@@ -1,0 +1,19 @@
+#!/bin/sh
+# Script for calling appropriate CGEN simulator based on ELF class
+
+# Copyright (C) 2020 Embecosm Limited
+
+# Contributor: Simon Cook <simon.cook@embecosm.com>
+
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# Test if file is 64-bit using file
+file $1 | grep 'ELF 64-bit' > /dev/null 2>&1
+
+if [ $? -eq 0 ]; then
+  riscv64-unknown-elf-run $*
+  exit $?
+else
+  riscv32-unknown-elf-run $*
+  exit $?
+fi
