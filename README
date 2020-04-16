@@ -1,0 +1,6 @@
+This repository contains build scripts, Dockerfiles and Jenkinsfiles for
+building release versions of toolchains.
+
+The intent is for these to be consumed by the Embecosm Public Buildbot
+(https://buildbot.embecosm.com, but also be usable by others to produce
+the same packages).
