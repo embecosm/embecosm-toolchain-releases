@@ -30,11 +30,12 @@ fi
 # Binutils-gdb
 mkdir -p ${BUILDPREFIX}/binutils-gdb
 cd ${BUILDPREFIX}/binutils-gdb
-${SRCPREFIX}/binutils-gdb/configure \
+../../binutils-gdb/configure        \
     --target=riscv32-unknown-elf    \
     --prefix=${INSTALLPREFIX}       \
     --disable-werror                \
-    ${EXTRA_OPTS}
+    ${EXTRA_OPTS}                   \
+    ${EXTRA_BINUTILS_OPTS}
 make -j$(nproc)
 make install
 
@@ -43,7 +44,7 @@ cd ${SRCPREFIX}/gcc
 ./contrib/download_prerequisites
 mkdir -p ${BUILDPREFIX}/gcc-stage1
 cd ${BUILDPREFIX}/gcc-stage1
-${SRCPREFIX}/gcc/configure                              \
+../../gcc/configure                                     \
     --target=riscv32-unknown-elf                        \
     --prefix=${INSTALLPREFIX}                           \
     --with-sysroot=${INSTALLPREFIX}/riscv32-unknown-elf \
@@ -62,7 +63,8 @@ ${SRCPREFIX}/gcc/configure                              \
     --enable-multilib                                   \
     --with-arch=${DEFAULTARCH}                          \
     --with-abi=${DEFAULTABI}                            \
-    ${EXTRA_OPTS}
+    ${EXTRA_OPTS}                                       \
+    ${EXTRA_GCC_OPTS}
 make -j$(nproc)
 make install
 
@@ -70,13 +72,14 @@ make install
 PATH=${INSTALLPREFIX}/bin:${PATH}
 mkdir -p ${BUILDPREFIX}/newlib
 cd ${BUILDPREFIX}/newlib
-${SRCPREFIX}/newlib/configure     \
+../../newlib/configure            \
     --target=riscv32-unknown-elf  \
     --prefix=${INSTALLPREFIX}     \
     --with-arch=${DEFAULTARCH}    \
     --with-abi=${DEFAULTABI}      \
     --enable-multilib             \
-    ${EXTRA_OPTS}
+    ${EXTRA_OPTS}                 \
+    ${EXTRA_NEWLIB_OPTS}
 make -j$(nproc)
 make install
 
@@ -85,7 +88,7 @@ cd ${SRCPREFIX}/gcc
 ./contrib/download_prerequisites
 mkdir -p ${BUILDPREFIX}/gcc-stage2
 cd ${BUILDPREFIX}/gcc-stage2
-${SRCPREFIX}/gcc/configure                              \
+../../gcc/configure                                     \
     --target=riscv32-unknown-elf                        \
     --prefix=${INSTALLPREFIX}                           \
     --with-sysroot=${INSTALLPREFIX}/riscv32-unknown-elf \
@@ -103,6 +106,7 @@ ${SRCPREFIX}/gcc/configure                              \
     --enable-multilib                                   \
     --with-arch=${DEFAULTARCH}                          \
     --with-abi=${DEFAULTABI}                            \
-    ${EXTRA_OPTS}
+    ${EXTRA_OPTS}                                       \
+    ${EXTRA_GCC_OPTS}
 make -j$(nproc)
 make install
