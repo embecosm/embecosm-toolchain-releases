@@ -27,17 +27,43 @@ if [ "x${PKGVERS}" != "x" ]; then
   EXTRA_OPTS="${EXTRA_OPTS} --with-pkgversion='${PKGVERS}'"
 fi
 
-# Binutils-gdb
-mkdir -p ${BUILDPREFIX}/binutils-gdb
-cd ${BUILDPREFIX}/binutils-gdb
-../../binutils-gdb/configure        \
-    --target=riscv32-unknown-elf    \
-    --prefix=${INSTALLPREFIX}       \
-    --disable-werror                \
-    ${EXTRA_OPTS}                   \
-    ${EXTRA_BINUTILS_OPTS}
-make -j$(nproc)
-make install
+# Binutils-gdb - Do in one step if possible
+if [ -e "binutils-gdb" ]; then
+  mkdir -p ${BUILDPREFIX}/binutils-gdb
+  cd ${BUILDPREFIX}/binutils-gdb
+  ../../binutils-gdb/configure        \
+      --target=riscv32-unknown-elf    \
+      --prefix=${INSTALLPREFIX}       \
+      --disable-werror                \
+      ${EXTRA_OPTS}                   \
+      ${EXTRA_BINUTILS_OPTS}
+  make -j$(nproc)
+  make install
+else
+  # Binutils
+  mkdir -p ${BUILDPREFIX}/binutils
+  cd ${BUILDPREFIX}/binutils
+  ../../binutils/configure            \
+      --target=riscv32-unknown-elf    \
+      --prefix=${INSTALLPREFIX}       \
+      --disable-werror                \
+      --disable-gdb                   \
+      ${EXTRA_OPTS}                   \
+      ${EXTRA_BINUTILS_OPTS}
+  make -j$(nproc)
+  make install
+  # GDB
+  mkdir -p ${BUILDPREFIX}/gdb
+  cd ${BUILDPREFIX}/gdb
+  ../../gdb/configure                 \
+      --target=riscv32-unknown-elf    \
+      --prefix=${INSTALLPREFIX}       \
+      --disable-werror                \
+      ${EXTRA_OPTS}                   \
+      ${EXTRA_BINUTILS_OPTS}
+  make -j$(nproc) all-gdb
+  make install-gdb
+fi
 
 # GCC
 cd ${SRCPREFIX}/gcc
