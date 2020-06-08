@@ -9,6 +9,11 @@
 
 WORKSPACE=$PWD
 
+# Allow environment to control parallelism
+if [ "x${PARALLEL_JOBS}" == "x" ]; then
+  PARALLEL_JOBS=$(nproc)
+fi
+
 # Build 32-bit
 mkdir -p ${WORKSPACE}/build/binutils-sim-32
 cd ${WORKSPACE}/build/binutils-sim-32
@@ -18,7 +23,7 @@ ${WORKSPACE}/binutils-gdb-sim/configure    \
   --disable-gdb                            \
   --enable-sim                             \
   --disable-werror
-make -j$(nproc) all-sim
+make -j${PARALLEL_JOBS} all-sim
 make install-sim
 
 # Build 64-bit
@@ -30,7 +35,7 @@ ${WORKSPACE}/binutils-gdb-sim/configure    \
   --disable-gdb                            \
   --enable-sim                             \
   --disable-werror
-make -j$(nproc) all-sim
+make -j${PARALLEL_JOBS} all-sim
 make install-sim
 
 # Copy simulator wrapper script
@@ -50,7 +55,7 @@ TARGET_BOARD="$(riscv32-unknown-elf-gcc -print-multi-lib | \
                   sed -e 's/.*;//' \
                       -e 's#@#/-#g' \
                       -e 's/^/riscv-sim/' | awk 1 ORS=' ')"
-make -j$(nproc) check-gcc \
+make -j${PARALLEL_JOBS} check-gcc \
   RUNTESTFLAGS="--target_board='${TARGET_BOARD}'"
 
 # If this is Windows, then the log merging script only generates the correct

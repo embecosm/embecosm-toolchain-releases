@@ -27,6 +27,11 @@ if [ "x${PKGVERS}" != "x" ]; then
   EXTRA_OPTS="${EXTRA_OPTS} --with-pkgversion='${PKGVERS}'"
 fi
 
+# Allow environment to control parallelism
+if [ "x${PARALLEL_JOBS}" == "x" ]; then
+  PARALLEL_JOBS=$(nproc)
+fi
+
 # Binutils-gdb - Do in one step if possible
 if [ -e "binutils-gdb" ]; then
   mkdir -p ${BUILDPREFIX}/binutils-gdb
@@ -37,7 +42,7 @@ if [ -e "binutils-gdb" ]; then
       --disable-werror                \
       ${EXTRA_OPTS}                   \
       ${EXTRA_BINUTILS_OPTS}
-  make -j$(nproc)
+  make -j${PARALLEL_JOBS}
   make install
 else
   # Binutils
@@ -50,7 +55,7 @@ else
       --disable-gdb                   \
       ${EXTRA_OPTS}                   \
       ${EXTRA_BINUTILS_OPTS}
-  make -j$(nproc)
+  make -j${PARALLEL_JOBS}
   make install
   # GDB
   mkdir -p ${BUILDPREFIX}/gdb
@@ -61,7 +66,7 @@ else
       --disable-werror                \
       ${EXTRA_OPTS}                   \
       ${EXTRA_BINUTILS_OPTS}
-  make -j$(nproc) all-gdb
+  make -j${PARALLEL_JOBS} all-gdb
   make install-gdb
 fi
 
@@ -91,7 +96,7 @@ cd ${BUILDPREFIX}/gcc-stage1
     --with-abi=${DEFAULTABI}                            \
     ${EXTRA_OPTS}                                       \
     ${EXTRA_GCC_OPTS}
-make -j$(nproc)
+make -j${PARALLEL_JOBS}
 make install
 
 # Newlib
@@ -106,7 +111,7 @@ cd ${BUILDPREFIX}/newlib
     --enable-multilib             \
     ${EXTRA_OPTS}                 \
     ${EXTRA_NEWLIB_OPTS}
-make -j$(nproc)
+make -j${PARALLEL_JOBS}
 make install
 
 # GCC stage 2
@@ -134,5 +139,5 @@ cd ${BUILDPREFIX}/gcc-stage2
     --with-abi=${DEFAULTABI}                            \
     ${EXTRA_OPTS}                                       \
     ${EXTRA_GCC_OPTS}
-make -j$(nproc)
+make -j${PARALLEL_JOBS}
 make install
