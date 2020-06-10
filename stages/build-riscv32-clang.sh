@@ -16,6 +16,14 @@ SRCPREFIX=${PWD}
 which gcc
 which g++
 
+# For compiler-rt, need to fully qualify paths to tools, so for Windows
+# builds under MSys need to add .exe to tool paths
+if [ "$(uname -o)" == "Msys" ]; then
+  EXE=".exe"
+else
+  EXE=""
+fi
+
 # If a BUGURL and PKGVERS has been provided, set variables
 EXTRA_OPTS=""
 LLVM_EXTRA_OPTS=""
@@ -100,14 +108,17 @@ make -j${PARALLEL_JOBS}
 make install
 
 # Compiler-rt for rv32 and rv64
+# NOTE: CMAKE_SYSTEM_NAME is set to linux to allow the configure step to
+#       correctly validate that clang works for cross compiling
 mkdir -p ${BUILDPREFIX}/compiler-rt32
 cd ${BUILDPREFIX}/compiler-rt32
 cmake -G"Unix Makefiles"                                                     \
+    -DCMAKE_SYSTEM_NAME=Linux                                                \
     -DCMAKE_INSTALL_PREFIX=$(${INSTALLPREFIX}/bin/clang -print-resource-dir) \
-    -DCMAKE_C_COMPILER=${INSTALLPREFIX}/bin/clang                            \
-    -DCMAKE_AR=${INSTALLPREFIX}/bin/llvm-ar                                  \
-    -DCMAKE_NM=${INSTALLPREFIX}/bin/llvm-nm                                  \
-    -DCMAKE_RANLIB=${INSTALLPREFIX}/bin/llvm-ranlib                          \
+    -DCMAKE_C_COMPILER=${INSTALLPREFIX}/bin/clang${EXE}                      \
+    -DCMAKE_AR=${INSTALLPREFIX}/bin/llvm-ar${EXE}                            \
+    -DCMAKE_NM=${INSTALLPREFIX}/bin/llvm-nm${EXE}                            \
+    -DCMAKE_RANLIB=${INSTALLPREFIX}/bin/llvm-ranlib${EXE}                    \
     -DCMAKE_C_COMPILER_TARGET="riscv32-unknown-elf"                          \
     -DCMAKE_ASM_COMPILER_TARGET="riscv32-unknown-elf"                        \
     -DCMAKE_C_FLAGS="-march=rv32imac -mabi=ilp32"                            \
@@ -129,11 +140,12 @@ make install
 mkdir -p ${BUILDPREFIX}/compiler-rt64
 cd ${BUILDPREFIX}/compiler-rt64
 cmake -G"Unix Makefiles"                                                     \
+    -DCMAKE_SYSTEM_NAME=Linux                                                \
     -DCMAKE_INSTALL_PREFIX=$(${INSTALLPREFIX}/bin/clang -print-resource-dir) \
-    -DCMAKE_C_COMPILER=${INSTALLPREFIX}/bin/clang                            \
-    -DCMAKE_AR=${INSTALLPREFIX}/bin/llvm-ar                                  \
-    -DCMAKE_NM=${INSTALLPREFIX}/bin/llvm-nm                                  \
-    -DCMAKE_RANLIB=${INSTALLPREFIX}/bin/llvm-ranlib                          \
+    -DCMAKE_C_COMPILER=${INSTALLPREFIX}/bin/clang${EXE}                      \
+    -DCMAKE_AR=${INSTALLPREFIX}/bin/llvm-ar${EXE}                            \
+    -DCMAKE_NM=${INSTALLPREFIX}/bin/llvm-nm${EXE}                            \
+    -DCMAKE_RANLIB=${INSTALLPREFIX}/bin/llvm-ranlib${EXE}                    \
     -DCMAKE_C_COMPILER_TARGET="riscv64-unknown-elf"                          \
     -DCMAKE_ASM_COMPILER_TARGET="riscv64-unknown-elf"                        \
     -DCMAKE_C_FLAGS="-march=rv64imac -mabi=lp64"                             \
