@@ -22,7 +22,7 @@ RUN mkdir -p /tmp/cmake && cd /tmp/cmake && \
 
 # Install new DejaGNU for more reliable test summary generation
 RUN mkdir -p /tmp/dejagnu && cd /tmp/dejagnu && \
-    wget https://www.mirrorservice.org/sites/ftp.gnu.org/gnu/dejagnu/dejagnu-1.6.2.tar.gz && \
+    wget https://ftp.gnu.org/gnu/dejagnu/dejagnu-1.6.2.tar.gz && \
     tar xf dejagnu-1.6.2.tar.gz && cd dejagnu-1.6.2 && \
     ./configure && make && make install && \
     cd /tmp && rm -rf dejagnu
