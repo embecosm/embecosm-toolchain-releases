@@ -28,13 +28,13 @@ node('builder') {
     }
     dir('gdb') {
       checkout([$class: 'GitSCM',
-          branches: [[name: 'tags/${GccTag}']],
+          branches: [[name: 'tags/${GdbTag}']],
           extensions: [[$class: 'CloneOption', shallow: true]],
           userRemoteConfigs: [[url: 'https://sourceware.org/git/binutils-gdb.git']]])
     }
     dir('gcc') {
       checkout([$class: 'GitSCM',
-          branches: [[name: 'tags/${GdbTag}']],
+          branches: [[name: 'tags/${GccTag}']],
           extensions: [[$class: 'CloneOption', shallow: true]],
           userRemoteConfigs: [[url: 'https://github.com/gcc-mirror/gcc.git']]])
     }
