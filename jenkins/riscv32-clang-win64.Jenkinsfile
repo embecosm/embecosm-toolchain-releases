@@ -35,19 +35,19 @@ node('winbuilder') {
       checkout([$class: 'GitSCM',
           branches: [[name: '*/master']],
           extensions: [[$class: 'CloneOption', shallow: true]],
-          userRemoteConfigs: [[url: 'https://sourceware.org/git/binutils-gdb.git']]])
+          userRemoteConfigs: [[url: 'https://mirrors.git.embecosm.com/mirrors/binutils-gdb.git']]])
     }
     dir('llvm-project') {
       checkout([$class: 'GitSCM',
           branches: [[name: '*/master']],
           extensions: [[$class: 'CloneOption', shallow: true]],
-          userRemoteConfigs: [[url: 'https://github.com/llvm/llvm-project.git']]])
+          userRemoteConfigs: [[url: 'https://mirrors.git.embecosm.com/mirrors/llvm-project.git']]])
     }
     dir('newlib') {
       checkout([$class: 'GitSCM',
           branches: [[name: '*/master']],
           extensions: [[$class: 'CloneOption', shallow: true]],
-          userRemoteConfigs: [[url: 'git://sourceware.org/git/newlib-cygwin.git']]])
+          userRemoteConfigs: [[url: 'https://mirrors.git.embecosm.com/mirrors/newlib-cygwin.git']]])
     }
     bat script: """set MSYSTEM=MINGW64
                    set /P UNIXWORKSPACE=<workspacedir

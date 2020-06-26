@@ -29,19 +29,19 @@ node('builder') {
       checkout([$class: 'GitSCM',
           branches: [[name: '*/master']],
           extensions: [[$class: 'CloneOption', shallow: true]],
-          userRemoteConfigs: [[url: 'https://sourceware.org/git/binutils-gdb.git']]])
+          userRemoteConfigs: [[url: 'https://mirrors.git.embecosm.com/mirrors/binutils-gdb.git']]])
     }
     dir('gcc') {
       checkout([$class: 'GitSCM',
           branches: [[name: '*/master']],
           extensions: [[$class: 'CloneOption', shallow: true]],
-          userRemoteConfigs: [[url: 'https://github.com/gcc-mirror/gcc.git']]])
+          userRemoteConfigs: [[url: 'https://mirrors.git.embecosm.com/mirrors/gcc.git']]])
     }
     dir('newlib') {
       checkout([$class: 'GitSCM',
           branches: [[name: '*/master']],
           extensions: [[$class: 'CloneOption', shallow: true]],
-          userRemoteConfigs: [[url: 'git://sourceware.org/git/newlib-cygwin.git']]])
+          userRemoteConfigs: [[url: 'https://mirrors.git.embecosm.com/mirrors/newlib-cygwin.git']]])
     }
     // or1k-utils is used for the site file
     dir('or1k-utils') {

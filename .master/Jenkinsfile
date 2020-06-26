@@ -1,0 +1,36 @@
+// Jenkinsfile for updating a local cache of sources and initiating a set of
+// builds at once.
+
+node('master') {
+  stage('Sync') {
+    checkout scm
+    dir('.master') {
+      sh './sync.sh'
+    }
+  }
+
+  stage('Trigger Builds') {
+    build job: 'riscv32-gcc-centos6', wait: false
+    build job: 'riscv32-gcc-centos7', wait: false
+    build job: 'riscv32-gcc-centos8', wait: false
+    build job: 'riscv32-gcc-macos', wait: false
+    build job: 'riscv32-gcc-ubuntu1804', wait: false
+    build job: 'riscv32-gcc-ubuntu2004', wait: false
+    build job: 'riscv32-gcc-win64', wait: false
+
+    build job: 'riscv32-clang-centos7', wait: false
+    build job: 'riscv32-clang-centos8', wait: false
+    build job: 'riscv32-clang-macos', wait: false
+    build job: 'riscv32-clang-ubuntu1804', wait: false
+    build job: 'riscv32-clang-ubuntu2004', wait: false
+    build job: 'riscv32-clang-win64', wait: false
+
+    build job: 'or1k-gcc-centos6', wait: false
+    build job: 'or1k-gcc-centos7', wait: false
+    build job: 'or1k-gcc-centos8', wait: false
+    build job: 'or1k-gcc-macos', wait: false
+    build job: 'or1k-gcc-ubuntu1804', wait: false
+    build job: 'or1k-gcc-ubuntu2004', wait: false
+    build job: 'or1k-gcc-win64', wait: false
+  }
+}

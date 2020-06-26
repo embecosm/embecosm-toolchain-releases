@@ -1,0 +1,3 @@
+This directory contains a Jenkinsfile and scripts for orchestrating building
+many toolchains at once. This directory should not be needed when just building
+an individual toolchain.
