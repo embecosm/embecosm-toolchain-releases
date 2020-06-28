@@ -15,7 +15,7 @@ syncrepo() {
   echo "Syncing ${NAME}..."
   echo "Mirroring ${SRC}..."
   if ! [ -e "${NAME}.git" ]; then
-    git clone --mirror "${SRC}" "${NAME}.git"
+    git clone --bare "${SRC}" "${NAME}.git"
   fi
   echo "Pushing to ${DST}"
   (
