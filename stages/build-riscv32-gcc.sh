@@ -11,7 +11,7 @@
 INSTALLPREFIX=${PWD}/install
 BUILDPREFIX=${PWD}/build
 SRCPREFIX=${PWD}
-DEFAULTARCH=rv32imac
+DEFAULTARCH=rv32imc
 DEFAULTABI=ilp32
 
 # Print the GCC and G++ used in this build
