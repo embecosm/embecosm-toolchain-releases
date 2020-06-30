@@ -31,7 +31,7 @@ node('macbuilder') {
           extensions: [[$class: 'CloneOption', shallow: true]],
           userRemoteConfigs: [[url: 'https://github.com/pulp-platform/pulp-riscv-binutils-gdb.git']]])
     }
-    dir('gcc') {
+    dir('riscv-gcc') {
       checkout([$class: 'GitSCM',
           branches: [[name: '*/master']],
           extensions: [[$class: 'CloneOption', shallow: true]],

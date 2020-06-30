@@ -71,11 +71,11 @@ else
 fi
 
 # GCC
-cd ${SRCPREFIX}/gcc
+cd ${SRCPREFIX}/riscv-gcc
 ./contrib/download_prerequisites
 mkdir -p ${BUILDPREFIX}/gcc-stage1
 cd ${BUILDPREFIX}/gcc-stage1
-../../gcc/configure                                     \
+../../riscv-gcc/configure                               \
     --target=riscv32-unknown-elf                        \
     --prefix=${INSTALLPREFIX}                           \
     --with-sysroot=${INSTALLPREFIX}/riscv32-unknown-elf \
@@ -115,11 +115,11 @@ make -j${PARALLEL_JOBS}
 make install
 
 # GCC stage 2
-cd ${SRCPREFIX}/gcc
+cd ${SRCPREFIX}/riscv-gcc
 ./contrib/download_prerequisites
 mkdir -p ${BUILDPREFIX}/gcc-stage2
 cd ${BUILDPREFIX}/gcc-stage2
-../../gcc/configure                                     \
+../../riscv-gcc/configure                               \
     --target=riscv32-unknown-elf                        \
     --prefix=${INSTALLPREFIX}                           \
     --with-sysroot=${INSTALLPREFIX}/riscv32-unknown-elf \
