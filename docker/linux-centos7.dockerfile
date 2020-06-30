@@ -4,7 +4,7 @@ FROM centos:centos7
 LABEL maintainer simon.cook@embecosm.com
 
 RUN yum -y upgrade && yum -y groupinstall 'Development tools' && \
-    yum -y install dejagnu python3 texinfo wget which
+    yum -y install dejagnu python3 texinfo wget which zlib-devel
 
 # Install newer toolchain components
 RUN yum install -y centos-release-scl && yum install -y devtoolset-7

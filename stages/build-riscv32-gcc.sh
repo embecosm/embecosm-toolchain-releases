@@ -92,6 +92,7 @@ cd ${BUILDPREFIX}/gcc-stage1
     --disable-nls                                       \
     --disable-bootstrap                                 \
     --enable-multilib                                   \
+    --with-system-zlib                                  \
     --with-arch=${DEFAULTARCH}                          \
     --with-abi=${DEFAULTABI}                            \
     ${EXTRA_OPTS}                                       \
@@ -135,6 +136,7 @@ cd ${BUILDPREFIX}/gcc-stage2
     --disable-libgomp                                   \
     --disable-nls                                       \
     --enable-multilib                                   \
+    --with-system-zlib                                  \
     --with-arch=${DEFAULTARCH}                          \
     --with-abi=${DEFAULTABI}                            \
     ${EXTRA_OPTS}                                       \
