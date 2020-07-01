@@ -68,9 +68,9 @@ if [ $(uname -o) == "Msys" ]; then
   mv gcc/testsuite/gcc/gcc.sum gcc/testsuite/gcc/gcc.sum.orig
   mv gcc/testsuite/g++/g++.log gcc/testsuite/g++/g++.log.orig
   mv gcc/testsuite/g++/g++.sum gcc/testsuite/g++/g++.sum.orig
-  ${WORKSPACE}/gcc/contrib/dg-extract-results.sh    gcc/testsuite/*/gcc.sum.sep > gcc/testsuite/gcc/gcc.sum
-  ${WORKSPACE}/gcc/contrib/dg-extract-results.sh -L gcc/testsuite/*/gcc.log.sep > gcc/testsuite/gcc/gcc.log
-  ${WORKSPACE}/gcc/contrib/dg-extract-results.sh    gcc/testsuite/*/g++.sum.sep > gcc/testsuite/g++/g++.sum
-  ${WORKSPACE}/gcc/contrib/dg-extract-results.sh -L gcc/testsuite/*/g++.log.sep > gcc/testsuite/g++/g++.log
+  ${WORKSPACE}/riscv-gcc/contrib/dg-extract-results.sh    gcc/testsuite/*/gcc.sum.sep > gcc/testsuite/gcc/gcc.sum
+  ${WORKSPACE}/riscv-gcc/contrib/dg-extract-results.sh -L gcc/testsuite/*/gcc.log.sep > gcc/testsuite/gcc/gcc.log
+  ${WORKSPACE}/riscv-gcc/contrib/dg-extract-results.sh    gcc/testsuite/*/g++.sum.sep > gcc/testsuite/g++/g++.sum
+  ${WORKSPACE}/riscv-gcc/contrib/dg-extract-results.sh -L gcc/testsuite/*/g++.log.sep > gcc/testsuite/g++/g++.log
 fi
 exit 0
