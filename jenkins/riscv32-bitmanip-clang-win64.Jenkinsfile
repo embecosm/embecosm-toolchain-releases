@@ -3,7 +3,7 @@ import java.time.*
 import java.time.format.DateTimeFormatter
 String CURRENTTIME = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC) \
                          .format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-String PKGVERS = "riscv32-experimental-bitmanip-win64-clang-${CURRENTTIME}"
+String PKGVERS = "riscv32-experimental-bitmanip-clang-win64-${CURRENTTIME}"
 String BUGURL = 'https://www.embecosm.com'
 
 // This directory is where to expect a MSYS64 installation on the build node
