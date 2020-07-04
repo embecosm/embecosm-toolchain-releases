@@ -32,5 +32,28 @@ node('master') {
     build job: 'or1k-gcc-ubuntu1804', wait: false
     build job: 'or1k-gcc-ubuntu2004', wait: false
     build job: 'or1k-gcc-win64', wait: false
+
+    // Also build bitmanip and core-v targets
+    // NOTE: The Jenkinsfiles for these live in other branches
+    build job: 'riscv32-bitmanip-clang-centos7', wait: false
+    build job: 'riscv32-bitmanip-clang-centos8', wait: false
+    build job: 'riscv32-bitmanip-clang-macos', wait: false
+    build job: 'riscv32-bitmanip-clang-ubuntu1804', wait: false
+    build job: 'riscv32-bitmanip-clang-ubuntu2004', wait: false
+    build job: 'riscv32-bitmanip-clang-win64', wait: false
+    build job: 'riscv32-bitmanip-gcc-centos6', wait: false
+    build job: 'riscv32-bitmanip-gcc-centos7', wait: false
+    build job: 'riscv32-bitmanip-gcc-centos8', wait: false
+    build job: 'riscv32-bitmanip-gcc-macos', wait: false
+    build job: 'riscv32-bitmanip-gcc-ubuntu1804', wait: false
+    build job: 'riscv32-bitmanip-gcc-ubuntu2004', wait: false
+    build job: 'riscv32-bitmanip-gcc-win64', wait: false
+    build job: 'corev-gcc-centos6', wait: false
+    build job: 'corev-gcc-centos7', wait: false
+    build job: 'corev-gcc-centos8', wait: false
+    build job: 'corev-gcc-macos', wait: false
+    build job: 'corev-gcc-ubuntu1804', wait: false
+    build job: 'corev-gcc-ubuntu2004', wait: false
+    build job: 'corev-gcc-win64', wait: false
   }
 }
