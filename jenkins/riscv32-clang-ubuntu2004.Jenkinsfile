@@ -3,7 +3,7 @@ import java.time.*
 import java.time.format.DateTimeFormatter
 String CURRENTTIME = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC) \
                          .format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-String PKGVERS = "riscv32-embecosm-ubuntu2004-clang-${CURRENTTIME}"
+String PKGVERS = "riscv32-embecosm-clang-ubuntu2004-${CURRENTTIME}"
 String BUGURL = 'https://www.embecosm.com'
 
 // Bug URL and Package Version override parameters
