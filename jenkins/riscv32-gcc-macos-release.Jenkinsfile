@@ -47,7 +47,7 @@ node('macbuilder') {
     }
     dir('binutils-gdb-sim') {
       checkout([$class: 'GitSCM',
-          branches: [[name: '*/cgen-sim-patch']],
+          branches: [[name: '*/spc-cgen-sim-rve']],
           extensions: [[$class: 'CloneOption', shallow: true]],
           userRemoteConfigs: [[url: 'https://github.com/embecosm/riscv-binutils-gdb.git']]])
     }
