@@ -60,6 +60,8 @@ node('builder') {
 
   stage('Build') {
     image.inside {
+      // Enable greater set of multilibs
+      sh script: 'cd gcc/gcc/config/riscv && python3 ./multilib-generator rv32e-ilp32e--c rv32ea-ilp32e--m rv32em-ilp32e--c rv32eac-ilp32e-- rv32emac-ilp32e-- rv32i-ilp32--c rv32ia-ilp32--m rv32im-ilp32--c rv32if-ilp32f-rv32ifd-c rv32iaf-ilp32f-rv32imaf,rv32iafc-d rv32imf-ilp32f-rv32imfd-c rv32iac-ilp32-- rv32imac-ilp32-- rv32imafc-ilp32f-rv32imafdc- rv32ifd-ilp32d--c rv32imfd-ilp32d--c rv32iafd-ilp32d-rv32imafd,rv32iafdc- rv32imafdc-ilp32d-- rv64i-lp64--c rv64ia-lp64--m rv64im-lp64--c rv64if-lp64f-rv64ifd-c rv64iaf-lp64f-rv64imaf,rv64iafc-d rv64imf-lp64f-rv64imfd-c rv64iac-lp64-- rv64imac-lp64-- rv64imafc-lp64f-rv64imafdc- rv64ifd-lp64d--m,c rv64iafd-lp64d-rv64imafd,rv64iafdc- rv64imafdc-lp64d-- rv32eb-ilp32e--c rv32eab-ilp32e--m rv32emb-ilp32e--c rv32eacb-ilp32e-- rv32emacb-ilp32e-- rv32ib-ilp32--c rv32iab-ilp32--m rv32imb-ilp32--c rv32ifb-ilp32f-rv32ifdb-c rv32iafb-ilp32f-rv32imaf,rv32iafcb-d rv32imfb-ilp32f-rv32imfdb-c rv32iacb-ilp32-- rv32imacb-ilp32-- rv32imafcb-ilp32f-rv32imafdcb- rv32ifdb-ilp32d--c rv32imfdb-ilp32d--c rv32iafdb-ilp32d-rv32imafd,rv32iafdcb- rv32imafdcb-ilp32d-- rv64ib-lp64--c rv64iab-lp64--m rv64imb-lp64--c rv64ifb-lp64f-rv64ifdb-c rv64iafb-lp64f-rv64imaf,rv64iafcb-d rv64imfb-lp64f-rv64imfdb-c rv64iacb-lp64-- rv64imacb-lp64-- rv64imafcb-lp64f-rv64imafdcb- rv64ifdb-lp64d--m,c rv64iafdb-lp64d-rv64imafd,rv64iafdcb- rv64imafdcb-lp64d-- > t-elf-multilib'
       sh script: "BUGURL='${BUGURL}' PKGVERS='${PKGVERS}' ./stages/build-riscv32-gcc.sh"
     }
   }
