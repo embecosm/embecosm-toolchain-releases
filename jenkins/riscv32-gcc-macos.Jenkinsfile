@@ -10,6 +10,7 @@ String BUGURL = 'https://www.embecosm.com'
 properties([parameters([
     string(defaultValue: '', description: 'Package Version', name: 'PackageVersion'),
     string(defaultValue: '', description: 'Bug Reporting URL', name: 'BugURL'),
+    booleanParam(defaultValue: false, description: 'Test with a reduced set of multilibs', name: 'ReducedMultilibTesting'),
 ])])
 
 if (params.PackageVersion != '')
@@ -65,7 +66,10 @@ node('macbuilder') {
   }
 
   stage('Test') {
-    sh script: '''PARALLEL_JOBS=2 ./stages/test-riscv32-gcc.sh'''
+    if (params.ReducedMultilibTesting)
+      sh script: '''REDUCED_MULTILIB_TEST=1 PARALLEL_JOBS=2 ./stages/test-riscv32-gcc.sh'''
+    else
+      sh script: '''PARALLEL_JOBS=2 ./stages/test-riscv32-gcc.sh'''
     dir('build/gcc-stage2') {
       archiveArtifacts artifacts: '''gcc/testsuite/gcc/gcc.log,
                                      gcc/testsuite/gcc/gcc.sum,

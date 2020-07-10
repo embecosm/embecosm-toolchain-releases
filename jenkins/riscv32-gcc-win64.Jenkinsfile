@@ -13,6 +13,7 @@ String MSYSHOME = 'C:\\msys64j'
 properties([parameters([
     string(defaultValue: '', description: 'Package Version', name: 'PackageVersion'),
     string(defaultValue: '', description: 'Bug Reporting URL', name: 'BugURL'),
+    booleanParam(defaultValue: false, description: 'Test with a reduced set of multilibs', name: 'ReducedMultilibTesting'),
 ])])
 
 if (params.PackageVersion != '')
@@ -91,10 +92,17 @@ node('winbuilder') {
 
   stage('Test') {
     // Build the CGEN simulator and use it for testing
-    bat script: """set MSYSTEM=MINGW64
-                   set /P UNIXWORKSPACE=<workspacedir
-                   ${MSYSHOME}\\usr\\bin\\bash --login -c ^
-                       "cd %UNIXWORKSPACE% && ./stages/test-riscv32-gcc.sh" """
+    if (params.ReducedMultilibTesting)
+      bat script: """set MSYSTEM=MINGW64
+                    set REDUCED_MULTILIB_TEST=1
+                    set /P UNIXWORKSPACE=<workspacedir
+                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
+                        "cd %UNIXWORKSPACE% && ./stages/test-riscv32-gcc.sh" """
+    else
+      bat script: """set MSYSTEM=MINGW64
+                    set /P UNIXWORKSPACE=<workspacedir
+                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
+                        "cd %UNIXWORKSPACE% && ./stages/test-riscv32-gcc.sh" """
     dir('build/gcc-stage2') {
       archiveArtifacts artifacts: '''gcc/testsuite/gcc/gcc.log,
                                      gcc/testsuite/gcc/gcc.sum,
