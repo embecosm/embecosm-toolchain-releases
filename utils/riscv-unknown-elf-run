@@ -7,6 +7,15 @@
 
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+# First check if this is a rv32e binary, in which case call the 32-bit
+# simulator in rve mode
+riscv32-unknown-elf-readelf -h $1 | grep RVE > /dev/null 2>&1
+
+if [ $? -eq 0 ]; then
+  riscv32-unknown-elf-run --riscv-rve $*
+  exit $?
+fi
+
 # Test if file is 64-bit using file
 file $1 | grep 'ELF 64-bit' > /dev/null 2>&1
 
