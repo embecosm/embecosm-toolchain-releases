@@ -10,13 +10,13 @@ node('master') {
   }
 
   stage('Trigger Builds') {
-    build job: 'riscv32-gcc-centos6', wait: false
-    build job: 'riscv32-gcc-centos7', wait: false
-    build job: 'riscv32-gcc-centos8', wait: false
-    build job: 'riscv32-gcc-macos', wait: false
-    build job: 'riscv32-gcc-ubuntu1804', wait: false
-    build job: 'riscv32-gcc-ubuntu2004', wait: false
-    build job: 'riscv32-gcc-win64', wait: false
+    build job: 'riscv32-gcc-centos6', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv32-gcc-centos7', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv32-gcc-centos8', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv32-gcc-macos', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv32-gcc-ubuntu1804', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv32-gcc-ubuntu2004', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv32-gcc-win64', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
 
     build job: 'riscv32-clang-centos7', wait: false
     build job: 'riscv32-clang-centos8', wait: false
