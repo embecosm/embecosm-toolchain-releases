@@ -17,6 +17,7 @@ node('master') {
     build job: 'riscv32-gcc-ubuntu1804', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv32-gcc-ubuntu2004', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv32-gcc-win64', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv32-gcc-fullregression', wait: false
 
     build job: 'riscv32-clang-centos7', wait: false
     build job: 'riscv32-clang-centos8', wait: false
