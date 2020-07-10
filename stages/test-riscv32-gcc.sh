@@ -49,12 +49,16 @@ export USER=builder
 export RISCV_SIM_COMMAND=riscv-unknown-elf-run
 export RISCV_TRIPLE=riscv32-unknown-elf
 export DEJAGNU=${WORKSPACE}/dejagnu/riscv-sim-site.exp
-# Calculate target list from multilib spec
+
 TARGET_BOARD=riscv-sim
-TARGET_BOARD="$(riscv32-unknown-elf-gcc -print-multi-lib | \
-                  sed -e 's/.*;//' \
-                      -e 's#@#/-#g' \
-                      -e 's/^/riscv-sim/' | awk 1 ORS=' ')"
+if [ "x${REDUCED_MULTILIB_TEST}" == "x" ]; then
+  # Calculate target list from multilib spec
+  TARGET_BOARD="$(riscv32-unknown-elf-gcc -print-multi-lib | \
+                    sed -e 's/.*;//' \
+                        -e 's#@#/-#g' \
+                        -e 's/^/riscv-sim/' | awk 1 ORS=' ')"
+fi
+
 make -j${PARALLEL_JOBS} check-gcc \
   RUNTESTFLAGS="--target_board='${TARGET_BOARD}'"
 
