@@ -9,10 +9,10 @@ RUN yum -y upgrade && yum -y groupinstall 'Development tools' && \
 # Install newer toolchain components
 RUN yum install -y centos-release-scl yum-utils && \
     yum-config-manager --enable rhel-server-rhscl-7-rpms && \
-    yum install -y devtoolset-7
+    yum install -y devtoolset-7 rh-python36
 
-ENV PATH="/opt/rh/devtoolset-7/root/usr/bin:${PATH}" \
-    LD_LIBRARY_PATH="/opt/rh/devtoolset-7/root/usr/lib64:/opt/rh/devtoolset-7/root/usr/lib:/opt/rh/devtoolset-7/root/usr/lib64/dyninst:/opt/rh/devtoolset-7/root/usr/lib/dyninst:/opt/rh/devtoolset-7/root/usr/lib64:/opt/rh/devtoolset-7/root/usr/lib"
+ENV PATH="/opt/rh/rh-python36/root/usr/bin:/opt/rh/devtoolset-7/root/usr/bin:${PATH}" \
+    LD_LIBRARY_PATH="/opt/rh/rh-python36/root/usr/lib64:/opt/rh/devtoolset-7/root/usr/lib64:/opt/rh/devtoolset-7/root/usr/lib:/opt/rh/devtoolset-7/root/usr/lib64/dyninst:/opt/rh/devtoolset-7/root/usr/lib/dyninst:/opt/rh/devtoolset-7/root/usr/lib64:/opt/rh/devtoolset-7/root/usr/lib"
 
 # Install new DejaGNU for more reliable test summary generation
 RUN mkdir -p /tmp/dejagnu && cd /tmp/dejagnu && \
