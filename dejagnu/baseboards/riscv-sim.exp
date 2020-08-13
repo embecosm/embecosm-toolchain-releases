@@ -48,8 +48,11 @@ set_board_info compiler "[find_gcc]"
 set_board_info cflags 	"[libgloss_include_flags] [newlib_include_flags]"
 set_board_info ldflags 	"[libgloss_link_flags] [newlib_link_flags]"
 
-# This board doesn't use a linker script.
-set_board_info ldscript ""
+if [info exists env(RISCV_LDSCRIPT)] {
+    set_board_info ldscript "$env(RISCV_LDSCRIPT)"
+} else {
+    set_board_info ldscript ""
+}
 
 # And, it can't do arguments, and doesn't have real signals.
 

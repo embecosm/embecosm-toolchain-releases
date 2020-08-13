@@ -48,6 +48,7 @@ export PATH=${WORKSPACE}/install/bin:${PATH}
 export USER=builder
 export RISCV_SIM_COMMAND=riscv-unknown-elf-run
 export RISCV_TRIPLE=riscv32-unknown-elf
+export RISCV_LDSCRIPT="-T${WORKSPACE}/install/riscv32-unknown-elf/lib/riscv.ld"
 export DEJAGNU=${WORKSPACE}/dejagnu/riscv-sim-site.exp
 # Calculate target list from multilib spec
 TARGET_BOARD=riscv-sim
