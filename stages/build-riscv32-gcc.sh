@@ -143,3 +143,6 @@ cd ${BUILDPREFIX}/gcc-stage2
     ${EXTRA_GCC_OPTS}
 make -j${PARALLEL_JOBS}
 make install
+
+# Copy riscv.ld
+cp ${WORKSPACE}/utils/riscv.ld ${WORKSPACE}/install/riscv32-unknown-elf/lib/
