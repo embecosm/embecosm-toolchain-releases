@@ -39,6 +39,7 @@ if [ -e "binutils-gdb" ]; then
   ../../binutils-gdb/configure        \
       --target=riscv32-unknown-elf    \
       --prefix=${INSTALLPREFIX}       \
+      --with-expat                    \
       --disable-werror                \
       ${EXTRA_OPTS}                   \
       ${EXTRA_BINUTILS_OPTS}
@@ -63,6 +64,7 @@ else
   ../../gdb/configure                 \
       --target=riscv32-unknown-elf    \
       --prefix=${INSTALLPREFIX}       \
+      --with-expat                    \
       --disable-werror                \
       ${EXTRA_OPTS}                   \
       ${EXTRA_BINUTILS_OPTS}

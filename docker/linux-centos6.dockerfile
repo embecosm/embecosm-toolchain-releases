@@ -4,7 +4,7 @@ FROM centos:centos6
 LABEL maintainer simon.cook@embecosm.com
 
 RUN yum -y upgrade && yum -y groupinstall 'Development tools' && \
-    yum -y install expect texinfo wget
+    yum -y install expect texinfo wget expat-devel
 
 # Install newer toolchain components
 RUN yum install -y centos-release-scl yum-utils && \
