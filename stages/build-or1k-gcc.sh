@@ -37,6 +37,7 @@ if [ -e "binutils-gdb" ]; then
   ../../binutils-gdb/configure        \
       --target=or1k-elf               \
       --prefix=${INSTALLPREFIX}       \
+      --with-expat                    \
       --disable-werror                \
       ${EXTRA_OPTS}                   \
       ${EXTRA_BINUTILS_OPTS}
@@ -61,6 +62,7 @@ else
   ../../gdb/configure                 \
       --target=or1k-elf               \
       --prefix=${INSTALLPREFIX}       \
+      --with-expat                    \
       --disable-werror                \
       ${EXTRA_OPTS}                   \
       ${EXTRA_BINUTILS_OPTS}
