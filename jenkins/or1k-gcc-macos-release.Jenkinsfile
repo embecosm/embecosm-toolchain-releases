@@ -56,7 +56,7 @@ node('macbuilder') {
   }
 
   stage('Build') {
-    sh script: "BUGURL='${BUGURL}' PKGVERS='${PKGVERS}' PARALLEL_JOBS=2 ./stages/build-or1k-gcc.sh"
+    sh script: "BUGURL='${BUGURL}' PKGVERS='${PKGVERS}' ./stages/build-or1k-gcc.sh"
   }
 
   stage('Package') {
@@ -68,7 +68,7 @@ node('macbuilder') {
   }
 
   stage('Test') {
-    sh script: '''PARALLEL_JOBS=2 ./stages/test-or1k-gcc.sh'''
+    sh script: '''./stages/test-or1k-gcc.sh'''
     dir('build/gcc-stage2') {
       archiveArtifacts artifacts: '''gcc/testsuite/gcc/gcc.log,
                                      gcc/testsuite/gcc/gcc.sum,

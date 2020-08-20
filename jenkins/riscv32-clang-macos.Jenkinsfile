@@ -48,7 +48,7 @@ node('macbuilder') {
   }
 
   stage('Build') {
-    sh script: "BUGURL='${BUGURL}' PKGVERS='${PKGVERS}' PARALLEL_JOBS=2 ./stages/build-riscv32-clang.sh"
+    sh script: "BUGURL='${BUGURL}' PKGVERS='${PKGVERS}' ./stages/build-riscv32-clang.sh"
   }
 
   stage('Package') {
@@ -60,7 +60,7 @@ node('macbuilder') {
   }
 
   stage('Test') {
-    sh script: '''PARALLEL_JOBS=2 ./stages/test-llvm.sh'''
+    sh script: '''./stages/test-llvm.sh'''
     dir('build/llvm') {
       archiveArtifacts artifacts: 'llvm-tests.log', fingerprint: true
     }
