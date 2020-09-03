@@ -79,8 +79,8 @@ make install
 # Add symlinks to LLVM tools
 cd ${INSTALLPREFIX}/bin
 for TRIPLE in riscv32-unknown-elf riscv64-unknown-elf; do
-  for TOOL in clang clang++ cc c++ as; do
-    ln -sv clang ${TRIPLE}-${TOOL}
+  for TOOL in clang clang++ cc c++; do
+    ln -sv clang ${TRIPLE}-${TOOL}${EXE}
   done
 done
 
