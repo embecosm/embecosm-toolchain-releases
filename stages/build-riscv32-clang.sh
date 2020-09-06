@@ -155,7 +155,6 @@ cmake -G"Unix Makefiles"                                                     \
     -DCOMPILER_RT_BUILD_XRAY=OFF                                             \
     -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON                                     \
     -DCOMPILER_RT_OS_DIR=""                                                  \
-    -DLLVM_CONFIG_PATH=${INSTALLPREFIX}/bin/llvm-config                      \
     ../../llvm-project/compiler-rt
 make -j${PARALLEL_JOBS}
 make install
@@ -182,7 +181,6 @@ cmake -G"Unix Makefiles"                                                     \
     -DCOMPILER_RT_BUILD_XRAY=OFF                                             \
     -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON                                     \
     -DCOMPILER_RT_OS_DIR=""                                                  \
-    -DLLVM_CONFIG_PATH=${INSTALLPREFIX}/bin/llvm-config                      \
     ../../llvm-project/compiler-rt
 make -j${PARALLEL_JOBS}
 make install
