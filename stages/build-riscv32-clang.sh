@@ -70,6 +70,7 @@ cmake -G"Unix Makefiles"                                      \
     -DLLVM_ENABLE_PROJECTS=clang                              \
     -DLLVM_ENABLE_PLUGINS=ON                                  \
     -DLLVM_BINUTILS_INCDIR=${SRCPREFIX}/binutils-gdb/include  \
+    -DLLVM_INSTALL_TOOLCHAIN_ONLY=ON                          \
     -DLLVM_PARALLEL_LINK_JOBS=5                               \
     -DLLVM_TARGETS_TO_BUILD=X86\;RISCV                        \
     ${LLVM_EXTRA_OPTS}                                        \
