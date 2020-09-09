@@ -14,6 +14,11 @@ if [ "x${PARALLEL_JOBS}" == "x" ]; then
   PARALLEL_JOBS=$(nproc)
 fi
 
+# Allow environment to override triple
+if [ "x${TRIPLE}" == "x" ]; then
+  TRIPLE=riscv32-unknown-elf
+fi
+
 # Build 32-bit
 mkdir -p ${WORKSPACE}/build/binutils-sim-32
 cd ${WORKSPACE}/build/binutils-sim-32
@@ -47,13 +52,13 @@ set +e
 export PATH=${WORKSPACE}/install/bin:${PATH}
 export USER=builder
 export RISCV_SIM_COMMAND=riscv-unknown-elf-run
-export RISCV_TRIPLE=riscv32-unknown-elf
+export RISCV_TRIPLE=${TRIPLE}
 export DEJAGNU=${WORKSPACE}/dejagnu/riscv-sim-site.exp
 
 TARGET_BOARD=riscv-sim
 if [ "x${REDUCED_MULTILIB_TEST}" == "x" ]; then
   # Calculate target list from multilib spec
-  TARGET_BOARD="$(riscv32-unknown-elf-gcc -print-multi-lib | \
+  TARGET_BOARD="$(${TRIPLE}-gcc -print-multi-lib | \
                     sed -e 's/.*;//' \
                         -e 's#@#/-#g' \
                         -e 's/^/riscv-sim/' | awk 1 ORS=' ')"

@@ -11,8 +11,17 @@
 INSTALLPREFIX=${PWD}/install
 BUILDPREFIX=${PWD}/build
 SRCPREFIX=${PWD}
-DEFAULTARCH=rv32imac
-DEFAULTABI=ilp32
+
+# Allow the triple and default architecture and ABI to be overridden
+if [ "x${TRIPLE}" == "x" ]; then
+  TRIPLE=riscv32-unknown-elf
+fi
+if [ "x${DEFAULTARCH}" == "x"]; then
+  DEFAULTARCH=rv32imac
+fi
+if [ "x${DEFAULTABI}" == "x" ]; then
+  DEFAULTABI=ilp32
+fi
 
 # Print the GCC and G++ used in this build
 which gcc
@@ -37,7 +46,7 @@ if [ -e "binutils-gdb" ]; then
   mkdir -p ${BUILDPREFIX}/binutils-gdb
   cd ${BUILDPREFIX}/binutils-gdb
   ../../binutils-gdb/configure        \
-      --target=riscv32-unknown-elf    \
+      --target=${TRIPLE}              \
       --prefix=${INSTALLPREFIX}       \
       --with-expat                    \
       --disable-werror                \
@@ -50,7 +59,7 @@ else
   mkdir -p ${BUILDPREFIX}/binutils
   cd ${BUILDPREFIX}/binutils
   ../../binutils/configure            \
-      --target=riscv32-unknown-elf    \
+      --target=${TRIPLE}              \
       --prefix=${INSTALLPREFIX}       \
       --disable-werror                \
       --disable-gdb                   \
@@ -62,7 +71,7 @@ else
   mkdir -p ${BUILDPREFIX}/gdb
   cd ${BUILDPREFIX}/gdb
   ../../gdb/configure                 \
-      --target=riscv32-unknown-elf    \
+      --target=${TRIPLE}              \
       --prefix=${INSTALLPREFIX}       \
       --with-expat                    \
       --disable-werror                \
@@ -78,9 +87,9 @@ cd ${SRCPREFIX}/gcc
 mkdir -p ${BUILDPREFIX}/gcc-stage1
 cd ${BUILDPREFIX}/gcc-stage1
 ../../gcc/configure                                     \
-    --target=riscv32-unknown-elf                        \
+    --target=${TRIPLE}                                  \
     --prefix=${INSTALLPREFIX}                           \
-    --with-sysroot=${INSTALLPREFIX}/riscv32-unknown-elf \
+    --with-sysroot=${INSTALLPREFIX}/${TRIPLE}           \
     --with-newlib                                       \
     --without-headers                                   \
     --disable-shared                                    \
@@ -107,7 +116,7 @@ mkdir -p ${BUILDPREFIX}/newlib
 cd ${BUILDPREFIX}/newlib
 CFLAGS_FOR_TARGET="-DPREFER_SIZE_OVER_SPEED=1 -Os" \
 ../../newlib/configure                             \
-    --target=riscv32-unknown-elf                   \
+    --target=${TRIPLE}                             \
     --prefix=${INSTALLPREFIX}                      \
     --with-arch=${DEFAULTARCH}                     \
     --with-abi=${DEFAULTABI}                       \
@@ -132,9 +141,9 @@ cd ${SRCPREFIX}/gcc
 mkdir -p ${BUILDPREFIX}/gcc-stage2
 cd ${BUILDPREFIX}/gcc-stage2
 ../../gcc/configure                                     \
-    --target=riscv32-unknown-elf                        \
+    --target=${TRIPLE}                                  \
     --prefix=${INSTALLPREFIX}                           \
-    --with-sysroot=${INSTALLPREFIX}/riscv32-unknown-elf \
+    --with-sysroot=${INSTALLPREFIX}/${TRIPLE}           \
     --with-native-system-header-dir=/include            \
     --with-newlib                                       \
     --disable-shared                                    \
