@@ -3,7 +3,7 @@ import java.time.*
 import java.time.format.DateTimeFormatter
 String CURRENTTIME = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC) \
                          .format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-String PKGVERS = "corev-openhw-gcc-centos6-${CURRENTTIME}"
+String PKGVERS = "pulp-gcc-ubuntu2004-${CURRENTTIME}"
 String BUGURL = 'https://www.embecosm.com'
 
 // Bug URL and Package Version override parameters
@@ -54,8 +54,8 @@ node('builder') {
   }
 
   stage('Prepare Docker') {
-    image = docker.build('build-env-centos6',
-                         '--no-cache -f docker/linux-centos6.dockerfile docker')
+    image = docker.build('build-env-ubuntu2004',
+                         '--no-cache -f docker/linux-ubuntu2004.dockerfile docker')
   }
 
   stage('Build') {

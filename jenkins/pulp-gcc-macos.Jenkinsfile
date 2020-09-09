@@ -3,7 +3,7 @@ import java.time.*
 import java.time.format.DateTimeFormatter
 String CURRENTTIME = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC) \
                          .format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-String PKGVERS = "corev-openhw-gcc-macos-${CURRENTTIME}"
+String PKGVERS = "pulp-gcc-macos-${CURRENTTIME}"
 String BUGURL = 'https://www.embecosm.com'
 
 // Bug URL and Package Version override parameters
