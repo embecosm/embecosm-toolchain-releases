@@ -11,8 +11,17 @@
 INSTALLPREFIX=${PWD}/install
 BUILDPREFIX=${PWD}/build
 SRCPREFIX=${PWD}
-DEFAULTARCH=rv32imac
-DEFAULTABI=ilp32
+
+# Allow the triple and default architecture and ABI to be overridden
+if [ "x${TRIPLE}" == "x" ]; then
+  TRIPLE=riscv32-unknown-elf
+fi
+if [ "x${DEFAULTARCH}" == "x"]; then
+  DEFAULTARCH=rv32imac
+fi
+if [ "x${DEFAULTABI}" == "x" ]; then
+  DEFAULTABI=ilp32
+fi
 
 # Print the GCC and G++ used in this build
 which gcc
@@ -42,7 +51,7 @@ if [ -e "binutils-gdb" ]; then
   CFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
   CXXFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
   ../../binutils-gdb/configure        \
-      --target=riscv32-unknown-elf    \
+      --target=${TRIPLE}              \
       --prefix=${INSTALLPREFIX}       \
       --with-expat                    \
       --with-libgmp-prefix=${SRCPREFIX}/gmp-${LIBGMP_VERS}/inst \
@@ -58,7 +67,7 @@ else
   CFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
   CXXFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
   ../../binutils/configure            \
-      --target=riscv32-unknown-elf    \
+      --target=${TRIPLE}              \
       --prefix=${INSTALLPREFIX}       \
       --disable-werror                \
       --disable-gdb                   \
@@ -72,7 +81,7 @@ else
   CFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
   CXXFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
   ../../gdb/configure                 \
-      --target=riscv32-unknown-elf    \
+      --target=${TRIPLE}              \
       --prefix=${INSTALLPREFIX}       \
       --with-expat                    \
       --with-libgmp-prefix=${SRCPREFIX}/gmp-${LIBGMP_VERS}/inst \
@@ -89,9 +98,9 @@ cd ${SRCPREFIX}/gcc
 mkdir -p ${BUILDPREFIX}/gcc-stage1
 cd ${BUILDPREFIX}/gcc-stage1
 ../../gcc/configure                                     \
-    --target=riscv32-unknown-elf                        \
+    --target=${TRIPLE}                                  \
     --prefix=${INSTALLPREFIX}                           \
-    --with-sysroot=${INSTALLPREFIX}/riscv32-unknown-elf \
+    --with-sysroot=${INSTALLPREFIX}/${TRIPLE}           \
     --with-newlib                                       \
     --without-headers                                   \
     --disable-shared                                    \
@@ -119,7 +128,7 @@ mkdir -p ${BUILDPREFIX}/newlib
 cd ${BUILDPREFIX}/newlib
 CFLAGS_FOR_TARGET="-O2 -mcmodel=medany"            \
 ../../newlib/configure                             \
-    --target=riscv32-unknown-elf                   \
+    --target=${TRIPLE}                             \
     --prefix=${INSTALLPREFIX}                      \
     --with-arch=${DEFAULTARCH}                     \
     --with-abi=${DEFAULTABI}                       \
@@ -182,9 +191,9 @@ cd ${SRCPREFIX}/gcc
 mkdir -p ${BUILDPREFIX}/gcc-stage2
 cd ${BUILDPREFIX}/gcc-stage2
 ../../gcc/configure                                     \
-    --target=riscv32-unknown-elf                        \
+    --target=${TRIPLE}                                  \
     --prefix=${INSTALLPREFIX}                           \
-    --with-sysroot=${INSTALLPREFIX}/riscv32-unknown-elf \
+    --with-sysroot=${INSTALLPREFIX}/${TRIPLE}           \
     --with-native-system-header-dir=/include            \
     --with-newlib                                       \
     --disable-shared                                    \
