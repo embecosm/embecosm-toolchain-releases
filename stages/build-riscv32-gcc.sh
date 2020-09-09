@@ -16,7 +16,7 @@ SRCPREFIX=${PWD}
 if [ "x${TRIPLE}" == "x" ]; then
   TRIPLE=riscv32-unknown-elf
 fi
-if [ "x${DEFAULTARCH}" == "x"]; then
+if [ "x${DEFAULTARCH}" == "x" ]; then
   DEFAULTARCH=rv32imac
 fi
 if [ "x${DEFAULTABI}" == "x" ]; then
