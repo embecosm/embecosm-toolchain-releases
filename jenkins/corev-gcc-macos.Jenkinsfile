@@ -28,9 +28,9 @@ node('macbuilder') {
     checkout scm
     dir('binutils-gdb') {
       checkout([$class: 'GitSCM',
-          branches: [[name: '*/master']],
+          branches: [[name: '*/development']],
           extensions: [[$class: 'CloneOption', shallow: true]],
-          userRemoteConfigs: [[url: 'https://mirrors.git.embecosm.com/mirrors/binutils-gdb.git']]])
+          userRemoteConfigs: [[url: 'https://github.com/openhwgroup/corev-binutils-gdb.git']]])
     }
     dir('gcc') {
       checkout([$class: 'GitSCM',
