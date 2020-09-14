@@ -36,8 +36,7 @@ node('macbuilder') {
       checkout([$class: 'GitSCM',
           branches: [[name: '*/development']],
           extensions: [[$class: 'CloneOption', shallow: true]],
-          // Placeholder repo URL until https://github.com/openhwgroup/corev-gcc.git is populated
-          userRemoteConfigs: [[url: 'https://github.com/simonpcook/corev-gcc.git']]])
+          userRemoteConfigs: [[url: 'https://github.com/openhwgroup/corev-gcc.git']]])
     }
     dir('newlib') {
       checkout([$class: 'GitSCM',
