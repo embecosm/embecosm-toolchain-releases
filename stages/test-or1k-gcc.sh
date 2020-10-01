@@ -18,7 +18,6 @@ fi
 cd ${WORKSPACE}/build/gcc-stage2
 set +e
 export PATH=${WORKSPACE}/install/bin:${PATH}
-export USER=builder
 export DEJAGNU=${WORKSPACE}/or1k-utils/site.exp
 # Calculate target list from multilib spec
 TARGET_BOARD="$(or1k-elf-gcc -print-multi-lib | \

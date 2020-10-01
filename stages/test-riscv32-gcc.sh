@@ -45,7 +45,6 @@ cp ${WORKSPACE}/utils/riscv-unknown-elf-run ${WORKSPACE}/install/bin
 cd ${WORKSPACE}/build/gcc-stage2
 set +e
 export PATH=${WORKSPACE}/install/bin:${PATH}
-export USER=builder
 export RISCV_SIM_COMMAND=riscv-unknown-elf-run
 export RISCV_TRIPLE=riscv32-unknown-elf
 export DEJAGNU=${WORKSPACE}/dejagnu/riscv-sim-site.exp
