@@ -92,6 +92,27 @@ node('winbuilder') {
   }
 
   stage('Test') {
+    bat script: """set MSYSTEM=MINGW64
+                   set /P UNIXWORKSPACE=<workspacedir
+                   ${MSYSHOME}\\usr\\bin\\bash --login -c ^
+                       "cd %UNIXWORKSPACE%\\build\\binutils && make check-gas" """, returnStatus: true
+    bat script: """set MSYSTEM=MINGW64
+                   set /P UNIXWORKSPACE=<workspacedir
+                   ${MSYSHOME}\\usr\\bin\\bash --login -c ^
+                       "cd %UNIXWORKSPACE%\\build\\binutils && make check-ld" """, returnStatus: true
+    bat script: """set MSYSTEM=MINGW64
+                   set /P UNIXWORKSPACE=<workspacedir
+                   ${MSYSHOME}\\usr\\bin\\bash --login -c ^
+                       "cd %UNIXWORKSPACE%\\build\\binutils && make check-binutils" """, returnStatus: true
+    dir('build/binutils') {
+      archiveArtifacts artifacts: '''gas/testsuite/gas.log,
+                                      gas/testsuite/gas.sum,
+                                      ld/ld.log,
+                                      ld/ld.sum,
+                                      binutils/binutils.log,
+                                      binutils/binutils.sum''',
+                       fingerprint: true
+    }
     // Build the CGEN simulator and use it for testing
     if (params.ReducedMultilibTesting)
       bat script: """set MSYSTEM=MINGW64
