@@ -25,6 +25,9 @@ syncrepo() {
   )
 }
 
+# Clean old runs of sync script
+rm -rf *.git
+
 DEST="ssh://git@git.embecosm.com:2230/mirrors"
 syncrepo llvm-project   https://github.com/llvm/llvm-project.git      ${DEST}/llvm-project.git
 syncrepo binutils-gdb   https://sourceware.org/git/binutils-gdb.git   ${DEST}/binutils-gdb.git
