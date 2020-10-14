@@ -82,15 +82,15 @@ node('winbuilder') {
     bat script: """set MSYSTEM=MINGW64
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
-                       "cd %UNIXWORKSPACE%\\build\\binutils-gdb && make check-gas" """, returnStatus: true
+                       "cd %UNIXWORKSPACE%/build/binutils-gdb && make check-gas" """, returnStatus: true
     bat script: """set MSYSTEM=MINGW64
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
-                       "cd %UNIXWORKSPACE%\\build\\binutils-gdb && make check-ld" """, returnStatus: true
+                       "cd %UNIXWORKSPACE%/build/binutils-gdb && make check-ld" """, returnStatus: true
     bat script: """set MSYSTEM=MINGW64
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
-                       "cd %UNIXWORKSPACE%\\build\\binutils-gdb && make check-binutils" """, returnStatus: true
+                       "cd %UNIXWORKSPACE%/build/binutils-gdb && make check-binutils" """, returnStatus: true
     dir('build/binutils-gdb') {
       archiveArtifacts artifacts: '''gas/testsuite/gas.log,
                                      gas/testsuite/gas.sum,
