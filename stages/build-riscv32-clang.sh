@@ -149,6 +149,7 @@ cmake -G"Unix Makefiles"                                                     \
     -DCMAKE_EXE_LINKER_FLAGS="-nostartfiles -nostdlib"                       \
     -DCOMPILER_RT_BAREMETAL_BUILD=ON                                         \
     -DCOMPILER_RT_BUILD_BUILTINS=ON                                          \
+    -DCOMPILER_RT_BUILD_MEMPROF=OFF                                          \
     -DCOMPILER_RT_BUILD_LIBFUZZER=OFF                                        \
     -DCOMPILER_RT_BUILD_PROFILE=OFF                                          \
     -DCOMPILER_RT_BUILD_SANITIZERS=OFF                                       \
@@ -176,6 +177,7 @@ cmake -G"Unix Makefiles"                                                     \
     -DCMAKE_EXE_LINKER_FLAGS="-nostartfiles -nostdlib"                       \
     -DCOMPILER_RT_BAREMETAL_BUILD=ON                                         \
     -DCOMPILER_RT_BUILD_BUILTINS=ON                                          \
+    -DCOMPILER_RT_BUILD_MEMPROF=OFF                                          \
     -DCOMPILER_RT_BUILD_LIBFUZZER=OFF                                        \
     -DCOMPILER_RT_BUILD_PROFILE=OFF                                          \
     -DCOMPILER_RT_BUILD_SANITIZERS=OFF                                       \
