@@ -47,7 +47,6 @@ cd ${BUILDPREFIX}/binutils-gdb
 ../../binutils-gdb/configure        \
     --target=riscv32-unknown-elf    \
     --prefix=${INSTALLPREFIX}       \
-    --without-gnu-as                \
     --with-expat                    \
     --disable-werror                \
     ${EXTRA_OPTS}                   \
