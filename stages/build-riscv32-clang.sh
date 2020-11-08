@@ -41,18 +41,47 @@ if [ "x${PARALLEL_JOBS}" == "x" ]; then
   PARALLEL_JOBS=$(nproc)
 fi
 
-# Binutils-gdb
-mkdir -p ${BUILDPREFIX}/binutils-gdb
-cd ${BUILDPREFIX}/binutils-gdb
-../../binutils-gdb/configure        \
-    --target=riscv32-unknown-elf    \
-    --prefix=${INSTALLPREFIX}       \
-    --with-expat                    \
-    --disable-werror                \
-    ${EXTRA_OPTS}                   \
-    ${EXTRA_BINUTILS_OPTS}
-make -j${PARALLEL_JOBS}
-make install
+# Binutils-gdb - Do in one step if possible
+if [ -e "binutils-gdb" ]; then
+  BINUTILS_DIR=binutils-gdb
+  mkdir -p ${BUILDPREFIX}/binutils-gdb
+  cd ${BUILDPREFIX}/binutils-gdb
+  ../../binutils-gdb/configure        \
+      --target=riscv32-unknown-elf    \
+      --prefix=${INSTALLPREFIX}       \
+      --with-expat                    \
+      --disable-werror                \
+      ${EXTRA_OPTS}                   \
+      ${EXTRA_BINUTILS_OPTS}
+  make -j${PARALLEL_JOBS}
+  make install
+else
+  # Binutils
+  BINUTILS_DIR=binutils
+  mkdir -p ${BUILDPREFIX}/binutils
+  cd ${BUILDPREFIX}/binutils
+  ../../binutils/configure            \
+      --target=riscv32-unknown-elf    \
+      --prefix=${INSTALLPREFIX}       \
+      --disable-werror                \
+      --disable-gdb                   \
+      ${EXTRA_OPTS}                   \
+      ${EXTRA_BINUTILS_OPTS}
+  make -j${PARALLEL_JOBS}
+  make install
+  # GDB
+  mkdir -p ${BUILDPREFIX}/gdb
+  cd ${BUILDPREFIX}/gdb
+  ../../gdb/configure                 \
+      --target=riscv32-unknown-elf    \
+      --prefix=${INSTALLPREFIX}       \
+      --with-expat                    \
+      --disable-werror                \
+      ${EXTRA_OPTS}                   \
+      ${EXTRA_BINUTILS_OPTS}
+  make -j${PARALLEL_JOBS} all-gdb
+  make install-gdb
+fi
 
 # Add symlinks for riscv32 tools to the equivalent riscv64 triple
 cd ${INSTALLPREFIX}/bin
@@ -63,16 +92,16 @@ done
 # Clang/LLVM
 mkdir -p ${BUILDPREFIX}/llvm
 cd ${BUILDPREFIX}/llvm
-cmake -G"Unix Makefiles"                                      \
-    -DCMAKE_BUILD_TYPE=Release                                \
-    -DCMAKE_INSTALL_PREFIX=${INSTALLPREFIX}                   \
-    -DLLVM_ENABLE_PROJECTS=clang                              \
-    -DLLVM_ENABLE_PLUGINS=ON                                  \
-    -DLLVM_BINUTILS_INCDIR=${SRCPREFIX}/binutils-gdb/include  \
-    -DLLVM_INSTALL_TOOLCHAIN_ONLY=ON                          \
-    -DLLVM_PARALLEL_LINK_JOBS=5                               \
-    -DLLVM_TARGETS_TO_BUILD=X86\;RISCV                        \
-    ${LLVM_EXTRA_OPTS}                                        \
+cmake -G"Unix Makefiles"                                         \
+    -DCMAKE_BUILD_TYPE=Release                                   \
+    -DCMAKE_INSTALL_PREFIX=${INSTALLPREFIX}                      \
+    -DLLVM_ENABLE_PROJECTS=clang                                 \
+    -DLLVM_ENABLE_PLUGINS=ON                                     \
+    -DLLVM_BINUTILS_INCDIR=${SRCPREFIX}/${BINUTILS_DIR}/include  \
+    -DLLVM_INSTALL_TOOLCHAIN_ONLY=ON                             \
+    -DLLVM_PARALLEL_LINK_JOBS=5                                  \
+    -DLLVM_TARGETS_TO_BUILD=X86\;RISCV                           \
+    ${LLVM_EXTRA_OPTS}                                           \
     ../../llvm-project/llvm
 make -j${PARALLEL_JOBS}
 make install
