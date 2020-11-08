@@ -34,6 +34,8 @@ fi
 if [ -e "binutils-gdb" ]; then
   mkdir -p ${BUILDPREFIX}/binutils-gdb
   cd ${BUILDPREFIX}/binutils-gdb
+  CFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
+  CXXFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
   ../../binutils-gdb/configure        \
       --target=or1k-elf               \
       --prefix=${INSTALLPREFIX}       \
@@ -47,6 +49,8 @@ else
   # Binutils
   mkdir -p ${BUILDPREFIX}/binutils
   cd ${BUILDPREFIX}/binutils
+  CFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
+  CXXFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
   ../../binutils/configure            \
       --target=or1k-elf               \
       --prefix=${INSTALLPREFIX}       \
@@ -59,6 +63,8 @@ else
   # GDB
   mkdir -p ${BUILDPREFIX}/gdb
   cd ${BUILDPREFIX}/gdb
+  CFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
+  CXXFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
   ../../gdb/configure                 \
       --target=or1k-elf               \
       --prefix=${INSTALLPREFIX}       \

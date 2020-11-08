@@ -17,6 +17,8 @@ fi
 # Build 32-bit
 mkdir -p ${WORKSPACE}/build/binutils-sim-32
 cd ${WORKSPACE}/build/binutils-sim-32
+CFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
+CXXFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
 ${WORKSPACE}/binutils-gdb-sim/configure    \
   --target=riscv32-unknown-elf             \
   --prefix=${WORKSPACE}/install            \
@@ -29,6 +31,8 @@ make install-sim
 # Build 64-bit
 mkdir -p ${WORKSPACE}/build/binutils-sim-64
 cd ${WORKSPACE}/build/binutils-sim-64
+CFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
+CXXFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
 ${WORKSPACE}/binutils-gdb-sim/configure    \
   --target=riscv64-unknown-elf             \
   --prefix=${WORKSPACE}/install            \
