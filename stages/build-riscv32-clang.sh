@@ -138,12 +138,15 @@ cmake -G"Unix Makefiles"                                                     \
     -DCMAKE_SYSTEM_NAME=Linux                                                \
     -DCMAKE_INSTALL_PREFIX=$(${INSTALLPREFIX}/bin/clang -print-resource-dir) \
     -DCMAKE_C_COMPILER=${INSTALLPREFIX}/bin/clang${EXE}                      \
+    -DCMAKE_CXX_COMPILER=${INSTALLPREFIX}/bin/clang${EXE}                    \
     -DCMAKE_AR=${INSTALLPREFIX}/bin/llvm-ar${EXE}                            \
     -DCMAKE_NM=${INSTALLPREFIX}/bin/llvm-nm${EXE}                            \
     -DCMAKE_RANLIB=${INSTALLPREFIX}/bin/llvm-ranlib${EXE}                    \
     -DCMAKE_C_COMPILER_TARGET="riscv32-unknown-elf"                          \
+    -DCMAKE_CXX_COMPILER_TARGET="riscv32-unknown-elf"                        \
     -DCMAKE_ASM_COMPILER_TARGET="riscv32-unknown-elf"                        \
     -DCMAKE_C_FLAGS="-march=rv32imac -mabi=ilp32"                            \
+    -DCMAKE_CXX_FLAGS="-march=rv32imac -mabi=ilp32"                          \
     -DCMAKE_ASM_FLAGS="-march=rv32imac -mabi=ilp32"                          \
     -DCMAKE_EXE_LINKER_FLAGS="-nostartfiles -nostdlib"                       \
     -DCOMPILER_RT_BAREMETAL_BUILD=ON                                         \
@@ -166,12 +169,15 @@ cmake -G"Unix Makefiles"                                                     \
     -DCMAKE_SYSTEM_NAME=Linux                                                \
     -DCMAKE_INSTALL_PREFIX=$(${INSTALLPREFIX}/bin/clang -print-resource-dir) \
     -DCMAKE_C_COMPILER=${INSTALLPREFIX}/bin/clang${EXE}                      \
+    -DCMAKE_CXX_COMPILER=${INSTALLPREFIX}/bin/clang${EXE}                    \
     -DCMAKE_AR=${INSTALLPREFIX}/bin/llvm-ar${EXE}                            \
     -DCMAKE_NM=${INSTALLPREFIX}/bin/llvm-nm${EXE}                            \
     -DCMAKE_RANLIB=${INSTALLPREFIX}/bin/llvm-ranlib${EXE}                    \
     -DCMAKE_C_COMPILER_TARGET="riscv64-unknown-elf"                          \
+    -DCMAKE_CXX_COMPILER_TARGET="riscv64-unknown-elf"                        \
     -DCMAKE_ASM_COMPILER_TARGET="riscv64-unknown-elf"                        \
     -DCMAKE_C_FLAGS="-march=rv64imac -mabi=lp64"                             \
+    -DCMAKE_CXX_FLAGS="-march=rv64imac -mabi=lp64"                           \
     -DCMAKE_ASM_FLAGS="-march=rv64imac -mabi=lp64"                           \
     -DCMAKE_EXE_LINKER_FLAGS="-nostartfiles -nostdlib"                       \
     -DCOMPILER_RT_BAREMETAL_BUILD=ON                                         \
