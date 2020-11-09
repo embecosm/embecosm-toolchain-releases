@@ -46,6 +46,8 @@ if [ -e "binutils-gdb" ]; then
   BINUTILS_DIR=binutils-gdb
   mkdir -p ${BUILDPREFIX}/binutils-gdb
   cd ${BUILDPREFIX}/binutils-gdb
+  CFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
+  CXXFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
   ../../binutils-gdb/configure        \
       --target=riscv32-unknown-elf    \
       --prefix=${INSTALLPREFIX}       \
@@ -60,6 +62,8 @@ else
   BINUTILS_DIR=binutils
   mkdir -p ${BUILDPREFIX}/binutils
   cd ${BUILDPREFIX}/binutils
+  CFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
+  CXXFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
   ../../binutils/configure            \
       --target=riscv32-unknown-elf    \
       --prefix=${INSTALLPREFIX}       \
@@ -72,6 +76,8 @@ else
   # GDB
   mkdir -p ${BUILDPREFIX}/gdb
   cd ${BUILDPREFIX}/gdb
+  CFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
+  CXXFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
   ../../gdb/configure                 \
       --target=riscv32-unknown-elf    \
       --prefix=${INSTALLPREFIX}       \
