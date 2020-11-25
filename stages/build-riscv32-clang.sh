@@ -41,6 +41,9 @@ if [ "x${PARALLEL_JOBS}" == "x" ]; then
   PARALLEL_JOBS=$(nproc)
 fi
 
+# If a local GMP build is not available, download and build it
+source utils/prepare-libgmp.sh
+
 # Binutils-gdb - Do in one step if possible
 if [ -e "binutils-gdb" ]; then
   BINUTILS_DIR=binutils-gdb
@@ -52,6 +55,7 @@ if [ -e "binutils-gdb" ]; then
       --target=riscv32-unknown-elf    \
       --prefix=${INSTALLPREFIX}       \
       --with-expat                    \
+      --with-libgmp-prefix=${SRCPREFIX}/gmp-${LIBGMP_VERS}/inst \
       --disable-werror                \
       ${EXTRA_OPTS}                   \
       ${EXTRA_BINUTILS_OPTS}
@@ -82,6 +86,7 @@ else
       --target=riscv32-unknown-elf    \
       --prefix=${INSTALLPREFIX}       \
       --with-expat                    \
+      --with-libgmp-prefix=${SRCPREFIX}/gmp-${LIBGMP_VERS}/inst \
       --disable-werror                \
       ${EXTRA_OPTS}                   \
       ${EXTRA_BINUTILS_OPTS}
