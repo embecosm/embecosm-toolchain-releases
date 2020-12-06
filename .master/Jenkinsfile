@@ -10,7 +10,6 @@ node('master') {
   }
 
   stage('Trigger Builds') {
-    build job: 'riscv32-gcc-centos6', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv32-gcc-centos7', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv32-gcc-centos8', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv32-gcc-macos', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
@@ -26,7 +25,6 @@ node('master') {
     build job: 'riscv32-clang-ubuntu2004', wait: false
     build job: 'riscv32-clang-win64', wait: false
 
-    build job: 'or1k-gcc-centos6', wait: false
     build job: 'or1k-gcc-centos7', wait: false
     build job: 'or1k-gcc-centos8', wait: false
     build job: 'or1k-gcc-macos', wait: false
