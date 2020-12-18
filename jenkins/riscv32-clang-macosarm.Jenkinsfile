@@ -1,5 +1,5 @@
 // NOTE: This file should be the same as the -macos version, except with a
-// change in the node specifier
+// change in the node specifier and the target architecture
 
 // Default package version and bug URL
 import java.time.*
@@ -51,22 +51,22 @@ node('armmacbuilder') {
   }
 
   stage('Build') {
-    sh script: "BUGURL='${BUGURL}' PKGVERS='${PKGVERS}' ./stages/build-riscv32-clang.sh"
+    sh script: "BUGURL='${BUGURL}' PKGVERS='${PKGVERS}' arch -arm64 ./stages/build-riscv32-clang.sh"
   }
 
   stage('Package') {
-    sh script: "utils/macos-code-sign-build.sh"
-    sh script: "utils/prepare-zip-package.sh ${PKGVERS}"
+    sh script: "arch -arm64 utils/macos-code-sign-build.sh"
+    sh script: "arch -arm64 utils/prepare-zip-package.sh ${PKGVERS}"
     sh script: "mkdir bundle-tmp && mv ${PKGVERS} bundle-tmp && hdiutil create -volname ${PKGVERS} -srcfolder bundle-tmp -ov -format UDZO ${PKGVERS}.dmg"
-    sh script: "utils/macos-notarize.sh '${PKGVERS}.zip' com.embecosm.toolchain.riscv32-clang"
-    sh script: "utils/macos-notarize.sh '${PKGVERS}.dmg' com.embecosm.toolchain.riscv32-clang"
+    sh script: "arch -arm64 utils/macos-notarize.sh '${PKGVERS}.zip' com.embecosm.toolchain.riscv32-clang"
+    sh script: "arch -arm64 utils/macos-notarize.sh '${PKGVERS}.dmg' com.embecosm.toolchain.riscv32-clang"
   }
 
   stage('Test') {
     dir('build/binutils-gdb') {
-      sh script: 'make check-gas', returnStatus: true
-      sh script: 'make check-ld', returnStatus: true
-      sh script: 'make check-binutils', returnStatus: true
+      sh script: 'arch -arm64 make check-gas', returnStatus: true
+      sh script: 'arch -arm64 make check-ld', returnStatus: true
+      sh script: 'arch -arm64 make check-binutils', returnStatus: true
       archiveArtifacts artifacts: '''gas/testsuite/gas.log,
                                      gas/testsuite/gas.sum,
                                      ld/ld.log,
@@ -75,7 +75,7 @@ node('armmacbuilder') {
                                      binutils/binutils.sum''',
                         fingerprint: true
     }
-    sh script: '''./stages/test-llvm.sh'''
+    sh script: '''arch -arm64 ./stages/test-llvm.sh'''
     dir('build/llvm') {
       archiveArtifacts artifacts: 'llvm-tests.log', fingerprint: true
     }
