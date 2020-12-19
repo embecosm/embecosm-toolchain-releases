@@ -25,9 +25,24 @@ String ArmJob = "${JobPrefix}-arm"
 
 // Build Intel and ARM versions of the tool
 parallel 'Intel Build': {
-    build job: "${IntelJob}", parameters: [stringParam(name: 'PackageVersion', value: PKGVERS),
-                                           stringParam(name: 'BugURL', value: BUGURL)]
+    stage('Intel Build') {
+        intel = build job: "${IntelJob}",
+                      parameters: [stringParam(name: 'PackageVersion', value: PKGVERS),
+                                   stringParam(name: 'BugURL', value: BUGURL)]
+    }
 }, 'ARM Build': {
-    build job: "${ArmJob}", parameters: [stringParam(name: 'PackageVersion', value: PKGVERS),
-                                         stringParam(name: 'BugURL', value: BUGURL)]
+    stage('ARM Build') {
+        arm = build job: "${ArmJob}",
+                    parameters: [stringParam(name: 'PackageVersion', value: PKGVERS),
+                                 stringParam(name: 'BugURL', value: BUGURL)]
+    }
+}
+
+// Download and merge packages
+node('macbuilder') {
+    stage('Combine') {
+        deleteDir()
+        copyArtifacts filter: "${PKGVERS}.zip", projectName: "${IntelJob}", selector: specific("$intel.number"), target: 'intel'
+        copyArtifacts filter: "${PKGVERS}.zip", projectName: "${ArmJob}", selector: specific("$arm.number"), target: 'arm'
+    }
 }
