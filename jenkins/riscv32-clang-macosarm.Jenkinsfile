@@ -57,10 +57,11 @@ node('armmacbuilder') {
   stage('Package') {
     sh script: "arch -arm64 utils/macos-code-sign-build.sh"
     sh script: "arch -arm64 utils/prepare-zip-package.sh ${PKGVERS}"
+    sh script: "arch -arm64 tar -czf ${PKGVERS}.tar.gz ${PKGVERS}"
     sh script: "mkdir bundle-tmp && mv ${PKGVERS} bundle-tmp && hdiutil create -volname ${PKGVERS} -srcfolder bundle-tmp -ov -format UDZO ${PKGVERS}.dmg"
     sh script: "arch -arm64 utils/macos-notarize.sh '${PKGVERS}.zip' com.embecosm.toolchain.riscv32-clang"
     sh script: "arch -arm64 utils/macos-notarize.sh '${PKGVERS}.dmg' com.embecosm.toolchain.riscv32-clang"
-    archiveArtifacts artifacts: "${PKGVERS}.zip, ${PKGVERS}.dmg", fingerprint: true
+    archiveArtifacts artifacts: "${PKGVERS}.zip, ${PKGVERS}.dmg, ${PKGVERS}.tar.gz", fingerprint: true
   }
 
   stage('Test') {

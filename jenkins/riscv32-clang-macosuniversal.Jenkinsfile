@@ -43,15 +43,18 @@ node('macbuilder') {
     stage('Combine') {
         deleteDir()
         checkout scm
-        copyArtifacts filter: "${PKGVERS}.zip", projectName: "${IntelJob}", selector: specific("$intel.number"), target: 'intel'
-        sh script: "cd intel && unzip ${PKGVERS}.zip && rm ${PKGVERS}.zip"
-        copyArtifacts filter: "${PKGVERS}.zip", projectName: "${ArmJob}", selector: specific("$arm.number"), target: 'arm'
-        sh script: "cd arm && unzip ${PKGVERS}.zip && rm ${PKGVERS}.zip"
+        copyArtifacts filter: "${PKGVERS}.tar.gz", projectName: "${IntelJob}", selector: specific("$intel.number"), target: 'intel'
+        sh script: "cd intel && tar xf ${PKGVERS}.tar.gz && rm ${PKGVERS}.tar.gz"
+        copyArtifacts filter: "${PKGVERS}.tar.gz", projectName: "${ArmJob}", selector: specific("$arm.number"), target: 'arm'
+        sh script: "cd arm && tar xf ${PKGVERS}.tar.gz && rm ${PKGVERS}.tar.gz"
         sh script: "utils/macos-combine-universal.sh"
-        sh script: "zip -9r '${PKGVERS}.zip' 'universal/${PKGVERS}'"
+        dir('universal') {
+            sh script: "tar -czf ../${PKGVERS}.tar.gz ${PKGVERS}"
+            sh script: "zip -9r '../${PKGVERS}.zip' '${PKGVERS}'"
+        }
         sh script: "hdiutil create -volname ${PKGVERS} -srcfolder universal -o ${PKGVERS}.dmg"
         sh script: "utils/macos-notarize.sh '${PKGVERS}.zip' com.embecosm.toolchain.riscv32-clang"
         sh script: "utils/macos-notarize.sh '${PKGVERS}.dmg' com.embecosm.toolchain.riscv32-clang"
-        archiveArtifacts artifacts: "${PKGVERS}.zip, ${PKGVERS}.dmg", fingerprint: true
+        archiveArtifacts artifacts: "${PKGVERS}.zip, ${PKGVERS}.dmg, ${PKGVERS}.tar.gz", fingerprint: true
     }
 }
