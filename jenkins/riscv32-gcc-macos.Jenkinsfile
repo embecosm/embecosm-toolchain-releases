@@ -55,7 +55,7 @@ node('macbuilder') {
   }
 
   stage('Build') {
-    sh script: "BUGURL='${BUGURL}' PKGVERS='${PKGVERS}' ./stages/build-riscv32-gcc.sh"
+    sh script: "BUGURL='${BUGURL}' PKGVERS='${PKGVERS}' EXTRA_BINUTILS_OPTS='--enable-libctf=no' ./stages/build-riscv32-gcc.sh"
   }
 
   stage('Package') {

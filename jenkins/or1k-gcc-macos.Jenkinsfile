@@ -55,7 +55,7 @@ node('macbuilder') {
   }
 
   stage('Build') {
-    sh script: "BUGURL='${BUGURL}' PKGVERS='${PKGVERS}' ./stages/build-or1k-gcc.sh"
+    sh script: "BUGURL='${BUGURL}' PKGVERS='${PKGVERS}' EXTRA_BINUTILS_OPTS='--enable-libctf=no' ./stages/build-or1k-gcc.sh"
   }
 
   stage('Package') {
