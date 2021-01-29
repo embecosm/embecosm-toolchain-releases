@@ -33,7 +33,7 @@ node('macbuilder') {
     }
     dir('llvm-project') {
       checkout([$class: 'GitSCM',
-          branches: [[name: '*/master']],
+          branches: [[name: '*/main']],
           extensions: [[$class: 'CloneOption', shallow: true]],
           userRemoteConfigs: [[url: 'https://mirrors.git.embecosm.com/mirrors/llvm-project.git']]])
     }
