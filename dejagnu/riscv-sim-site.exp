@@ -1,0 +1,20 @@
+# RISC-V specific site.exp
+
+# Use an environment specified triple if specified
+if [info exists env(RISCV_TRIPLE)] {
+  set target_triplet "$env(RISCV_TRIPLE)"
+  set target_alias   "$env(RISCV_TRIPLE)"
+} else {
+  set target_triplet "riscv64-unknown-elf"
+  set target_alias   "riscv64-unknown-elf"
+}
+
+# Make sure we look in the right place for the board description files. Add
+# our local boards directories
+if [info exists boards_dir] {
+    lappend boards_dir "[file dirname $env(DEJAGNU)]"
+    lappend boards_dir "[file dirname $env(DEJAGNU)]/baseboards"
+} else {
+    set boards_dir "[file dirname $env(DEJAGNU)]"
+    lappend boards_dir "[file dirname $env(DEJAGNU)]/baseboards"
+}
