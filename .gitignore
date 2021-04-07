@@ -1,0 +1,10 @@
+binutils-gdb-sim/
+binutils-gdb/
+build/
+gcc-for-llvm-testing/
+gmp-6.2.1.tar.bz2
+gmp-6.2.1/
+install/
+llvm-project/
+newlib/
+test-output/
