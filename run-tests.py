@@ -43,9 +43,9 @@ RUNTEST_FLAGS = []
 TestSet = namedtuple('TestSet', ['tool', 'set_dir', 'sub_dir', 'expect_file'])
 
 TORTURE_TESTS = [
-#    TestSet('gcc', 'gcc.c-torture', 'compile', 'compile.exp'),
+    TestSet('gcc', 'gcc.c-torture', 'compile', 'compile.exp'),
     TestSet('gcc', 'gcc.c-torture', 'execute', 'execute.exp'),
-#    TestSet('gcc', 'gcc.c-torture', 'unsorted', 'unsorted.exp'),
+    TestSet('gcc', 'gcc.c-torture', 'unsorted', 'unsorted.exp'),
 ]
 
 # Tests from gcc.dg that we're not including:
@@ -102,8 +102,7 @@ CXX_TESTS = [
 
 # FIXME: The RISC-V baseboard does not work with clang++, don't run the g++
 #        tests until this is investigated
-#TEST_SETS = TORTURE_TESTS + DG_TESTS
-TEST_SETS = TORTURE_TESTS
+TEST_SETS = TORTURE_TESTS + DG_TESTS
 
 # The number of tests to pass to a single Dejagnu invocation at once
 DG_INSTANCE_NTESTS = 20
