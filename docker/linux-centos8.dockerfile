@@ -6,9 +6,7 @@ LABEL maintainer simon.cook@embecosm.com
 RUN dnf -y upgrade && dnf -y groupinstall 'Development tools' && \
     (dnf config-manager --set-enabled PowerTools || \
      dnf config-manager --set-enabled powertools) && \
-    dnf -y install dejagnu python2 python3 texinfo wget which expat-devel
-
-RUN alternatives --set python /usr/bin/python2
+    dnf -y install dejagnu python3 texinfo wget which expat-devel
 
 # Install cmake 3.17
 RUN mkdir -p /tmp/cmake && cd /tmp/cmake && \
