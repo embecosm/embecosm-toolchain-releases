@@ -164,7 +164,7 @@ class TestManager(object):
 
 def runtests_env():
     env = os.environ.copy()
-    bindir = os.path.join(TOPDIR, 'install', 'bin')
+    bindir = os.path.join(TOPDIR, 'install-clang', 'bin')
     path = '%s:%s' % (bindir, env['PATH'])
     env['PATH'] = path
     env['DEJAGNU'] = os.path.join(TOPDIR, 'dejagnu', 'riscv-sim-site.exp')

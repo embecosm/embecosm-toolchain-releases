@@ -8,8 +8,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # Variables used in this script
-INSTALLPREFIX=${PWD}/install
-BUILDPREFIX=${PWD}/build
+INSTALLPREFIX=${PWD}/install-clang
+BUILDPREFIX=${PWD}/build-clang
 SRCPREFIX=${PWD}
 
 # Print the GCC and G++ used in this build
@@ -119,7 +119,6 @@ CFLAGS_FOR_TARGET="-DPREFER_SIZE_OVER_SPEED=1 -Os" \
 ../../newlib/configure                             \
     --target=riscv32-unknown-elf                   \
     --prefix=${INSTALLPREFIX}                      \
-    --enable-multilib                              \
     --disable-newlib-fvwrite-in-streamio           \
     --disable-newlib-fseek-optimization            \
     --enable-newlib-nano-malloc                    \
