@@ -68,7 +68,7 @@ node('winbuilder') {
     bat script: """set MSYSTEM=MINGW64
                    set BUGURL=${BUGURL}
                    set PKGVERS=${PKGVERS}
-                   set EXTRA_BINUTILS_OPTS=--with-python=no --with-system-readline
+                   set EXTRA_BINUTILS_OPTS=--with-python=no --with-system-readline --disable-sim
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && ./stages/build-or1k-gcc.sh" """
@@ -106,18 +106,6 @@ node('winbuilder') {
                                      ld/ld.sum,
                                      binutils/binutils.log,
                                      binutils/binutils.sum''',
-                       fingerprint: true
-    }
-    // Build the CGEN simulator and use it for testing
-    bat script: """set MSYSTEM=MINGW64
-                   set /P UNIXWORKSPACE=<workspacedir
-                   ${MSYSHOME}\\usr\\bin\\bash --login -c ^
-                       "cd %UNIXWORKSPACE% && ./stages/test-or1k-gcc.sh" """
-    dir('build/gcc-stage2') {
-      archiveArtifacts artifacts: '''gcc/testsuite/gcc/gcc.log,
-                                     gcc/testsuite/gcc/gcc.sum,
-                                     gcc/testsuite/g++/g++.log,
-                                     gcc/testsuite/g++/g++.sum''',
                        fingerprint: true
     }
   }

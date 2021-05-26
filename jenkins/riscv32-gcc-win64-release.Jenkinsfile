@@ -68,7 +68,7 @@ node('winbuilder') {
     bat script: """set MSYSTEM=MINGW64
                    set BUGURL=${BUGURL}
                    set PKGVERS=${PKGVERS}
-                   set EXTRA_BINUTILS_OPTS=--with-python=no --with-system-readline
+                   set EXTRA_BINUTILS_OPTS=--with-python=no --with-system-readline --disable-sim
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && ./stages/build-riscv32-gcc.sh" """
