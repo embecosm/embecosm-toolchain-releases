@@ -129,42 +129,22 @@ done
 PATH=${INSTALLPREFIX}/bin:${PATH}
 mkdir -p ${BUILDPREFIX}/newlib32
 cd ${BUILDPREFIX}/newlib32
-CFLAGS_FOR_TARGET="-DPREFER_SIZE_OVER_SPEED=1 -Os" \
-../../newlib/configure                             \
-    --target=riscv32-unknown-elf                   \
-    --prefix=${INSTALLPREFIX}                      \
-    --enable-multilib                              \
-    --disable-newlib-fvwrite-in-streamio           \
-    --disable-newlib-fseek-optimization            \
-    --enable-newlib-nano-malloc                    \
-    --disable-newlib-unbuf-stream-opt              \
-    --enable-target-optspace                       \
-    --enable-newlib-reent-small                    \
-    --disable-newlib-wide-orient                   \
-    --disable-newlib-io-float                      \
-    --enable-newlib-nano-formatted-io              \
-    ${EXTRA_OPTS}                                  \
+../../newlib/configure            \
+    --target=riscv32-unknown-elf  \
+    --prefix=${INSTALLPREFIX}     \
+    --enable-multilib             \
+    ${EXTRA_OPTS}                 \
     ${EXTRA_NEWLIB_OPTS}
 make -j${PARALLEL_JOBS}
 make install
 
 mkdir -p ${BUILDPREFIX}/newlib64
 cd ${BUILDPREFIX}/newlib64
-CFLAGS_FOR_TARGET="-DPREFER_SIZE_OVER_SPEED=1 -Os" \
-../../newlib/configure                             \
-    --target=riscv64-unknown-elf                   \
-    --prefix=${INSTALLPREFIX}                      \
-    --enable-multilib                              \
-    --disable-newlib-fvwrite-in-streamio           \
-    --disable-newlib-fseek-optimization            \
-    --enable-newlib-nano-malloc                    \
-    --disable-newlib-unbuf-stream-opt              \
-    --enable-target-optspace                       \
-    --enable-newlib-reent-small                    \
-    --disable-newlib-wide-orient                   \
-    --disable-newlib-io-float                      \
-    --enable-newlib-nano-formatted-io              \
-    ${EXTRA_OPTS}                                  \
+../../newlib/configure            \
+    --target=riscv64-unknown-elf  \
+    --prefix=${INSTALLPREFIX}     \
+    --enable-multilib             \
+    ${EXTRA_OPTS}                 \
     ${EXTRA_NEWLIB_OPTS}
 make -j${PARALLEL_JOBS}
 make install

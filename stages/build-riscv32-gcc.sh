@@ -117,23 +117,13 @@ make install
 PATH=${INSTALLPREFIX}/bin:${PATH}
 mkdir -p ${BUILDPREFIX}/newlib
 cd ${BUILDPREFIX}/newlib
-CFLAGS_FOR_TARGET="-DPREFER_SIZE_OVER_SPEED=1 -Os" \
-../../newlib/configure                             \
-    --target=riscv32-unknown-elf                   \
-    --prefix=${INSTALLPREFIX}                      \
-    --with-arch=${DEFAULTARCH}                     \
-    --with-abi=${DEFAULTABI}                       \
-    --enable-multilib                              \
-    --disable-newlib-fvwrite-in-streamio           \
-    --disable-newlib-fseek-optimization            \
-    --enable-newlib-nano-malloc                    \
-    --disable-newlib-unbuf-stream-opt              \
-    --enable-target-optspace                       \
-    --enable-newlib-reent-small                    \
-    --disable-newlib-wide-orient                   \
-    --disable-newlib-io-float                      \
-    --enable-newlib-nano-formatted-io              \
-    ${EXTRA_OPTS}                                  \
+../../newlib/configure            \
+    --target=riscv32-unknown-elf  \
+    --prefix=${INSTALLPREFIX}     \
+    --with-arch=${DEFAULTARCH}    \
+    --with-abi=${DEFAULTABI}      \
+    --enable-multilib             \
+    ${EXTRA_OPTS}                 \
     ${EXTRA_NEWLIB_OPTS}
 make -j${PARALLEL_JOBS}
 make install
