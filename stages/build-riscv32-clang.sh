@@ -41,6 +41,13 @@ if [ "x${PARALLEL_JOBS}" == "x" ]; then
   PARALLEL_JOBS=$(nproc)
 fi
 
+# Attempt to identify the host architecture, and include this in the build
+if [ "$(arch)" == "arm64" ]; then
+  LLVM_NATIVE_ARCH="AArch64"
+else
+  LLVM_NATIVE_ARCH="X86"
+fi
+
 # If a local GMP build is not available, download and build it
 source utils/prepare-libgmp.sh
 
@@ -111,7 +118,7 @@ cmake -G"Unix Makefiles"                                         \
     -DLLVM_BINUTILS_INCDIR=${SRCPREFIX}/${BINUTILS_DIR}/include  \
     -DLLVM_INSTALL_TOOLCHAIN_ONLY=ON                             \
     -DLLVM_PARALLEL_LINK_JOBS=5                                  \
-    -DLLVM_TARGETS_TO_BUILD=X86\;RISCV                           \
+    -DLLVM_TARGETS_TO_BUILD=${LLVM_NATIVE_ARCH}\;RISCV           \
     ${LLVM_EXTRA_OPTS}                                           \
     ../../llvm-project/llvm
 make -j${PARALLEL_JOBS}
