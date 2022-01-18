@@ -68,6 +68,7 @@ node('winbuilder') {
                    set BUGURL=${BUGURL}
                    set PKGVERS=${PKGVERS}
                    set EXTRA_BINUTILS_OPTS=--with-python=no --with-system-readline --disable-sim
+                   set EXTRA_GCC_OPTS=--enable-libstdcxx-pch=no
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && ./stages/build-or1k-gcc.sh" """
