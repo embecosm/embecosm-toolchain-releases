@@ -117,26 +117,64 @@ make install
 PATH=${INSTALLPREFIX}/bin:${PATH}
 mkdir -p ${BUILDPREFIX}/newlib
 cd ${BUILDPREFIX}/newlib
-CFLAGS_FOR_TARGET="-DPREFER_SIZE_OVER_SPEED=1 -Os" \
+CFLAGS_FOR_TARGET="-O2 -mcmodel=medany"            \
 ../../newlib/configure                             \
     --target=riscv32-unknown-elf                   \
     --prefix=${INSTALLPREFIX}                      \
     --with-arch=${DEFAULTARCH}                     \
     --with-abi=${DEFAULTABI}                       \
     --enable-multilib                              \
-    --disable-newlib-fvwrite-in-streamio           \
-    --disable-newlib-fseek-optimization            \
-    --enable-newlib-nano-malloc                    \
-    --disable-newlib-unbuf-stream-opt              \
-    --enable-target-optspace                       \
-    --enable-newlib-reent-small                    \
-    --disable-newlib-wide-orient                   \
-    --disable-newlib-io-float                      \
-    --enable-newlib-nano-formatted-io              \
+    --enable-newlib-io-long-double                 \
+    --enable-newlib-io-long-long                   \
+    --enable-newlib-io-c99-formats                 \
+    --enable-newlib-register-fini                  \
     ${EXTRA_OPTS}                                  \
     ${EXTRA_NEWLIB_OPTS}
 make -j${PARALLEL_JOBS}
 make install
+
+# Nano-newlib
+# NOTE: This configuration is based on the config.log of a "riscv-gnu-toolchain"
+# nano newlib library build
+mkdir -p ${BUILDPREFIX}/newlib-nano
+cd ${BUILDPREFIX}/newlib-nano
+CFLAGS_FOR_TARGET="-Os -mcmodel=medany -ffunction-sections -fdata-sections" \
+../../newlib/configure                             \
+    --target=riscv32-unknown-elf                   \
+    --prefix=${BUILDPREFIX}/newlib-nano-inst       \
+    --with-arch=${DEFAULTARCH}                     \
+    --with-abi=${DEFAULTABI}                       \
+    --enable-multilib                              \
+    --enable-newlib-reent-small                    \
+    --disable-newlib-fvwrite-in-streamio           \
+    --disable-newlib-fseek-optimization            \
+    --disable-newlib-wide-orient                   \
+    --enable-newlib-nano-malloc                    \
+    --disable-newlib-unbuf-stream-opt              \
+    --enable-lite-exit                             \
+    --enable-newlib-global-atexit                  \
+    --enable-newlib-nano-formatted-io              \
+    --disable-newlib-supplied-syscalls             \
+    --disable-nls                                  \
+    ${EXTRA_OPTS}                                  \
+    ${EXTRA_NEWLIB_OPTS}
+make -j${PARALLEL_JOBS}
+make install
+
+# Manualy copy the nano variant to the expected location
+# Directory information obtained from "riscv-gnu-toolchain"
+for multilib in $(${INSTALLPREFIX}/bin/riscv32-unknown-elf-gcc --print-multi-lib); do
+  multilibdir=$(echo ${multilib} | sed 's/;.*//')
+  for file in libc.a libm.a libg.a libgloss.a; do
+    cp ${BUILDPREFIX}/newlib-nano-inst/riscv32-unknown-elf/lib/${multilibdir}/${file} \
+        ${INSTALLPREFIX}/riscv32-unknown-elf/lib/${multilibdir}/${file%.*}_nano.${file##*.}
+  done
+  cp ${BUILDPREFIX}/newlib-nano-inst/riscv32-unknown-elf/lib/${multilibdir}/crt0.o \
+      ${INSTALLPREFIX}/riscv32-unknown-elf/lib/${multilibdir}/crt0.o
+done
+mkdir -p ${INSTALLPREFIX}/riscv32-unknown-elf/include/newlib-nano
+cp ${BUILDPREFIX}/newlib-nano-inst/riscv32-unknown-elf/include/newlib.h \
+    ${INSTALLPREFIX}/riscv32-unknown-elf/include/newlib-nano/newlib.h
 
 # GCC stage 2
 cd ${SRCPREFIX}/gcc

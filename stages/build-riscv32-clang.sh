@@ -136,45 +136,109 @@ done
 PATH=${INSTALLPREFIX}/bin:${PATH}
 mkdir -p ${BUILDPREFIX}/newlib32
 cd ${BUILDPREFIX}/newlib32
-CFLAGS_FOR_TARGET="-DPREFER_SIZE_OVER_SPEED=1 -Os" \
+CFLAGS_FOR_TARGET="-O2 -mcmodel=medany"            \
 ../../newlib/configure                             \
     --target=riscv32-unknown-elf                   \
     --prefix=${INSTALLPREFIX}                      \
     --enable-multilib                              \
-    --disable-newlib-fvwrite-in-streamio           \
-    --disable-newlib-fseek-optimization            \
-    --enable-newlib-nano-malloc                    \
-    --disable-newlib-unbuf-stream-opt              \
-    --enable-target-optspace                       \
-    --enable-newlib-reent-small                    \
-    --disable-newlib-wide-orient                   \
-    --disable-newlib-io-float                      \
-    --enable-newlib-nano-formatted-io              \
+    --enable-newlib-io-long-double                 \
+    --enable-newlib-io-long-long                   \
+    --enable-newlib-io-c99-formats                 \
+    --enable-newlib-register-fini                  \
     ${EXTRA_OPTS}                                  \
     ${EXTRA_NEWLIB_OPTS}
 make -j${PARALLEL_JOBS}
 make install
 
-mkdir -p ${BUILDPREFIX}/newlib64
-cd ${BUILDPREFIX}/newlib64
-CFLAGS_FOR_TARGET="-DPREFER_SIZE_OVER_SPEED=1 -Os" \
+mkdir -p ${BUILDPREFIX}/newlib32-nano
+cd ${BUILDPREFIX}/newlib32-nano
+CFLAGS_FOR_TARGET="-Os -mcmodel=medany -ffunction-sections -fdata-sections" \
 ../../newlib/configure                             \
-    --target=riscv64-unknown-elf                   \
-    --prefix=${INSTALLPREFIX}                      \
+    --target=riscv32-unknown-elf                   \
+    --prefix=${BUILDPREFIX}/newlib32-nano-inst     \
     --enable-multilib                              \
+    --enable-newlib-reent-small                    \
     --disable-newlib-fvwrite-in-streamio           \
     --disable-newlib-fseek-optimization            \
+    --disable-newlib-wide-orient                   \
     --enable-newlib-nano-malloc                    \
     --disable-newlib-unbuf-stream-opt              \
-    --enable-target-optspace                       \
-    --enable-newlib-reent-small                    \
-    --disable-newlib-wide-orient                   \
-    --disable-newlib-io-float                      \
+    --enable-lite-exit                             \
+    --enable-newlib-global-atexit                  \
     --enable-newlib-nano-formatted-io              \
+    --disable-newlib-supplied-syscalls             \
+    --disable-nls                                  \
     ${EXTRA_OPTS}                                  \
     ${EXTRA_NEWLIB_OPTS}
 make -j${PARALLEL_JOBS}
 make install
+
+# Manualy copy the nano variant to the expected location
+# Directory information obtained from "riscv-gnu-toolchain"
+for multilib in $(${INSTALLPREFIX}/bin/riscv32-unknown-elf-clang --print-multi-lib); do
+  multilibdir=$(echo ${multilib} | sed 's/;.*//')
+  for file in libc.a libm.a libg.a libgloss.a; do
+    cp ${BUILDPREFIX}/newlib32-nano-inst/riscv32-unknown-elf/lib/${multilibdir}/${file} \
+        ${INSTALLPREFIX}/riscv32-unknown-elf/lib/${multilibdir}/${file%.*}_nano.${file##*.}
+  done
+  cp ${BUILDPREFIX}/newlib32-nano-inst/riscv32-unknown-elf/lib/${multilibdir}/crt0.o \
+      ${INSTALLPREFIX}/riscv32-unknown-elf/lib/${multilibdir}/crt0.o
+done
+mkdir -p ${INSTALLPREFIX}/riscv32-unknown-elf/include/newlib-nano
+cp ${BUILDPREFIX}/newlib32-nano-inst/riscv32-unknown-elf/include/newlib.h \
+    ${INSTALLPREFIX}/riscv32-unknown-elf/include/newlib-nano/newlib.h
+
+mkdir -p ${BUILDPREFIX}/newlib64
+cd ${BUILDPREFIX}/newlib64
+CFLAGS_FOR_TARGET="-O2 -mcmodel=medany"            \
+../../newlib/configure                             \
+    --target=riscv64-unknown-elf                   \
+    --prefix=${INSTALLPREFIX}                      \
+    --enable-multilib                              \
+    --enable-newlib-io-long-double                 \
+    --enable-newlib-io-long-long                   \
+    --enable-newlib-io-c99-formats                 \
+    --enable-newlib-register-fini                  \
+    ${EXTRA_OPTS}                                  \
+    ${EXTRA_NEWLIB_OPTS}
+make -j${PARALLEL_JOBS}
+make install
+
+mkdir -p ${BUILDPREFIX}/newlib64-nano
+cd ${BUILDPREFIX}/newlib64-nano
+CFLAGS_FOR_TARGET="-Os -mcmodel=medany -ffunction-sections -fdata-sections" \
+../../newlib/configure                             \
+    --target=riscv64-unknown-elf                   \
+    --prefix=${BUILDPREFIX}/newlib64-nano-inst     \
+    --enable-multilib                              \
+    --enable-newlib-reent-small                    \
+    --disable-newlib-fvwrite-in-streamio           \
+    --disable-newlib-fseek-optimization            \
+    --disable-newlib-wide-orient                   \
+    --enable-newlib-nano-malloc                    \
+    --disable-newlib-unbuf-stream-opt              \
+    --enable-lite-exit                             \
+    --enable-newlib-global-atexit                  \
+    --enable-newlib-nano-formatted-io              \
+    --disable-newlib-supplied-syscalls             \
+    --disable-nls                                  \
+    ${EXTRA_OPTS}                                  \
+    ${EXTRA_NEWLIB_OPTS}
+make -j${PARALLEL_JOBS}
+make install
+
+for multilib in $(${INSTALLPREFIX}/bin/riscv64-unknown-elf-clang --print-multi-lib); do
+  multilibdir=$(echo ${multilib} | sed 's/;.*//')
+  for file in libc.a libm.a libg.a libgloss.a; do
+    cp ${BUILDPREFIX}/newlib64-nano-inst/riscv64-unknown-elf/lib/${multilibdir}/${file} \
+        ${INSTALLPREFIX}/riscv64-unknown-elf/lib/${multilibdir}/${file%.*}_nano.${file##*.}
+  done
+  cp ${BUILDPREFIX}/newlib64-nano-inst/riscv64-unknown-elf/lib/${multilibdir}/crt0.o \
+      ${INSTALLPREFIX}/riscv64-unknown-elf/lib/${multilibdir}/crt0.o
+done
+mkdir -p ${INSTALLPREFIX}/riscv64-unknown-elf/include/newlib-nano
+cp ${BUILDPREFIX}/newlib64-nano-inst/riscv64-unknown-elf/include/newlib.h \
+    ${INSTALLPREFIX}/riscv64-unknown-elf/include/newlib-nano/newlib.h
 
 # Compiler-rt for rv32 and rv64
 # NOTE: CMAKE_SYSTEM_NAME is set to linux to allow the configure step to
