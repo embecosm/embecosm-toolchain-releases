@@ -49,8 +49,8 @@ node('builder') {
   }
 
   stage('Prepare Docker') {
-    image = docker.build('build-env-centos8',
-                         '--no-cache -f docker/linux-centos8.dockerfile docker')
+    image = docker.build('build-env-rocky8',
+                         '--no-cache -f docker/linux-rocky8.dockerfile docker')
   }
 
   stage('Build') {

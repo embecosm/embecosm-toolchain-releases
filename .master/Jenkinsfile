@@ -11,7 +11,7 @@ node('master') {
 
   stage('Trigger Builds') {
     build job: 'riscv32-gcc-centos7', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
-    build job: 'riscv32-gcc-centos8', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv32-gcc-rocky8', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv32-gcc-macos', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv32-gcc-macos-arm64', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv32-gcc-ubuntu1804', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
@@ -20,7 +20,7 @@ node('master') {
     build job: 'riscv32-gcc-fullregression', wait: false
 
     build job: 'riscv32-clang-centos7', wait: false
-    build job: 'riscv32-clang-centos8', wait: false
+    build job: 'riscv32-clang-rocky8', wait: false
     build job: 'riscv32-clang-macos', wait: false
     build job: 'riscv32-clang-macos-arm64', wait: false
     build job: 'riscv32-clang-ubuntu1804', wait: false
@@ -28,7 +28,7 @@ node('master') {
     build job: 'riscv32-clang-win64', wait: false
 
     build job: 'or1k-gcc-centos7', wait: false
-    build job: 'or1k-gcc-centos8', wait: false
+    build job: 'or1k-gcc-rocky8', wait: false
     build job: 'or1k-gcc-macos', wait: false
     build job: 'or1k-gcc-macos-arm64', wait: false
     build job: 'or1k-gcc-ubuntu1804', wait: false

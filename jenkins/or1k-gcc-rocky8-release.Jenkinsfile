@@ -1,22 +1,17 @@
-// Default package version and bug URL
-import java.time.*
-import java.time.format.DateTimeFormatter
-String CURRENTTIME = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC) \
-                         .format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-String PKGVERS = "or1k-embecosm-gcc-centos8-${CURRENTTIME}"
-String BUGURL = 'https://www.embecosm.com'
-
-// Bug URL and Package Version override parameters
+// Bug URL and Package Version parameters
 properties([parameters([
     string(defaultValue: '', description: 'Package Version', name: 'PackageVersion'),
     string(defaultValue: '', description: 'Bug Reporting URL', name: 'BugURL'),
+    string(defaultvalue: '', description: 'Binutils Tag', name: 'BinutilsTag'),
+    string(defaultvalue: '', description: 'GDB Tag', name: 'GdbTag'),
+    string(defaultvalue: '', description: 'GCC Tag', name: 'GccTag'),
+    string(defaultvalue: '', description: 'Newlib Tag', name: 'NewlibTag'),
 ])])
 
-if (params.PackageVersion != '')
-  PKGVERS = params.PackageVersion
-if (params.BugURL != '')
-  BUGURL = params.BugURL
-currentBuild.displayName = PKGVERS
+PKGVERS = params.PackageVersion
+BUGURL = params.BugURL
+if (PKGVERS != '')
+  currentBuild.displayName = PKGVERS
 
 node('builder') {
   stage('Cleanup') {
@@ -25,23 +20,29 @@ node('builder') {
 
   stage('Checkout') {
     checkout scm
-    dir('binutils-gdb') {
+    dir('binutils') {
       checkout([$class: 'GitSCM',
-          branches: [[name: '*/master']],
+          branches: [[name: 'tags/${BinutilsTag}']],
           extensions: [[$class: 'CloneOption', shallow: true]],
-          userRemoteConfigs: [[url: 'https://mirrors.git.embecosm.com/mirrors/binutils-gdb.git']]])
+          userRemoteConfigs: [[url: 'https://sourceware.org/git/binutils-gdb.git']]])
+    }
+    dir('gdb') {
+      checkout([$class: 'GitSCM',
+          branches: [[name: 'tags/${GdbTag}']],
+          extensions: [[$class: 'CloneOption', shallow: true]],
+          userRemoteConfigs: [[url: 'https://sourceware.org/git/binutils-gdb.git']]])
     }
     dir('gcc') {
       checkout([$class: 'GitSCM',
-          branches: [[name: '*/master']],
+          branches: [[name: 'tags/${GccTag}']],
           extensions: [[$class: 'CloneOption', shallow: true]],
-          userRemoteConfigs: [[url: 'https://mirrors.git.embecosm.com/mirrors/gcc.git']]])
+          userRemoteConfigs: [[url: 'https://github.com/gcc-mirror/gcc.git']]])
     }
     dir('newlib') {
       checkout([$class: 'GitSCM',
-          branches: [[name: '*/master']],
+          branches: [[name: 'tags/${NewlibTag}']],
           extensions: [[$class: 'CloneOption', shallow: true]],
-          userRemoteConfigs: [[url: 'https://mirrors.git.embecosm.com/mirrors/newlib-cygwin.git']]])
+          userRemoteConfigs: [[url: 'git://sourceware.org/git/newlib-cygwin.git']]])
     }
     // or1k-utils is used for the site file
     dir('or1k-utils') {
@@ -55,8 +56,8 @@ node('builder') {
   }
 
   stage('Prepare Docker') {
-    image = docker.build('build-env-centos8',
-                         '--no-cache -f docker/linux-centos8.dockerfile docker')
+    image = docker.build('build-env-rocky8',
+                         '--no-cache -f docker/linux-rocky8.dockerfile docker')
   }
 
   stage('Build') {
@@ -74,7 +75,7 @@ node('builder') {
 
   stage('Test') {
     image.inside {
-      dir('build/binutils-gdb') {
+      dir('build/binutils') {
         sh script: 'make check-gas', returnStatus: true
         sh script: 'make check-ld', returnStatus: true
         sh script: 'make check-binutils', returnStatus: true

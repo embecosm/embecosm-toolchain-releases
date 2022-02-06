@@ -1,5 +1,5 @@
-# Dockerfile for CentOS 8 toolchain builds
-FROM centos:centos8
+# Dockerfile for Rocky Linux 8 toolchain builds
+FROM rockylinux:8
 
 LABEL maintainer simon.cook@embecosm.com
 

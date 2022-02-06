@@ -6,6 +6,7 @@ properties([parameters([
     string(defaultvalue: '', description: 'GDB Tag', name: 'GdbTag'),
     string(defaultvalue: '', description: 'GCC Tag', name: 'GccTag'),
     string(defaultvalue: '', description: 'Newlib Tag', name: 'NewlibTag'),
+    booleanParam(defaultValue: false, description: 'Test with a reduced set of multilibs', name: 'ReducedMultilibTesting'),
 ])])
 
 PKGVERS = params.PackageVersion
@@ -22,47 +23,46 @@ node('builder') {
     checkout scm
     dir('binutils') {
       checkout([$class: 'GitSCM',
-          branches: [[name: 'tags/${BinutilsTag}']],
+          branches: [[name: "tags/${BinutilsTag}"]],
           extensions: [[$class: 'CloneOption', shallow: true]],
           userRemoteConfigs: [[url: 'https://sourceware.org/git/binutils-gdb.git']]])
     }
     dir('gdb') {
       checkout([$class: 'GitSCM',
-          branches: [[name: 'tags/${GdbTag}']],
+          branches: [[name: "tags/${GdbTag}"]],
           extensions: [[$class: 'CloneOption', shallow: true]],
           userRemoteConfigs: [[url: 'https://sourceware.org/git/binutils-gdb.git']]])
     }
     dir('gcc') {
       checkout([$class: 'GitSCM',
-          branches: [[name: 'tags/${GccTag}']],
+          branches: [[name: "tags/${GccTag}"]],
           extensions: [[$class: 'CloneOption', shallow: true]],
           userRemoteConfigs: [[url: 'https://github.com/gcc-mirror/gcc.git']]])
     }
     dir('newlib') {
       checkout([$class: 'GitSCM',
-          branches: [[name: 'tags/${NewlibTag}']],
+          branches: [[name: "tags/${NewlibTag}"]],
           extensions: [[$class: 'CloneOption', shallow: true]],
           userRemoteConfigs: [[url: 'git://sourceware.org/git/newlib-cygwin.git']]])
     }
-    // or1k-utils is used for the site file
-    dir('or1k-utils') {
+    dir('binutils-gdb-sim') {
       checkout([$class: 'GitSCM',
-          branches: [[name: '*/master']],
+          branches: [[name: '*/spc-cgen-sim-rve']],
           extensions: [[$class: 'CloneOption', shallow: true]],
-          userRemoteConfigs: [[url: 'https://github.com/stffrdhrn/or1k-utils.git']]])
+          userRemoteConfigs: [[url: 'https://github.com/embecosm/riscv-binutils-gdb.git']]])
     }
     sh script: './describe-build.sh'
     archiveArtifacts artifacts: 'build-sources.txt', fingerprint: true
   }
 
   stage('Prepare Docker') {
-    image = docker.build('build-env-centos8',
-                         '--no-cache -f docker/linux-centos8.dockerfile docker')
+    image = docker.build('build-env-rocky8',
+                         '--no-cache -f docker/linux-rocky8.dockerfile docker')
   }
 
   stage('Build') {
     image.inside {
-      sh script: "BUGURL='${BUGURL}' PKGVERS='${PKGVERS}' ./stages/build-or1k-gcc.sh"
+      sh script: "BUGURL='${BUGURL}' PKGVERS='${PKGVERS}' ./stages/build-riscv32-gcc.sh"
     }
   }
 
@@ -87,7 +87,10 @@ node('builder') {
                                        binutils/binutils.sum''',
                          fingerprint: true
       }
-      sh script: '''./stages/test-or1k-gcc.sh'''
+      if (params.ReducedMultilibTesting)
+        sh script: '''REDUCED_MULTILIB_TEST=1 ./stages/test-riscv32-gcc.sh'''
+      else
+        sh script: '''./stages/test-riscv32-gcc.sh'''
       dir('build/gcc-stage2') {
         archiveArtifacts artifacts: '''gcc/testsuite/gcc/gcc.log,
                                        gcc/testsuite/gcc/gcc.sum,
