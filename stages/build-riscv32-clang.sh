@@ -136,7 +136,7 @@ done
 PATH=${INSTALLPREFIX}/bin:${PATH}
 mkdir -p ${BUILDPREFIX}/newlib32
 cd ${BUILDPREFIX}/newlib32
-CFLAGS_FOR_TARGET="-O2 -mcmodel=medany -Wno-error=implicit-function-declaration" \
+CFLAGS_FOR_TARGET="-O2 -mcmodel=medany -Wno-error=implicit-function-declaration -Wno-int-conversion" \
 ../../newlib/configure                             \
     --target=riscv32-unknown-elf                   \
     --prefix=${INSTALLPREFIX}                      \
@@ -152,7 +152,7 @@ make install
 
 mkdir -p ${BUILDPREFIX}/newlib32-nano
 cd ${BUILDPREFIX}/newlib32-nano
-CFLAGS_FOR_TARGET="-Os -mcmodel=medany -ffunction-sections -fdata-sections -Wno-error=implicit-function-declaration" \
+CFLAGS_FOR_TARGET="-Os -mcmodel=medany -ffunction-sections -fdata-sections -Wno-error=implicit-function-declaration -Wno-int-conversion" \
 ../../newlib/configure                             \
     --target=riscv32-unknown-elf                   \
     --prefix=${BUILDPREFIX}/newlib32-nano-inst     \
@@ -190,7 +190,7 @@ cp ${BUILDPREFIX}/newlib32-nano-inst/riscv32-unknown-elf/include/newlib.h \
 
 mkdir -p ${BUILDPREFIX}/newlib64
 cd ${BUILDPREFIX}/newlib64
-CFLAGS_FOR_TARGET="-O2 -mcmodel=medany -Wno-error=implicit-function-declaration" \
+CFLAGS_FOR_TARGET="-O2 -mcmodel=medany -Wno-error=implicit-function-declaration -Wno-int-conversion" \
 ../../newlib/configure                             \
     --target=riscv64-unknown-elf                   \
     --prefix=${INSTALLPREFIX}                      \
@@ -206,7 +206,7 @@ make install
 
 mkdir -p ${BUILDPREFIX}/newlib64-nano
 cd ${BUILDPREFIX}/newlib64-nano
-CFLAGS_FOR_TARGET="-Os -mcmodel=medany -ffunction-sections -fdata-sections -Wno-error=implicit-function-declaration" \
+CFLAGS_FOR_TARGET="-Os -mcmodel=medany -ffunction-sections -fdata-sections -Wno-error=implicit-function-declaration -Wno-int-conversion" \
 ../../newlib/configure                             \
     --target=riscv64-unknown-elf                   \
     --prefix=${BUILDPREFIX}/newlib64-nano-inst     \
