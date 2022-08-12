@@ -1,7 +1,7 @@
 #!/bin/bash -xe
 # Script for building a RISC-V GNU Toolchain from checked out sources
 
-# Copyright (C) 2020 Embecosm Limited
+# Copyright (C) 2020-2022 Embecosm Limited
 
 # Contributor: Simon Cook <simon.cook@embecosm.com>
 
@@ -11,8 +11,17 @@
 INSTALLPREFIX=${PWD}/install
 BUILDPREFIX=${PWD}/build
 SRCPREFIX=${PWD}
-DEFAULTARCH=rv32imac
-DEFAULTABI=ilp32
+
+# Allow the triple and default architecture and ABI to be overridden
+if [ "x${TRIPLE}" == "x" ]; then
+  TRIPLE=riscv32-unknown-elf
+fi
+if [ "x${DEFAULTARCH}" == "x" ]; then
+  DEFAULTARCH=rv32imac
+fi
+if [ "x${DEFAULTABI}" == "x" ]; then
+  DEFAULTABI=ilp32
+fi
 
 # Print the GCC and G++ used in this build
 which gcc
@@ -42,7 +51,7 @@ if [ -e "binutils-gdb" ]; then
   CFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
   CXXFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
   ../../binutils-gdb/configure        \
-      --target=riscv32-unknown-elf    \
+      --target=${TRIPLE}              \
       --prefix=${INSTALLPREFIX}       \
       --with-expat                    \
       --with-libgmp-prefix=${SRCPREFIX}/gmp-${LIBGMP_VERS}/inst \
@@ -58,7 +67,7 @@ else
   CFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
   CXXFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
   ../../binutils/configure            \
-      --target=riscv32-unknown-elf    \
+      --target=${TRIPLE}              \
       --prefix=${INSTALLPREFIX}       \
       --disable-werror                \
       --disable-gdb                   \
@@ -72,7 +81,7 @@ else
   CFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
   CXXFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
   ../../gdb/configure                 \
-      --target=riscv32-unknown-elf    \
+      --target=${TRIPLE}              \
       --prefix=${INSTALLPREFIX}       \
       --with-expat                    \
       --with-libgmp-prefix=${SRCPREFIX}/gmp-${LIBGMP_VERS}/inst \
@@ -89,9 +98,9 @@ cd ${SRCPREFIX}/gcc
 mkdir -p ${BUILDPREFIX}/gcc-stage1
 cd ${BUILDPREFIX}/gcc-stage1
 ../../gcc/configure                                     \
-    --target=riscv32-unknown-elf                        \
+    --target=${TRIPLE}                                  \
     --prefix=${INSTALLPREFIX}                           \
-    --with-sysroot=${INSTALLPREFIX}/riscv32-unknown-elf \
+    --with-sysroot=${INSTALLPREFIX}/${TRIPLE}           \
     --with-newlib                                       \
     --without-headers                                   \
     --disable-shared                                    \
@@ -119,7 +128,7 @@ mkdir -p ${BUILDPREFIX}/newlib
 cd ${BUILDPREFIX}/newlib
 CFLAGS_FOR_TARGET="-O2 -mcmodel=medany"            \
 ../../newlib/configure                             \
-    --target=riscv32-unknown-elf                   \
+    --target=${TRIPLE}                             \
     --prefix=${INSTALLPREFIX}                      \
     --with-arch=${DEFAULTARCH}                     \
     --with-abi=${DEFAULTABI}                       \
@@ -140,7 +149,7 @@ mkdir -p ${BUILDPREFIX}/newlib-nano
 cd ${BUILDPREFIX}/newlib-nano
 CFLAGS_FOR_TARGET="-Os -mcmodel=medany -ffunction-sections -fdata-sections" \
 ../../newlib/configure                             \
-    --target=riscv32-unknown-elf                   \
+    --target=${TRIPLE}                             \
     --prefix=${BUILDPREFIX}/newlib-nano-inst       \
     --with-arch=${DEFAULTARCH}                     \
     --with-abi=${DEFAULTABI}                       \
@@ -163,18 +172,18 @@ make install
 
 # Manualy copy the nano variant to the expected location
 # Directory information obtained from "riscv-gnu-toolchain"
-for multilib in $(${INSTALLPREFIX}/bin/riscv32-unknown-elf-gcc --print-multi-lib); do
+for multilib in $(${INSTALLPREFIX}/bin/${TRIPLE}-gcc --print-multi-lib); do
   multilibdir=$(echo ${multilib} | sed 's/;.*//')
   for file in libc.a libm.a libg.a libgloss.a; do
-    cp ${BUILDPREFIX}/newlib-nano-inst/riscv32-unknown-elf/lib/${multilibdir}/${file} \
-        ${INSTALLPREFIX}/riscv32-unknown-elf/lib/${multilibdir}/${file%.*}_nano.${file##*.}
+    cp ${BUILDPREFIX}/newlib-nano-inst/${TRIPLE}/lib/${multilibdir}/${file} \
+        ${INSTALLPREFIX}/${TRIPLE}/lib/${multilibdir}/${file%.*}_nano.${file##*.}
   done
-  cp ${BUILDPREFIX}/newlib-nano-inst/riscv32-unknown-elf/lib/${multilibdir}/crt0.o \
-      ${INSTALLPREFIX}/riscv32-unknown-elf/lib/${multilibdir}/crt0.o
+  cp ${BUILDPREFIX}/newlib-nano-inst/${TRIPLE}/lib/${multilibdir}/crt0.o \
+      ${INSTALLPREFIX}/${TRIPLE}/lib/${multilibdir}/crt0.o
 done
-mkdir -p ${INSTALLPREFIX}/riscv32-unknown-elf/include/newlib-nano
-cp ${BUILDPREFIX}/newlib-nano-inst/riscv32-unknown-elf/include/newlib.h \
-    ${INSTALLPREFIX}/riscv32-unknown-elf/include/newlib-nano/newlib.h
+mkdir -p ${INSTALLPREFIX}/${TRIPLE}/include/newlib-nano
+cp ${BUILDPREFIX}/newlib-nano-inst/${TRIPLE}/include/newlib.h \
+    ${INSTALLPREFIX}/${TRIPLE}/include/newlib-nano/newlib.h
 
 # GCC stage 2
 cd ${SRCPREFIX}/gcc
@@ -182,9 +191,9 @@ cd ${SRCPREFIX}/gcc
 mkdir -p ${BUILDPREFIX}/gcc-stage2
 cd ${BUILDPREFIX}/gcc-stage2
 ../../gcc/configure                                     \
-    --target=riscv32-unknown-elf                        \
+    --target=${TRIPLE}                                  \
     --prefix=${INSTALLPREFIX}                           \
-    --with-sysroot=${INSTALLPREFIX}/riscv32-unknown-elf \
+    --with-sysroot=${INSTALLPREFIX}/${TRIPLE}           \
     --with-native-system-header-dir=/include            \
     --with-newlib                                       \
     --disable-shared                                    \

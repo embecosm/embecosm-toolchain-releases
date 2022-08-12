@@ -1,7 +1,7 @@
 #!/bin/bash -xe
 # Wrapper around regression testing for RISC-V GCC Builds
 
-# Copyright (C) 2020 Embecosm Limited
+# Copyright (C) 2020-2022 Embecosm Limited
 
 # Contributor: Simon Cook <simon.cook@embecosm.com>
 
@@ -9,12 +9,20 @@
 
 WORKSPACE=$PWD
 
+# Allow environment to override triple
+if [ "x${TRIPLE}" == "x" ]; then
+  TRIPLE=riscv32-unknown-elf
+fi
+
 # Allow environment to control parallelism
 if [ "x${PARALLEL_JOBS}" == "x" ]; then
   PARALLEL_JOBS=$(nproc)
 fi
 
 # Build 32-bit
+# Note explicit riscv*-unknown-elf triples are used here, since both
+# simulators need building, and we choose between these using our custom
+# biarch run script.
 mkdir -p ${WORKSPACE}/build/binutils-sim-32
 cd ${WORKSPACE}/build/binutils-sim-32
 CFLAGS="-g -O2 -Wno-error=implicit-function-declaration" \
@@ -50,13 +58,13 @@ cd ${WORKSPACE}/build/gcc-stage2
 set +e
 export PATH=${WORKSPACE}/install/bin:${PATH}
 export RISCV_SIM_COMMAND=riscv-unknown-elf-run
-export RISCV_TRIPLE=riscv32-unknown-elf
+export RISCV_TRIPLE=${TRIPLE}
 export DEJAGNU=${WORKSPACE}/dejagnu/riscv-sim-site.exp
 
 TARGET_BOARD=riscv-sim
 if [ "x${REDUCED_MULTILIB_TEST}" == "x" ]; then
   # Calculate target list from multilib spec
-  TARGET_BOARD="$(riscv32-unknown-elf-gcc -print-multi-lib | \
+  TARGET_BOARD="$(${TRIPLE}-gcc -print-multi-lib | \
                     sed -e 's/.*;//' \
                         -e 's#@#/-#g' \
                         -e 's/^/riscv-sim/' | awk 1 ORS=' ')"
