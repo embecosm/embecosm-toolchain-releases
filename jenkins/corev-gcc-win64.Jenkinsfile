@@ -68,7 +68,8 @@ node('winbuilder') {
                    set BUGURL=${BUGURL}
                    set PKGVERS=${PKGVERS}
                    set TRIPLE=riscv32-corev-elf
-                   set EXTRA_BINUTILS_OPTS=--with-python=no --with-system-readline
+                   set EXTRA_BINUTILS_OPTS=--with-python=no --with-system-readline --disable-sim
+                   set EXTRA_GCC_OPTS=--enable-libstdcxx-pch=no
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && ./stages/build-riscv32-gcc.sh" """
@@ -87,6 +88,27 @@ node('winbuilder') {
   }
 
   stage('Test') {
+    bat script: """set MSYSTEM=MINGW64
+                   set /P UNIXWORKSPACE=<workspacedir
+                   ${MSYSHOME}\\usr\\bin\\bash --login -c ^
+                       "cd %UNIXWORKSPACE%/build/binutils-gdb && make check-gas" """, returnStatus: true
+    bat script: """set MSYSTEM=MINGW64
+                   set /P UNIXWORKSPACE=<workspacedir
+                   ${MSYSHOME}\\usr\\bin\\bash --login -c ^
+                       "cd %UNIXWORKSPACE%/build/binutils-gdb && make check-ld" """, returnStatus: true
+    bat script: """set MSYSTEM=MINGW64
+                   set /P UNIXWORKSPACE=<workspacedir
+                   ${MSYSHOME}\\usr\\bin\\bash --login -c ^
+                       "cd %UNIXWORKSPACE%/build/binutils-gdb && make check-binutils" """, returnStatus: true
+    dir('build/binutils-gdb') {
+      archiveArtifacts artifacts: '''gas/testsuite/gas.log,
+                                      gas/testsuite/gas.sum,
+                                      ld/ld.log,
+                                      ld/ld.sum,
+                                      binutils/binutils.log,
+                                      binutils/binutils.sum''',
+                       fingerprint: true
+    }
     // Build the CGEN simulator and use it for testing
     if (params.ReducedMultilibTesting)
       bat script: """set MSYSTEM=MINGW64

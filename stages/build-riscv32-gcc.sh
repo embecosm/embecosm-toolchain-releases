@@ -149,7 +149,7 @@ mkdir -p ${BUILDPREFIX}/newlib-nano
 cd ${BUILDPREFIX}/newlib-nano
 CFLAGS_FOR_TARGET="-Os -mcmodel=medany -ffunction-sections -fdata-sections" \
 ../../newlib/configure                             \
-    --target=riscv32-unknown-elf                   \
+    --target=${TRIPLE}                             \
     --prefix=${BUILDPREFIX}/newlib-nano-inst       \
     --with-arch=${DEFAULTARCH}                     \
     --with-abi=${DEFAULTABI}                       \
@@ -172,18 +172,18 @@ make install
 
 # Manualy copy the nano variant to the expected location
 # Directory information obtained from "riscv-gnu-toolchain"
-for multilib in $(${INSTALLPREFIX}/bin/riscv32-unknown-elf-gcc --print-multi-lib); do
+for multilib in $(${INSTALLPREFIX}/bin/${TRIPLE}-gcc --print-multi-lib); do
   multilibdir=$(echo ${multilib} | sed 's/;.*//')
   for file in libc.a libm.a libg.a libgloss.a; do
-    cp ${BUILDPREFIX}/newlib-nano-inst/riscv32-unknown-elf/lib/${multilibdir}/${file} \
-        ${INSTALLPREFIX}/riscv32-unknown-elf/lib/${multilibdir}/${file%.*}_nano.${file##*.}
+    cp ${BUILDPREFIX}/newlib-nano-inst/${TRIPLE}/lib/${multilibdir}/${file} \
+        ${INSTALLPREFIX}/${TRIPLE}/lib/${multilibdir}/${file%.*}_nano.${file##*.}
   done
-  cp ${BUILDPREFIX}/newlib-nano-inst/riscv32-unknown-elf/lib/${multilibdir}/crt0.o \
-      ${INSTALLPREFIX}/riscv32-unknown-elf/lib/${multilibdir}/crt0.o
+  cp ${BUILDPREFIX}/newlib-nano-inst/${TRIPLE}/lib/${multilibdir}/crt0.o \
+      ${INSTALLPREFIX}/${TRIPLE}/lib/${multilibdir}/crt0.o
 done
-mkdir -p ${INSTALLPREFIX}/riscv32-unknown-elf/include/newlib-nano
-cp ${BUILDPREFIX}/newlib-nano-inst/riscv32-unknown-elf/include/newlib.h \
-    ${INSTALLPREFIX}/riscv32-unknown-elf/include/newlib-nano/newlib.h
+mkdir -p ${INSTALLPREFIX}/${TRIPLE}/include/newlib-nano
+cp ${BUILDPREFIX}/newlib-nano-inst/${TRIPLE}/include/newlib.h \
+    ${INSTALLPREFIX}/${TRIPLE}/include/newlib-nano/newlib.h
 
 # GCC stage 2
 cd ${SRCPREFIX}/gcc
