@@ -3,7 +3,7 @@ import java.time.*
 import java.time.format.DateTimeFormatter
 String CURRENTTIME = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC) \
                          .format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-String PKGVERS = "corev-openhw-gcc-centos8-${CURRENTTIME}"
+String PKGVERS = "corev-openhw-gcc-rocky8-${CURRENTTIME}"
 String BUGURL = 'https://www.embecosm.com'
 
 // Bug URL and Package Version override parameters
@@ -55,8 +55,8 @@ node('builder') {
   }
 
   stage('Prepare Docker') {
-    image = docker.build('build-env-centos8',
-                         '--no-cache -f docker/linux-centos8.dockerfile docker')
+    image = docker.build('build-env-rocky8',
+                         '--no-cache -f docker/linux-rocky8.dockerfile docker')
   }
 
   stage('Build') {
@@ -74,6 +74,18 @@ node('builder') {
 
   stage('Test') {
     image.inside {
+     dir('build/binutils-gdb') {
+        sh script: 'make check-gas', returnStatus: true
+        sh script: 'make check-ld', returnStatus: true
+        sh script: 'make check-binutils', returnStatus: true
+        archiveArtifacts artifacts: '''gas/testsuite/gas.log,
+                                       gas/testsuite/gas.sum,
+                                       ld/ld.log,
+                                       ld/ld.sum,
+                                       binutils/binutils.log,
+                                       binutils/binutils.sum''',
+                         fingerprint: true
+      }
       if (params.ReducedMultilibTesting)
         sh script: '''REDUCED_MULTILIB_TEST=1 TRIPLE='riscv32-corev-elf' ./stages/test-riscv32-gcc.sh'''
       else

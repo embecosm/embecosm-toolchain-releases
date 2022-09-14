@@ -74,6 +74,18 @@ node('builder') {
 
   stage('Test') {
     image.inside {
+    dir('build/binutils-gdb') {
+      sh script: 'make check-gas', returnStatus: true
+      sh script: 'make check-ld', returnStatus: true
+      sh script: 'make check-binutils', returnStatus: true
+      archiveArtifacts artifacts: '''gas/testsuite/gas.log,
+                                      gas/testsuite/gas.sum,
+                                      ld/ld.log,
+                                      ld/ld.sum,
+                                      binutils/binutils.log,
+                                      binutils/binutils.sum''',
+                        fingerprint: true
+    }
       if (params.ReducedMultilibTesting)
         sh script: '''REDUCED_MULTILIB_TEST=1 TRIPLE='riscv32-corev-elf' ./stages/test-riscv32-gcc.sh'''
       else
