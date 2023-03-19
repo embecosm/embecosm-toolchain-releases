@@ -48,6 +48,16 @@ else
   LLVM_NATIVE_ARCH="X86"
 fi
 
+# There exists an issue with the binutils 2.40 tag whereby a .dirstamp file was
+# committed and this causes builds using this tag to be commited. While this is
+# a relevant release, remove this files if found.
+if [ -e binutils/gas/doc/.dirstamp ]; then
+  rm -f binutils/gas/doc/.dirstamp
+fi
+if [ -e binutils-gdb/gas/doc/.dirstamp ]; then
+  rm -f binutils-gdb/gas/doc/.dirstamp
+fi
+
 # Binutils-gdb - Do in one step if possible
 if [ -e "binutils-gdb" ]; then
   BINUTILS_DIR=binutils-gdb
