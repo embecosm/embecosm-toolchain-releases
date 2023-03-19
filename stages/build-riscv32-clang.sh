@@ -79,6 +79,7 @@ if [ -e "binutils-gdb" ]; then
   make -j${PARALLEL_JOBS}
   make install
 else
+  source utils/download-libgmp.sh binutils
   # Binutils
   BINUTILS_DIR=binutils
   mkdir -p ${BUILDPREFIX}/binutils
