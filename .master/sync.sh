@@ -33,3 +33,4 @@ syncrepo llvm-project   https://github.com/llvm/llvm-project.git      ${DEST}/ll
 syncrepo binutils-gdb   https://sourceware.org/git/binutils-gdb.git   ${DEST}/binutils-gdb.git
 syncrepo gcc            https://gcc.gnu.org/git/gcc.git               ${DEST}/gcc.git
 syncrepo newlib-cygwin  https://sourceware.org/git/newlib-cygwin.git  ${DEST}/newlib-cygwin.git
+syncrepo gccrs          https://github.com/Rust-GCC/gccrs.git         ${DEST}/gccrs.git
