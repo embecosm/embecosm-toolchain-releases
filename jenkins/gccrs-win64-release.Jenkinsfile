@@ -25,7 +25,7 @@ node('winbuilder') {
 
     dir('gccrs') {
       checkout([$class: 'GitSCM',
-          branches: [[name: "tags/${GccTag}"]],
+          branches: [[name: "${GccTag}"]],
           extensions: [[$class: 'CloneOption', shallow: true]],
           userRemoteConfigs: [[url: 'https://github.com/Rust-GCC/gccrs.git']]])
     }
