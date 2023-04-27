@@ -36,8 +36,11 @@ cd ${SRCPREFIX}/gccrs
 mkdir -p ${BUILDPREFIX}/gccrs
 cd ${BUILDPREFIX}/gccrs
 ../../gccrs/configure                                   \
+    --prefix=${INSTALLPREFIX}                           \
     --enable-languages=rust                             \
-    --enable-multilib                                   \
+    --disable-multilib                                  \
+    --disable-werror                                    \
+    --disable-bootstrap                                 \
     ${EXTRA_OPTS}                                       \
     ${EXTRA_GCC_OPTS}
 make -j${PARALLEL_JOBS}

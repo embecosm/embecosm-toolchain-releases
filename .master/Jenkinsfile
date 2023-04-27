@@ -40,5 +40,26 @@ node('master') {
     build job: 'or1k-gcc-ubuntu2004', wait: false
     build job: 'or1k-gcc-ubuntu2204', wait: false
     build job: 'or1k-gcc-win64', wait: false
+
+    build job: 'gccrs-centos7', wait: false
+    build job: 'gccrs-rocky8', wait: false
+    build job: 'gccrs-rocky9', wait: false
+    build job: 'gccrs-macos', wait: false
+    build job: 'gccrs-macos-arm64', wait: false
+    build job: 'gccrs-ubuntu1804', wait: false
+    build job: 'gccrs-ubuntu2004', wait: false
+    build job: 'gccrs-ubuntu2204', wait: false
+    build job: 'gccrs-win64', wait: false
+
+    build job: 'gccrs-fsf-centos7', wait: false
+    build job: 'gccrs-fsf-rocky8', wait: false
+    build job: 'gccrs-fsf-rocky9', wait: false
+    build job: 'gccrs-fsf-macos', wait: false
+    build job: 'gccrs-fsf-macos-arm64', wait: false
+    build job: 'gccrs-fsf-ubuntu1804', wait: false
+    build job: 'gccrs-fsf-ubuntu2004', wait: false
+    build job: 'gccrs-fsf-ubuntu2204', wait: false
+    build job: 'gccrs-fsf-win64', wait: false
+
   }
 }
