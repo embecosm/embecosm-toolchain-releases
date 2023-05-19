@@ -12,10 +12,10 @@ RUN yum install -y centos-release-scl && yum install -y devtoolset-7
 ENV PATH="/opt/rh/devtoolset-7/root/usr/bin:${PATH}" \
     LD_LIBRARY_PATH="/opt/rh/devtoolset-7/root/usr/lib64:/opt/rh/devtoolset-7/root/usr/lib:/opt/rh/devtoolset-7/root/usr/lib64/dyninst:/opt/rh/devtoolset-7/root/usr/lib/dyninst:/opt/rh/devtoolset-7/root/usr/lib64:/opt/rh/devtoolset-7/root/usr/lib"
 
-# Install cmake 3.17
+# Install cmake 3.26.4
 RUN mkdir -p /tmp/cmake && cd /tmp/cmake && \
-    wget https://github.com/Kitware/CMake/releases/download/v3.17.3/cmake-3.17.3.tar.gz && \
-    tar xf cmake-3.17.3.tar.gz && cd cmake-3.17.3 && \
+    wget https://github.com/Kitware/CMake/releases/download/v3.26.4/cmake-3.26.4.tar.gz && \
+    tar xf cmake-3.26.4.tar.gz && cd cmake-3.26.4 && \
     ./bootstrap --parallel=$(nproc) -- -DCMAKE_USE_OPENSSL=OFF && \
     make -j$(nproc) && make install && \
     cd /tmp && rm -rf cmake

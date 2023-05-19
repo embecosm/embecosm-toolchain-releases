@@ -7,10 +7,10 @@ RUN apt-get -y update && \
     DEBIAN_FRONTEND=noninteractive \
     apt-get install -y flex bison build-essential dejagnu git python python3 python3-distutils texinfo wget libexpat-dev
 
-# Install cmake 3.17
+# Install cmake 3.26.4
 RUN mkdir -p /tmp/cmake && cd /tmp/cmake && \
-    wget https://github.com/Kitware/CMake/releases/download/v3.17.3/cmake-3.17.3.tar.gz && \
-    tar xf cmake-3.17.3.tar.gz && cd cmake-3.17.3 && \
+    wget https://github.com/Kitware/CMake/releases/download/v3.26.4/cmake-3.26.4.tar.gz && \
+    tar xf cmake-3.26.4.tar.gz && cd cmake-3.26.4 && \
     ./bootstrap --parallel=$(nproc) -- -DCMAKE_USE_OPENSSL=OFF && \
     make -j$(nproc) && make install && \
     cd /tmp && rm -rf cmake

@@ -5,7 +5,15 @@ LABEL maintainer simon.cook@embecosm.com
 
 RUN apt-get -y update && \
     DEBIAN_FRONTEND=noninteractive \
-    apt-get install -y cmake flex bison build-essential dejagnu git python-is-python3 python3 python3-distutils texinfo wget libexpat-dev
+    apt-get install -y flex bison build-essential dejagnu git python-is-python3 python3 python3-distutils texinfo wget libexpat-dev
+
+# Install cmake 3.26.4
+RUN mkdir -p /tmp/cmake && cd /tmp/cmake && \
+    wget https://github.com/Kitware/CMake/releases/download/v3.26.4/cmake-3.26.4.tar.gz && \
+    tar xf cmake-3.26.4.tar.gz && cd cmake-3.26.4 && \
+    ./bootstrap --parallel=$(nproc) -- -DCMAKE_USE_OPENSSL=OFF && \
+    make -j$(nproc) && make install && \
+    cd /tmp && rm -rf cmake
 
 # Some tests require the user running testing to exist and have a home directory
 # These values match what the Embecosm Buildbot builders are set up to use

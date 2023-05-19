@@ -5,7 +5,15 @@ LABEL maintainer simon.cook@embecosm.com
 
 RUN dnf -y upgrade && dnf -y groupinstall 'Development tools' && \
      dnf config-manager --set-enabled crb && \
-    dnf -y install dejagnu python3 python-unversioned-command cmake texinfo wget which expat-devel
+    dnf -y install dejagnu python3 python-unversioned-command texinfo wget which expat-devel
+
+# Install cmake 3.26.4
+RUN mkdir -p /tmp/cmake && cd /tmp/cmake && \
+    wget https://github.com/Kitware/CMake/releases/download/v3.26.4/cmake-3.26.4.tar.gz && \
+    tar xf cmake-3.26.4.tar.gz && cd cmake-3.26.4 && \
+    ./bootstrap --parallel=$(nproc) -- -DCMAKE_USE_OPENSSL=OFF && \
+    make -j$(nproc) && make install && \
+    cd /tmp && rm -rf cmake
 
 # There seems to be an issue with our testing when using DejaGnu 1.6.3,
 # whereby testing multiple variations causes DejaGnu to fail. To work
