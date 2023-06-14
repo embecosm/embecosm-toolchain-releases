@@ -62,8 +62,9 @@ node('macarmbuilder') {
     sh script: "utils/macos-code-sign-build.sh"
     sh script: "utils/prepare-zip-package.sh ${PKGVERS}"
     sh script: "mkdir bundle-tmp && mv ${PKGVERS} bundle-tmp && hdiutil create -volname ${PKGVERS} -srcfolder bundle-tmp -ov -format UDZO ${PKGVERS}.dmg"
-    sh script: "utils/macos-notarize.sh '${PKGVERS}.zip' com.embecosm.toolchain.riscv32-gcc"
-    sh script: "utils/macos-notarize.sh '${PKGVERS}.dmg' com.embecosm.toolchain.riscv32-gcc"
+    sh script: "utils/macos-notarize.sh '${PKGVERS}.zip'"
+    sh script: "utils/macos-notarize.sh '${PKGVERS}.dmg'"
+    archiveArtifacts artifacts: "${PKGVERS}.zip, ${PKGVERS}.dmg", fingerprint: true
   }
 
   stage('Test') {
@@ -90,10 +91,5 @@ node('macarmbuilder') {
                                      gcc/testsuite/g++/g++.sum''',
                        fingerprint: true
     }
-  }
-
-  stage('Notarize') {
-    sh script: "xcrun stapler staple ${PKGVERS}.dmg"
-    archiveArtifacts artifacts: "${PKGVERS}.zip, ${PKGVERS}.dmg", fingerprint: true
   }
 }
