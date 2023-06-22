@@ -34,13 +34,13 @@ node('winbuilder') {
 
     dir('binutils-gdb') {
       checkout([$class: 'GitSCM',
-          branches: [[name: '*/development']],
+          branches: [[name: '*/development-eddf4096b97']],
           extensions: [[$class: 'CloneOption', shallow: true]],
           userRemoteConfigs: [[url: 'https://github.com/openhwgroup/corev-binutils-gdb.git']]])
     }
     dir('gcc') {
       checkout([$class: 'GitSCM',
-          branches: [[name: '*/development']],
+          branches: [[name: '*/development-08dd5f65b06']],
           extensions: [[$class: 'CloneOption', shallow: true]],
           userRemoteConfigs: [[url: 'https://github.com/openhwgroup/corev-gcc.git']]])
     }
