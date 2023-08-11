@@ -7,10 +7,10 @@ RUN yum -y upgrade && yum -y groupinstall 'Development tools' && \
     yum -y install dejagnu python3 texinfo wget which expat-devel
 
 # Install newer toolchain components
-RUN yum install -y centos-release-scl && yum install -y devtoolset-7
+RUN yum install -y centos-release-scl && yum install -y devtoolset-8
 
-ENV PATH="/opt/rh/devtoolset-7/root/usr/bin:${PATH}" \
-    LD_LIBRARY_PATH="/opt/rh/devtoolset-7/root/usr/lib64:/opt/rh/devtoolset-7/root/usr/lib:/opt/rh/devtoolset-7/root/usr/lib64/dyninst:/opt/rh/devtoolset-7/root/usr/lib/dyninst:/opt/rh/devtoolset-7/root/usr/lib64:/opt/rh/devtoolset-7/root/usr/lib"
+ENV PATH="/opt/rh/devtoolset-8/root/usr/bin:${PATH}" \
+    LD_LIBRARY_PATH="/opt/rh/devtoolset-8/root/usr/lib64:/opt/rh/devtoolset-8/root/usr/lib:/opt/rh/devtoolset-8/root/usr/lib64/dyninst:/opt/rh/devtoolset-8/root/usr/lib/dyninst:/opt/rh/devtoolset-8/root/usr/lib64:/opt/rh/devtoolset-8/root/usr/lib"
 
 # Install cmake 3.26.4
 RUN mkdir -p /tmp/cmake && cd /tmp/cmake && \
