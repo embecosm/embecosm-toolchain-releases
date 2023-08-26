@@ -25,15 +25,13 @@ else
 fi
 
 # If a BUGURL and PKGVERS has been provided, set variables
-EXTRA_OPTS=""
-LLVM_EXTRA_OPTS=""
 if [ "x${BUGURL}" != "x" ]; then
   EXTRA_OPTS="${EXTRA_OPTS} --with-bugurl='${BUGURL}'"
-  LLVM_EXTRA_OPTS="${LLVM_EXTRA_OPTS} -DBUG_REPORT_URL='${BUGURL}"
+  EXTRA_LLVM_OPTS="${EXTRA_LLVM_OPTS} -DBUG_REPORT_URL='${BUGURL}"
 fi
 if [ "x${PKGVERS}" != "x" ]; then
   EXTRA_OPTS="${EXTRA_OPTS} --with-pkgversion='${PKGVERS}'"
-  LLVM_EXTRA_OPTS="${LLVM_EXTRA_OPTS} -DCLANG_VENDOR='${PKGVERS}'"
+  EXTRA_LLVM_OPTS="${EXTRA_LLVM_OPTS} -DCLANG_VENDOR='${PKGVERS}'"
 fi
 
 # Allow environment to control parallelism
@@ -116,7 +114,7 @@ cmake -G"Unix Makefiles"                                         \
     -DLLVM_DISTRIBUTION_COMPONENTS=clang\;clang-resource-headers\;lld\;llvm-ar\;llvm-cov\;llvm-cxxfilt\;llvm-dwp\;llvm-ranlib\;llvm-nm\;llvm-objcopy\;llvm-objdump\;llvm-readobj\;llvm-size\;llvm-strings\;llvm-strip\;llvm-profdata\;llvm-symbolizer\;LLVMgold \
     -DLLVM_PARALLEL_LINK_JOBS=5                                  \
     -DLLVM_TARGETS_TO_BUILD=${LLVM_NATIVE_ARCH}\;RISCV           \
-    ${LLVM_EXTRA_OPTS}                                           \
+    ${EXTRA_LLVM_OPTS}                                           \
     ../../llvm-project/llvm
 make -j${PARALLEL_JOBS}
 make install-distribution

@@ -19,7 +19,6 @@ which gcc
 which g++
 
 # If a BUGURL and PKGVERS has been provided, set variables
-EXTRA_OPTS=""
 if [ "x${BUGURL}" != "x" ]; then
   EXTRA_OPTS="${EXTRA_OPTS} --with-bugurl='${BUGURL}'"
 fi

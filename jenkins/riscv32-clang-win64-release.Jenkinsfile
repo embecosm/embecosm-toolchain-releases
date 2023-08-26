@@ -62,6 +62,7 @@ node('winbuilder') {
                    set BUGURL=${BUGURL}
                    set PKGVERS=${PKGVERS}
                    set EXTRA_BINUTILS_OPTS=--with-python=no --with-system-readline --disable-sim
+                   set EXTRA_LLVM_OPTS=-DLLVM_ENABLE_THREADS=OFF
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && ./stages/build-riscv32-clang.sh" """
