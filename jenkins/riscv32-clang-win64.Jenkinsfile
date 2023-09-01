@@ -31,12 +31,6 @@ node('winbuilder') {
     // Store workspace dir in a file we can source later
     bat script: """${MSYSHOME}\\usr\\bin\\cygpath %WORKSPACE% > workspacedir"""
 
-   dir('binutils-gdb') {
-      checkout([$class: 'GitSCM',
-          branches: [[name: '*/master']],
-          extensions: [[$class: 'CloneOption', shallow: true]],
-          userRemoteConfigs: [[url: 'https://mirrors.git.embecosm.com/mirrors/binutils-gdb.git']]])
-    }
     dir('llvm-project') {
       checkout([$class: 'GitSCM',
           branches: [[name: '*/main']],
@@ -60,11 +54,10 @@ node('winbuilder') {
     bat script: """set MSYSTEM=MINGW64
                    set BUGURL=${BUGURL}
                    set PKGVERS=${PKGVERS}
-                   set EXTRA_BINUTILS_OPTS=--with-python=no --with-system-readline --disable-sim
                    set EXTRA_LLVM_OPTS=-DLLVM_ENABLE_THREADS=OFF
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
-                       "cd %UNIXWORKSPACE% && ./stages/build-riscv32-clang.sh" """
+                       "cd %UNIXWORKSPACE% && ./stages/build-riscv32-clang-baremetal.sh" """
     bat script: """set MSYSTEM=MINGW64
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
@@ -80,27 +73,6 @@ node('winbuilder') {
   }
 
   stage('Test') {
-    bat script: """set MSYSTEM=MINGW64
-                   set /P UNIXWORKSPACE=<workspacedir
-                   ${MSYSHOME}\\usr\\bin\\bash --login -c ^
-                       "cd %UNIXWORKSPACE%/build/binutils-gdb && make check-gas" """, returnStatus: true
-    bat script: """set MSYSTEM=MINGW64
-                   set /P UNIXWORKSPACE=<workspacedir
-                   ${MSYSHOME}\\usr\\bin\\bash --login -c ^
-                       "cd %UNIXWORKSPACE%/build/binutils-gdb && make check-ld" """, returnStatus: true
-    bat script: """set MSYSTEM=MINGW64
-                   set /P UNIXWORKSPACE=<workspacedir
-                   ${MSYSHOME}\\usr\\bin\\bash --login -c ^
-                       "cd %UNIXWORKSPACE%/build/binutils-gdb && make check-binutils" """, returnStatus: true
-    dir('build/binutils-gdb') {
-      archiveArtifacts artifacts: '''gas/testsuite/gas.log,
-                                     gas/testsuite/gas.sum,
-                                     ld/ld.log,
-                                     ld/ld.sum,
-                                     binutils/binutils.log,
-                                     binutils/binutils.sum''',
-                       fingerprint: true
-    }
     // Build the CGEN simulator and use it for testing
     bat script: """set MSYSTEM=MINGW64
                    set /P UNIXWORKSPACE=<workspacedir

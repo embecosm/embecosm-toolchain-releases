@@ -25,12 +25,6 @@ node('builder') {
 
   stage('Checkout') {
     checkout scm
-    dir('binutils-gdb') {
-      checkout([$class: 'GitSCM',
-          branches: [[name: '*/master']],
-          extensions: [[$class: 'CloneOption', shallow: true]],
-          userRemoteConfigs: [[url: 'https://mirrors.git.embecosm.com/mirrors/binutils-gdb.git']]])
-    }
     dir('llvm-project') {
       checkout([$class: 'GitSCM',
           branches: [[name: '*/main']],
@@ -54,7 +48,7 @@ node('builder') {
 
   stage('Build') {
     image.inside {
-      sh script: "BUGURL='${BUGURL}' PKGVERS='${PKGVERS}' ./stages/build-riscv32-clang.sh"
+      sh script: "BUGURL='${BUGURL}' PKGVERS='${PKGVERS}' ./stages/build-riscv32-clang-baremetal.sh"
     }
   }
 
@@ -67,18 +61,6 @@ node('builder') {
 
   stage('Test') {
     image.inside {
-      dir('build/binutils-gdb') {
-        sh script: 'make check-gas', returnStatus: true
-        sh script: 'make check-ld', returnStatus: true
-        sh script: 'make check-binutils', returnStatus: true
-        archiveArtifacts artifacts: '''gas/testsuite/gas.log,
-                                       gas/testsuite/gas.sum,
-                                       ld/ld.log,
-                                       ld/ld.sum,
-                                       binutils/binutils.log,
-                                       binutils/binutils.sum''',
-                         fingerprint: true
-      }
       sh script: '''./stages/test-llvm.sh'''
       dir('build/llvm') {
         archiveArtifacts artifacts: 'llvm-tests.log', fingerprint: true
