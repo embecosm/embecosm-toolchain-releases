@@ -10,6 +10,17 @@ node('master') {
   }
 
   stage('Trigger Builds') {
+    build job: 'riscv-embedded-centos7', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv-embedded-rocky8', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv-embedded-rocky9', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv-embedded-macos', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv-embedded-macos-arm64', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv-embedded-ubuntu1804', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv-embedded-ubuntu2004', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv-embedded-ubuntu2204', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv-embedded-win64', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv-embedded-fullregression', wait: false
+
     build job: 'riscv32-gcc-centos7', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv32-gcc-rocky8', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv32-gcc-rocky9', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
