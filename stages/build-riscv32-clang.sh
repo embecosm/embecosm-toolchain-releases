@@ -123,7 +123,7 @@ make install-distribution
 cd ${INSTALLPREFIX}/bin
 for TRIPLE in riscv32-unknown-elf riscv64-unknown-elf; do
   for TOOL in clang clang++ cc c++; do
-    ln -sv clang ${TRIPLE}-${TOOL}${EXE}
+    ln -sv clang${EXE} ${TRIPLE}-${TOOL}${EXE}
   done
 done
 
