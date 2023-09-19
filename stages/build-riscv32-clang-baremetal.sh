@@ -243,9 +243,9 @@ for CRT_MULTILIB in $(${BUILDPREFIX}/llvm/bin/clang -target riscv32-unknown-elf 
       -DCMAKE_C_COMPILER_TARGET="riscv32-unknown-elf"                          \
       -DCMAKE_CXX_COMPILER_TARGET="riscv32-unknown-elf"                        \
       -DCMAKE_ASM_COMPILER_TARGET="riscv32-unknown-elf"                        \
-      -DCMAKE_C_FLAGS="${CRT_MULTILIB_OPT}"                                    \
-      -DCMAKE_CXX_FLAGS="${CRT_MULTILIB_OPT}"                                  \
-      -DCMAKE_ASM_FLAGS="${CRT_MULTILIB_OPT}"                                  \
+      -DCMAKE_C_FLAGS="${CRT_MULTILIB_OPT} -O2"                                \
+      -DCMAKE_CXX_FLAGS="${CRT_MULTILIB_OPT} -O2"                              \
+      -DCMAKE_ASM_FLAGS="${CRT_MULTILIB_OPT} -O2"                              \
       -DCMAKE_EXE_LINKER_FLAGS="-nostartfiles -nostdlib"                       \
       -DCOMPILER_RT_BAREMETAL_BUILD=ON                                         \
       -DCOMPILER_RT_BUILD_BUILTINS=ON                                          \
@@ -288,9 +288,9 @@ for CRT_MULTILIB in $(${BUILDPREFIX}/llvm/bin/clang -target riscv64-unknown-elf 
       -DCMAKE_C_COMPILER_TARGET="riscv64-unknown-elf"                          \
       -DCMAKE_CXX_COMPILER_TARGET="riscv64-unknown-elf"                        \
       -DCMAKE_ASM_COMPILER_TARGET="riscv64-unknown-elf"                        \
-      -DCMAKE_C_FLAGS="${CRT_MULTILIB_OPT}"                                    \
-      -DCMAKE_CXX_FLAGS="${CRT_MULTILIB_OPT}"                                  \
-      -DCMAKE_ASM_FLAGS="${CRT_MULTILIB_OPT}"                                  \
+      -DCMAKE_C_FLAGS="${CRT_MULTILIB_OPT} -O2"                                \
+      -DCMAKE_CXX_FLAGS="${CRT_MULTILIB_OPT} -O2"                              \
+      -DCMAKE_ASM_FLAGS="${CRT_MULTILIB_OPT} -O2"                              \
       -DCMAKE_EXE_LINKER_FLAGS="-nostartfiles -nostdlib"                       \
       -DCOMPILER_RT_BAREMETAL_BUILD=ON                                         \
       -DCOMPILER_RT_BUILD_BUILTINS=ON                                          \
