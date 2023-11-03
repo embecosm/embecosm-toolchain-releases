@@ -4,13 +4,17 @@ FROM centos:centos7
 LABEL maintainer simon.cook@embecosm.com
 
 RUN yum -y upgrade && yum -y groupinstall 'Development tools' && \
-    yum -y install dejagnu python3 texinfo wget which expat-devel rsync
+    yum -y install dejagnu python3 texinfo wget which expat-devel rsync file \
+    gawk zlib-devel glib2-devel
 
 # Install newer toolchain components
-RUN yum install -y centos-release-scl && yum install -y devtoolset-8
+RUN yum install -y centos-release-scl && yum install -y devtoolset-8 rh-python38
 
-ENV PATH="/opt/rh/devtoolset-8/root/usr/bin:${PATH}" \
-    LD_LIBRARY_PATH="/opt/rh/devtoolset-8/root/usr/lib64:/opt/rh/devtoolset-8/root/usr/lib:/opt/rh/devtoolset-8/root/usr/lib64/dyninst:/opt/rh/devtoolset-8/root/usr/lib/dyninst:/opt/rh/devtoolset-8/root/usr/lib64:/opt/rh/devtoolset-8/root/usr/lib"
+ENV PATH="/opt/rh/rh-python38/root/usr/local/bin:/opt/rh/rh-python38/root/usr/bin:/opt/rh/devtoolset-8/root/usr/bin:${PATH}" \
+    LD_LIBRARY_PATH="/opt/rh/rh-python38/root/usr/lib64:/opt/rh/devtoolset-8/root/usr/lib64:/opt/rh/devtoolset-8/root/usr/lib:/opt/rh/devtoolset-8/root/usr/lib64/dyninst:/opt/rh/devtoolset-8/root/usr/lib/dyninst:/opt/rh/devtoolset-8/root/usr/lib64:/opt/rh/devtoolset-8/root/usr/lib"
+
+# Use the newly installed pip to get ninja
+RUN python -m pip install ninja
 
 # Install cmake 3.26.4
 RUN mkdir -p /tmp/cmake && cd /tmp/cmake && \

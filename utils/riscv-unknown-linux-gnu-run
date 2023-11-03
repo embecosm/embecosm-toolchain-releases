@@ -1,0 +1,19 @@
+#!/bin/sh
+# Script for calling appropriate CGEN simulator based on ELF class
+
+# Copyright (C) 2020 Embecosm Limited
+
+# Contributor: Simon Cook <simon.cook@embecosm.com>
+
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# Test if file is 64-bit using file
+file $1 | grep 'ELF 64-bit' > /dev/null 2>&1
+
+if [ $? -eq 0 ]; then
+  qemu-riscv64 -cpu rv64,Zicsr=true,zba=true,zbb=true,zbc=true,zbs=true,v=true,vext_spec=v1.0,Zfh=true,x-zvfh=true,zicond=true,zicboz=true,Zihintpause=true,Zawrs=true $*
+  exit $?
+else
+  qemu-riscv32 -cpu rv32,Zicsr=true,zba=true,zbb=true,zbc=true,zbs=true,v=true,vext_spec=v1.0,Zfh=true,x-zvfh=true,zicond=true,zicboz=true,Zihintpause=true,Zawrs=true $*
+  exit $?
+fi

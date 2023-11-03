@@ -5,7 +5,8 @@ LABEL maintainer simon.cook@embecosm.com
 
 RUN apt-get -y update && \
     DEBIAN_FRONTEND=noninteractive \
-    apt-get install -y flex bison build-essential dejagnu git python-is-python3 python3 python3-distutils texinfo wget libexpat-dev rsync file
+    apt-get install -y flex bison build-essential dejagnu git python-is-python3 python3 python3-distutils texinfo wget libexpat-dev rsync file \
+    gawk zlib1g-dev ninja-build pkg-config libglib2.0-dev python3-venv
 
 # Install cmake 3.26.4
 RUN mkdir -p /tmp/cmake && cd /tmp/cmake && \

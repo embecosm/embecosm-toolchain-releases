@@ -4,8 +4,9 @@ FROM rockylinux:9
 LABEL maintainer simon.cook@embecosm.com
 
 RUN dnf -y upgrade && dnf -y groupinstall 'Development tools' && \
-     dnf config-manager --set-enabled crb && \
-    dnf -y install dejagnu python3 python-unversioned-command texinfo wget which expat-devel rsync
+    dnf config-manager --set-enabled crb && \
+    dnf -y install dejagnu python3 python-unversioned-command texinfo wget which expat-devel rsync file \
+    gawk zlib-devel ninja-build pkg-config glib2-devel
 
 # Install cmake 3.26.4
 RUN mkdir -p /tmp/cmake && cd /tmp/cmake && \

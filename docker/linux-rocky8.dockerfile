@@ -6,7 +6,9 @@ LABEL maintainer simon.cook@embecosm.com
 RUN dnf -y upgrade && dnf -y groupinstall 'Development tools' && \
     (dnf config-manager --set-enabled PowerTools || \
      dnf config-manager --set-enabled powertools) && \
-    dnf -y install dejagnu python2 python3 texinfo wget which expat-devel rsync
+    dnf -y install dejagnu python2 python3 texinfo wget which expat-devel rsync file \
+    gawk zlib-devel ninja-build pkg-config glib2-devel && \
+    dnf module -y install python38
 
 RUN alternatives --set python /usr/bin/python2
 
