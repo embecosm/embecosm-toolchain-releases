@@ -11,9 +11,9 @@
 file $1 | grep 'ELF 64-bit' > /dev/null 2>&1
 
 if [ $? -eq 0 ]; then
-  qemu-riscv64 -cpu rv64,Zicsr=true,zba=true,zbb=true,zbc=true,zbs=true,v=true,vext_spec=v1.0,Zfh=true,x-zvfh=true,zicond=true,zicboz=true,Zihintpause=true,Zawrs=true $*
+  qemu-riscv64 -cpu rv64,Zicsr=true,zba=true,zbb=true,zbc=true,zbs=true,v=true,vext_spec=v1.0 $*
   exit $?
 else
-  qemu-riscv32 -cpu rv32,Zicsr=true,zba=true,zbb=true,zbc=true,zbs=true,v=true,vext_spec=v1.0,Zfh=true,x-zvfh=true,zicond=true,zicboz=true,Zihintpause=true,Zawrs=true $*
+  qemu-riscv32 -cpu rv32,Zicsr=true,zba=true,zbb=true,zbc=true,zbs=true,v=true,vext_spec=v1.0 $*
   exit $?
 fi
