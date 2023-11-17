@@ -42,7 +42,7 @@ node('builder') {
       checkout([$class: 'GitSCM',
           branches: [[name: '*/master']],
           extensions: [[$class: 'CloneOption', shallow: true]],
-          userRemoteConfigs: [[url: 'https://sourceware.org/git/glibc.git']]])
+          userRemoteConfigs: [[url: 'https://mirrors.git.embecosm.com/mirrors/glibc.git']]])
     }
     dir('riscv-gnu-toolchain') {
       checkout([$class: 'GitSCM',
