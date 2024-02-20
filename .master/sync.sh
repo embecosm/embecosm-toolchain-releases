@@ -21,6 +21,11 @@ syncrepo() {
   (
     cd "${NAME}.git"
     git fetch -p origin
+    # Because some user branch names are too long to clone on Windows, prune
+    # all these from our mirror
+    if [ $(git branch | grep ' users/' | wc -l) -gt 0 ]; then
+      git branch | grep ' users/' | xargs git branch -D
+    fi
     git push --force --mirror "${DST}"
   )
 }
