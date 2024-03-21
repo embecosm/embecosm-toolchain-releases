@@ -110,7 +110,7 @@ make install
 PATH=${INSTALLPREFIX}/bin:${PATH}
 mkdir -p ${BUILDPREFIX}/newlib
 cd ${BUILDPREFIX}/newlib
-CFLAGS_FOR_TARGET="-DPREFER_SIZE_OVER_SPEED=1 -Os" \
+CFLAGS_FOR_TARGET="-DPREFER_SIZE_OVER_SPEED=1 -Os -Wno-error=implicit-function-declaration" \
 ../../newlib/configure                             \
     --target=or1k-elf                              \
     --prefix=${INSTALLPREFIX}                      \
