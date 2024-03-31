@@ -16,6 +16,13 @@ RUN mkdir -p /tmp/cmake && cd /tmp/cmake && \
     make -j$(nproc) && make install && \
     cd /tmp && rm -rf cmake
 
-# Some tests require the user running testing to exist and have a home directory
-# These values match what the Embecosm Buildbot builders are set up to use
+# Create a user which matches the uid of the buildbot user.
+# This is needed:
+#   1. For some tests, which require a real user and real home directory
+#   2. For running rustup to install a rust toolchain for gccrs
+# Note UID 1002 matches the Embecosm Buildbot environment, but may need changing
+# to run in other contexts.
 RUN useradd -m -u 1002 builder
+RUN wget -O /tmp/rustup.sh https://sh.rustup.rs && chmod +x /tmp/rustup.sh && \
+    su builder -c '/tmp/rustup.sh -y --default-toolchain=1.72.0'
+ENV PATH="/home/builder/.cargo/bin:${PATH}"
