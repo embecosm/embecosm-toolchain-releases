@@ -81,6 +81,7 @@ node('master') {
 
     build job: 'corev-gcc-centos7', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'corev-gcc-macos', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'corev-gcc-macos-arm64', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'corev-gcc-rocky8', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'corev-gcc-rocky9', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'corev-gcc-ubuntu1804', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
