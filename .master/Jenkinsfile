@@ -18,6 +18,7 @@ node('master') {
     build job: 'riscv-embedded-ubuntu1804', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv-embedded-ubuntu2004', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv-embedded-ubuntu2204', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv-embedded-ubuntu2404', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv-embedded-win64', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv-embedded-fullregression', wait: false
 
@@ -27,6 +28,7 @@ node('master') {
     build job: 'riscv64-linux-gcc-ubuntu1804', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv64-linux-gcc-ubuntu2004', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv64-linux-gcc-ubuntu2204', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv64-linux-gcc-ubuntu2404', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
 
     build job: 'riscv32-gcc-centos7', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv32-gcc-rocky8', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
@@ -36,6 +38,7 @@ node('master') {
     build job: 'riscv32-gcc-ubuntu1804', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv32-gcc-ubuntu2004', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv32-gcc-ubuntu2204', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
+    build job: 'riscv32-gcc-ubuntu2404', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv32-gcc-win64', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv32-gcc-fullregression', wait: false
 
@@ -47,6 +50,7 @@ node('master') {
     build job: 'riscv32-clang-ubuntu1804', wait: false
     build job: 'riscv32-clang-ubuntu2004', wait: false
     build job: 'riscv32-clang-ubuntu2204', wait: false
+    build job: 'riscv32-clang-ubuntu2404', wait: false
     build job: 'riscv32-clang-win64', wait: false
 
     build job: 'or1k-gcc-centos7', wait: false
@@ -57,6 +61,7 @@ node('master') {
     build job: 'or1k-gcc-ubuntu1804', wait: false
     build job: 'or1k-gcc-ubuntu2004', wait: false
     build job: 'or1k-gcc-ubuntu2204', wait: false
+    build job: 'or1k-gcc-ubuntu2404', wait: false
     build job: 'or1k-gcc-win64', wait: false
 
     build job: 'gccrs-centos7', wait: false
@@ -67,6 +72,7 @@ node('master') {
     build job: 'gccrs-ubuntu1804', wait: false
     build job: 'gccrs-ubuntu2004', wait: false
     build job: 'gccrs-ubuntu2204', wait: false
+    build job: 'gccrs-ubuntu2404', wait: false
     build job: 'gccrs-win64', wait: false
 
     build job: 'gccrs-fsf-centos7', wait: false
@@ -77,6 +83,7 @@ node('master') {
     build job: 'gccrs-fsf-ubuntu1804', wait: false
     build job: 'gccrs-fsf-ubuntu2004', wait: false
     build job: 'gccrs-fsf-ubuntu2204', wait: false
+    build job: 'gccrs-fsf-ubuntu2404', wait: false
     build job: 'gccrs-fsf-win64', wait: false
 
     build job: 'corev-gcc-centos7', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
