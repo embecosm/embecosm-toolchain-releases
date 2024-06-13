@@ -6,6 +6,7 @@ properties([parameters([
     string(defaultvalue: '', description: 'GDB Tag', name: 'GdbTag'),
     string(defaultvalue: '', description: 'GCC Tag', name: 'GccTag'),
     string(defaultvalue: '', description: 'Newlib Tag', name: 'NewlibTag'),
+    string(defaultvalue: '', description: 'LLVM Tag', name: 'LLVMTag'),
     booleanParam(defaultValue: false, description: 'Test with a reduced set of multilibs', name: 'ReducedMultilibTesting'),
 ])])
 
