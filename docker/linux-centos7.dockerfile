@@ -3,12 +3,20 @@ FROM centos:centos7
 
 LABEL maintainer simon.cook@embecosm.com
 
+# Since centos7 has reached its end of life, repositories have moved to
+# vault.centos.org, so yum repo urls need updating accordingly
+RUN sed -i -e 's/^mirrorlist=/#mirrorlist=/' /etc/yum.repos.d/CentOS* && \
+    sed -i -e 's|^#\s*baseurl=http://mirror\.centos\.org|baseurl=http://vault.centos.org|' /etc/yum.repos.d/CentOS*
+
 RUN yum -y upgrade && yum -y groupinstall 'Development tools' && \
     yum -y install dejagnu python3 texinfo wget which expat-devel rsync file \
     gawk zlib-devel glib2-devel
 
 # Install newer toolchain components
-RUN yum install -y centos-release-scl && yum install -y devtoolset-8 rh-python38
+RUN yum install -y centos-release-scl && \
+    sed -i -e 's/^mirrorlist=/#mirrorlist=/' /etc/yum.repos.d/CentOS* && \
+    sed -i -e 's|^#\s*baseurl=http://mirror\.centos\.org|baseurl=http://vault.centos.org|' /etc/yum.repos.d/CentOS* && \
+    yum install -y devtoolset-8 rh-python38
 
 ENV PATH="/opt/rh/rh-python38/root/usr/local/bin:/opt/rh/rh-python38/root/usr/bin:/opt/rh/devtoolset-8/root/usr/bin:${PATH}" \
     LD_LIBRARY_PATH="/opt/rh/rh-python38/root/usr/lib64:/opt/rh/devtoolset-8/root/usr/lib64:/opt/rh/devtoolset-8/root/usr/lib:/opt/rh/devtoolset-8/root/usr/lib64/dyninst:/opt/rh/devtoolset-8/root/usr/lib/dyninst:/opt/rh/devtoolset-8/root/usr/lib64:/opt/rh/devtoolset-8/root/usr/lib"
