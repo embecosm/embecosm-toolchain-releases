@@ -262,6 +262,7 @@ cmake -G"Unix Makefiles"                                                     \
     -DCOMPILER_RT_BUILD_PROFILE=OFF                                          \
     -DCOMPILER_RT_BUILD_SANITIZERS=OFF                                       \
     -DCOMPILER_RT_BUILD_XRAY=OFF                                             \
+    -DCOMPILER_RT_BUILD_CTX_PROFILE=OFF                                      \
     -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON                                     \
     -DCOMPILER_RT_OS_DIR=""                                                  \
     -DLLVM_CONFIG_PATH=${BUILDPREFIX}/llvm/bin/llvm-config                   \
@@ -293,6 +294,7 @@ cmake -G"Unix Makefiles"                                                     \
     -DCOMPILER_RT_BUILD_PROFILE=OFF                                          \
     -DCOMPILER_RT_BUILD_SANITIZERS=OFF                                       \
     -DCOMPILER_RT_BUILD_XRAY=OFF                                             \
+    -DCOMPILER_RT_BUILD_CTX_PROFILE=OFF                                      \
     -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON                                     \
     -DCOMPILER_RT_OS_DIR=""                                                  \
     -DLLVM_CONFIG_PATH=${BUILDPREFIX}/llvm/bin/llvm-config                   \
