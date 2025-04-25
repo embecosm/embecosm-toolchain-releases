@@ -8,7 +8,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 LIBGMP_VERS=6.2.1
-LIBMPFR_VERS=4.2.1
+LIBMPFR_VERS=4.2.2
 
 (
   set -e
