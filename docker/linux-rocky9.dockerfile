@@ -7,7 +7,8 @@ RUN dnf -y upgrade && dnf -y groupinstall 'Development tools' && \
     dnf -y install dnf-plugins-core && \
     dnf config-manager --set-enabled crb && \
     dnf -y install dejagnu python3 python-unversioned-command texinfo wget which expat-devel rsync file \
-    gawk zlib-devel ninja-build pkg-config glib2-devel
+    gawk zlib-devel ninja-build pkg-config glib2-devel python3-pip && \
+    pip3 install tomli
 
 # Install cmake 3.26.4
 RUN mkdir -p /tmp/cmake && cd /tmp/cmake && \

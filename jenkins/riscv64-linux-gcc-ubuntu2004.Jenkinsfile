@@ -50,9 +50,10 @@ node('builder') {
           extensions: [[$class: 'CloneOption', shallow: true, disableSubmodules: true]],
           userRemoteConfigs: [[url: 'https://github.com/riscv-collab/riscv-gnu-toolchain.git']]])
     }
+    // QEMU 9.0 is the last version to successfully build on Ubuntu 20.04
     dir('qemu') {
       checkout([$class: 'GitSCM',
-          branches: [[name: '*/master']],
+          branches: [[name: '*/stable-9.0']],
           extensions: [[$class: 'CloneOption', shallow: true]],
           userRemoteConfigs: [[url: 'https://github.com/qemu/qemu.git']]])
     }
