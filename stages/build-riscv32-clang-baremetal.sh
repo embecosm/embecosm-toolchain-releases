@@ -246,7 +246,7 @@ for CRT_MULTILIB in $(${BUILDPREFIX}/llvm/bin/clang -target riscv32-unknown-elf 
       -DCMAKE_C_FLAGS="${CRT_MULTILIB_OPT} -O2"                                \
       -DCMAKE_CXX_FLAGS="${CRT_MULTILIB_OPT} -O2"                              \
       -DCMAKE_ASM_FLAGS="${CRT_MULTILIB_OPT} -O2"                              \
-      -DCMAKE_EXE_LINKER_FLAGS="-nostartfiles -nostdlib"                       \
+      -DCMAKE_EXE_LINKER_FLAGS="-nostartfiles -nostdlib -fuse-ld=lld"          \
       -DCOMPILER_RT_BAREMETAL_BUILD=ON                                         \
       -DCOMPILER_RT_BUILD_BUILTINS=ON                                          \
       -DCOMPILER_RT_BUILD_MEMPROF=OFF                                          \
@@ -292,7 +292,7 @@ for CRT_MULTILIB in $(${BUILDPREFIX}/llvm/bin/clang -target riscv64-unknown-elf 
       -DCMAKE_C_FLAGS="${CRT_MULTILIB_OPT} -O2"                                \
       -DCMAKE_CXX_FLAGS="${CRT_MULTILIB_OPT} -O2"                              \
       -DCMAKE_ASM_FLAGS="${CRT_MULTILIB_OPT} -O2"                              \
-      -DCMAKE_EXE_LINKER_FLAGS="-nostartfiles -nostdlib"                       \
+      -DCMAKE_EXE_LINKER_FLAGS="-nostartfiles -nostdlib -fuse-ld=lld"          \
       -DCOMPILER_RT_BAREMETAL_BUILD=ON                                         \
       -DCOMPILER_RT_BUILD_BUILTINS=ON                                          \
       -DCOMPILER_RT_BUILD_MEMPROF=OFF                                          \
