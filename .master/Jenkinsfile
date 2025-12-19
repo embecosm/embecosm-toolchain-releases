@@ -10,7 +10,6 @@ node('master') {
   }
 
   stage('Trigger Builds') {
-    build job: 'riscv-embedded-centos7', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv-embedded-rocky8', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv-embedded-rocky9', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv-embedded-macos', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
@@ -42,7 +41,6 @@ node('master') {
     build job: 'riscv32-gcc-win64', wait: false, parameters: [booleanParam(name: 'ReducedMultilibTesting', value: true)]
     build job: 'riscv32-gcc-fullregression', wait: false
 
-    build job: 'riscv32-clang-centos7', wait: false
     build job: 'riscv32-clang-rocky8', wait: false
     build job: 'riscv32-clang-rocky9', wait: false
     build job: 'riscv32-clang-macos', wait: false
