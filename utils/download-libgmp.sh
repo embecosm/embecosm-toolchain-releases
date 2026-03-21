@@ -27,13 +27,13 @@ LIBMPFR_VERS=4.2.2
   fi
 
   if [ ! -e gmp ]; then
-    ${dl} https://gmplib.org/download/gmp/gmp-${LIBGMP_VERS}.tar.bz2
+    ${dl} https://buildbot.embecosm.com/userContent/packages/gmp-${LIBGMP_VERS}.tar.bz2
     tar -xjf gmp-${LIBGMP_VERS}.tar.bz2
     mv gmp-${LIBGMP_VERS} gmp
   fi
 
   if [ ! -e mpfr ]; then
-    ${dl} https://www.mpfr.org/mpfr-current/mpfr-${LIBMPFR_VERS}.tar.bz2
+    ${dl} https://buildbot.embecosm.com/userContent/packages/mpfr-${LIBMPFR_VERS}.tar.bz2
     tar -xjf mpfr-${LIBMPFR_VERS}.tar.bz2
     mv mpfr-${LIBMPFR_VERS} mpfr
   fi

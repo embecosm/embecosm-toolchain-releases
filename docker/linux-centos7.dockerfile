@@ -26,7 +26,7 @@ RUN python -m pip install ninja
 
 # Install cmake 3.26.4
 RUN mkdir -p /tmp/cmake && cd /tmp/cmake && \
-    wget https://github.com/Kitware/CMake/releases/download/v3.26.4/cmake-3.26.4.tar.gz && \
+    wget https://buildbot.embecosm.com/userContent/packages/cmake-3.26.4.tar.gz && \
     tar xf cmake-3.26.4.tar.gz && cd cmake-3.26.4 && \
     ./bootstrap --parallel=$(nproc) -- -DCMAKE_USE_OPENSSL=OFF && \
     make -j$(nproc) && make install && \
@@ -34,7 +34,7 @@ RUN mkdir -p /tmp/cmake && cd /tmp/cmake && \
 
 # Install new DejaGNU for more reliable test summary generation
 RUN mkdir -p /tmp/dejagnu && cd /tmp/dejagnu && \
-    wget https://ftp.gnu.org/gnu/dejagnu/dejagnu-1.6.2.tar.gz && \
+    wget https://buildbot.embecosm.com/userContent/packages/dejagnu-1.6.2.tar.gz && \
     tar xf dejagnu-1.6.2.tar.gz && cd dejagnu-1.6.2 && \
     ./configure && make && make install && \
     cd /tmp && rm -rf dejagnu

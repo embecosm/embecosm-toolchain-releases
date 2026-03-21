@@ -20,7 +20,7 @@ LIBGMP_VERS=6.2.1
   fi
 
   if [ ! -e gmp-${LIBGMP_VERS}/inst ]; then
-    ${dl} https://gmplib.org/download/gmp/gmp-${LIBGMP_VERS}.tar.bz2
+    ${dl} https://buildbot.embecosm.com/userContent/packages/gmp-${LIBGMP_VERS}.tar.bz2
     tar -xjf gmp-${LIBGMP_VERS}.tar.bz2
 
     cd gmp-${LIBGMP_VERS}

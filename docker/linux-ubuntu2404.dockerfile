@@ -10,7 +10,7 @@ RUN apt-get -y update && \
 
 # Install fixed version of DejaGNU for more reliable test summary generation
 RUN mkdir -p /tmp/dejagnu && cd /tmp/dejagnu && \
-    wget https://ftp.gnu.org/gnu/dejagnu/dejagnu-1.6.2.tar.gz && \
+    wget https://buildbot.embecosm.com/userContent/packages/dejagnu-1.6.2.tar.gz && \
     tar xf dejagnu-1.6.2.tar.gz && cd dejagnu-1.6.2 && \
     ./configure && make && make install && \
     cd /tmp && rm -rf dejagnu
