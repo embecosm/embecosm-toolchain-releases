@@ -47,6 +47,15 @@ else
   LLVM_NATIVE_ARCH="X86"
 fi
 
+# On Windows/MSys we cannot reliably enable LLVM plugins, so disable these
+if [ "$(uname -o)" == "Msys" ]; then
+  LLVM_ENABLE_PLUGINS="OFF"
+  LLVM_ENABLE_GOLD=""
+else
+  LLVM_ENABLE_PLUGINS="ON"
+  LLVM_ENABLE_GOLD=";LLVMgold"
+fi
+
 # Find the location of the binutils repository in order to pass the linker
 # plugin header to LLVM's build system
 if [ -e "binutils-gdb" ]; then
@@ -64,9 +73,9 @@ cmake -G"Unix Makefiles"                                         \
     -DCMAKE_BUILD_TYPE=Release                                   \
     -DCMAKE_INSTALL_PREFIX=${INSTALLPREFIX}                      \
     -DLLVM_ENABLE_PROJECTS=clang\;lld                            \
-    -DLLVM_ENABLE_PLUGINS=ON                                     \
+    -DLLVM_ENABLE_PLUGINS=${LLVM_ENABLE_PLUGINS}                 \
     -DLLVM_BINUTILS_INCDIR=${SRCPREFIX}/${BINUTILS_DIR}/include  \
-    -DLLVM_DISTRIBUTION_COMPONENTS=clang\;clang-resource-headers\;lld\;llvm-ar\;llvm-cov\;llvm-cxxfilt\;llvm-dwp\;llvm-ranlib\;llvm-nm\;llvm-objcopy\;llvm-objdump\;llvm-readobj\;llvm-size\;llvm-strings\;llvm-strip\;llvm-profdata\;llvm-symbolizer\;LLVMgold \
+    -DLLVM_DISTRIBUTION_COMPONENTS=clang\;clang-resource-headers\;lld\;llvm-ar\;llvm-cov\;llvm-cxxfilt\;llvm-dwp\;llvm-ranlib\;llvm-nm\;llvm-objcopy\;llvm-objdump\;llvm-readobj\;llvm-size\;llvm-strings\;llvm-strip\;llvm-profdata\;llvm-symbolizer${LLVM_ENABLE_GOLD} \
     -DLLVM_PARALLEL_LINK_JOBS=5                                  \
     -DLLVM_TARGETS_TO_BUILD=${LLVM_NATIVE_ARCH}\;RISCV           \
     ${EXTRA_LLVM_OPTS}                                           \

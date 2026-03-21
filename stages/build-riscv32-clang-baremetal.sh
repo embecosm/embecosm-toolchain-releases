@@ -46,6 +46,13 @@ else
   LLVM_NATIVE_ARCH="X86"
 fi
 
+# On Windows/MSys we cannot reliably enable LLVM plugins, so disable these
+if [ "$(uname -o)" == "Msys" ]; then
+  LLVM_ENABLE_PLUGINS="OFF"
+else
+  LLVM_ENABLE_PLUGINS="ON"
+fi
+
 # Clang/LLVM
 mkdir -p ${BUILDPREFIX}/llvm
 cd ${BUILDPREFIX}/llvm
@@ -53,7 +60,7 @@ cmake -G"Unix Makefiles"                                         \
     -DCMAKE_BUILD_TYPE=Release                                   \
     -DCMAKE_INSTALL_PREFIX=${INSTALLPREFIX}                      \
     -DLLVM_ENABLE_PROJECTS=clang\;lld                            \
-    -DLLVM_ENABLE_PLUGINS=ON                                     \
+    -DLLVM_ENABLE_PLUGINS=${LLVM_ENABLE_PLUGINS}                 \
     -DLLVM_DISTRIBUTION_COMPONENTS=clang\;clang-resource-headers\;lld\;llvm-ar\;llvm-cov\;llvm-cxxfilt\;llvm-dwp\;llvm-ranlib\;llvm-nm\;llvm-objcopy\;llvm-objdump\;llvm-readobj\;llvm-size\;llvm-strings\;llvm-strip\;llvm-profdata\;llvm-symbolizer \
     -DLLVM_PARALLEL_LINK_JOBS=5                                  \
     -DLLVM_TARGETS_TO_BUILD=${LLVM_NATIVE_ARCH}\;RISCV           \
