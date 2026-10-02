@@ -89,7 +89,7 @@ NM_FOR_TARGET=llvm-nm                              \
 RANLIB_FOR_TARGET=llvm-ranlib                      \
 READELF_FOR_TARGET=llvm-readelf                    \
 STRIP_FOR_TARGET=llvm-strip                        \
-CFLAGS_FOR_TARGET="-O2 -mcmodel=medany -Wno-error=implicit-function-declaration -Wno-int-conversion" \
+CFLAGS_FOR_TARGET="-O2 -mcmodel=medany -Wno-error=implicit-function-declaration -Wno-int-conversion -DUCHAR_WIDTH=__CHAR_BIT__ -DUSHRT_WIDTH=__SHRT_WIDTH__ -DUINT_WIDTH=__INT_WIDTH__ -DULONG_WIDTH=__LONG_WIDTH__ -DULLONG_WIDTH=__LLONG_WIDTH__" \
 ../../newlib/configure                             \
     --target=riscv32-unknown-elf                   \
     --prefix=${BUILDPREFIX}/newlib32-inst          \
@@ -111,7 +111,7 @@ NM_FOR_TARGET=llvm-nm                              \
 RANLIB_FOR_TARGET=llvm-ranlib                      \
 READELF_FOR_TARGET=llvm-readelf                    \
 STRIP_FOR_TARGET=llvm-strip                        \
-CFLAGS_FOR_TARGET="-Os -mcmodel=medany -ffunction-sections -fdata-sections -Wno-error=implicit-function-declaration -Wno-int-conversion" \
+CFLAGS_FOR_TARGET="-Os -mcmodel=medany -ffunction-sections -fdata-sections -Wno-error=implicit-function-declaration -Wno-int-conversion -DUCHAR_WIDTH=__CHAR_BIT__ -DUSHRT_WIDTH=__SHRT_WIDTH__ -DUINT_WIDTH=__INT_WIDTH__ -DULONG_WIDTH=__LONG_WIDTH__ -DULLONG_WIDTH=__LLONG_WIDTH__" \
 ../../newlib/configure                             \
     --target=riscv32-unknown-elf                   \
     --prefix=${BUILDPREFIX}/newlib32-nano-inst     \
@@ -164,7 +164,7 @@ NM_FOR_TARGET=llvm-nm                              \
 RANLIB_FOR_TARGET=llvm-ranlib                      \
 READELF_FOR_TARGET=llvm-readelf                    \
 STRIP_FOR_TARGET=llvm-strip                        \
-CFLAGS_FOR_TARGET="-O2 -mcmodel=medany -Wno-error=implicit-function-declaration -Wno-int-conversion" \
+CFLAGS_FOR_TARGET="-O2 -mcmodel=medany -Wno-error=implicit-function-declaration -Wno-int-conversion -DUCHAR_WIDTH=__CHAR_BIT__ -DUSHRT_WIDTH=__SHRT_WIDTH__ -DUINT_WIDTH=__INT_WIDTH__ -DULONG_WIDTH=__LONG_WIDTH__ -DULLONG_WIDTH=__LLONG_WIDTH__" \
 ../../newlib/configure                             \
     --target=riscv64-unknown-elf                   \
     --prefix=${BUILDPREFIX}/newlib64-inst          \
@@ -186,7 +186,7 @@ NM_FOR_TARGET=llvm-nm                              \
 RANLIB_FOR_TARGET=llvm-ranlib                      \
 READELF_FOR_TARGET=llvm-readelf                    \
 STRIP_FOR_TARGET=llvm-strip                        \
-CFLAGS_FOR_TARGET="-Os -mcmodel=medany -ffunction-sections -fdata-sections -Wno-error=implicit-function-declaration -Wno-int-conversion" \
+CFLAGS_FOR_TARGET="-Os -mcmodel=medany -ffunction-sections -fdata-sections -Wno-error=implicit-function-declaration -Wno-int-conversion -DUCHAR_WIDTH=__CHAR_BIT__ -DUSHRT_WIDTH=__SHRT_WIDTH__ -DUINT_WIDTH=__INT_WIDTH__ -DULONG_WIDTH=__LONG_WIDTH__ -DULLONG_WIDTH=__LLONG_WIDTH__" \
 ../../newlib/configure                             \
     --target=riscv64-unknown-elf                   \
     --prefix=${BUILDPREFIX}/newlib64-nano-inst     \
@@ -257,6 +257,7 @@ for CRT_MULTILIB in $(${BUILDPREFIX}/llvm/bin/clang -target riscv32-unknown-elf 
       -DCOMPILER_RT_BAREMETAL_BUILD=ON                                         \
       -DCOMPILER_RT_BUILD_BUILTINS=ON                                          \
       -DCOMPILER_RT_BUILD_MEMPROF=OFF                                          \
+      -DCOMPILER_RT_BUILD_COPYPROF=OFF                                         \
       -DCOMPILER_RT_BUILD_LIBFUZZER=OFF                                        \
       -DCOMPILER_RT_BUILD_PROFILE=OFF                                          \
       -DCOMPILER_RT_BUILD_SANITIZERS=OFF                                       \
@@ -274,7 +275,7 @@ for CRT_MULTILIB in $(${BUILDPREFIX}/llvm/bin/clang -target riscv32-unknown-elf 
   cp ${BUILDPREFIX}/compiler-rt32${CRT_MULTILIB_BDIR}-inst/lib/clang_rt.crtbegin-riscv32.o \
      ${INSTALLPREFIX}/lib/clang-runtimes/riscv32-unknown-elf/${CRT_MULTILIB_DIR}/lib/clang_rt.crtbegin.o
   cp ${BUILDPREFIX}/compiler-rt32${CRT_MULTILIB_BDIR}-inst/lib/clang_rt.crtend-riscv32.o \
-     ${INSTALLPREFIX}/lib/clang-runtimes/riscv32-unknown-elf/${CRT_MULTILIB_DIR}/lib/libclang_rt.crtend.o
+     ${INSTALLPREFIX}/lib/clang-runtimes/riscv32-unknown-elf/${CRT_MULTILIB_DIR}/lib/clang_rt.crtend.o
 done
 
 for CRT_MULTILIB in $(${BUILDPREFIX}/llvm/bin/clang -target riscv64-unknown-elf -print-multi-lib 2>/dev/null); do
@@ -303,6 +304,7 @@ for CRT_MULTILIB in $(${BUILDPREFIX}/llvm/bin/clang -target riscv64-unknown-elf 
       -DCOMPILER_RT_BAREMETAL_BUILD=ON                                         \
       -DCOMPILER_RT_BUILD_BUILTINS=ON                                          \
       -DCOMPILER_RT_BUILD_MEMPROF=OFF                                          \
+      -DCOMPILER_RT_BUILD_COPYPROF=OFF                                         \
       -DCOMPILER_RT_BUILD_LIBFUZZER=OFF                                        \
       -DCOMPILER_RT_BUILD_PROFILE=OFF                                          \
       -DCOMPILER_RT_BUILD_SANITIZERS=OFF                                       \
@@ -320,5 +322,5 @@ for CRT_MULTILIB in $(${BUILDPREFIX}/llvm/bin/clang -target riscv64-unknown-elf 
   cp ${BUILDPREFIX}/compiler-rt64${CRT_MULTILIB_BDIR}-inst/lib/clang_rt.crtbegin-riscv64.o \
      ${INSTALLPREFIX}/lib/clang-runtimes/riscv64-unknown-elf/${CRT_MULTILIB_DIR}/lib/clang_rt.crtbegin.o
   cp ${BUILDPREFIX}/compiler-rt64${CRT_MULTILIB_BDIR}-inst/lib/clang_rt.crtend-riscv64.o \
-     ${INSTALLPREFIX}/lib/clang-runtimes/riscv64-unknown-elf/${CRT_MULTILIB_DIR}/lib/libclang_rt.crtend.o
+     ${INSTALLPREFIX}/lib/clang-runtimes/riscv64-unknown-elf/${CRT_MULTILIB_DIR}/lib/clang_rt.crtend.o
 done
