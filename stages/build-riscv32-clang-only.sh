@@ -91,3 +91,47 @@ for TRIPLE in riscv32-unknown-elf; do
   done
 done
 
+# Compiler-rt
+# NOTE: CMAKE_SYSTEM_NAME is set to linux to allow the configure step to
+#       correctly validate that clang works for cross compiling
+mkdir -p ${BUILDPREFIX}/compiler-rt32
+cd ${BUILDPREFIX}/compiler-rt32
+cmake -G"Unix Makefiles"                                                     \
+    -DCMAKE_SYSTEM_NAME=Linux                                                \
+    -DCMAKE_INSTALL_PREFIX=${BUILDPREFIX}/compiler-rt32-inst                 \
+    -DCMAKE_C_COMPILER=${INSTALLPREFIX}/bin/clang${EXE}                      \
+    -DCMAKE_CXX_COMPILER=${INSTALLPREFIX}/bin/clang${EXE}                    \
+    -DCMAKE_AR=${INSTALLPREFIX}/bin/llvm-ar${EXE}                            \
+    -DCMAKE_NM=${INSTALLPREFIX}/bin/llvm-nm${EXE}                            \
+    -DCMAKE_RANLIB=${INSTALLPREFIX}/bin/llvm-ranlib${EXE}                    \
+    -DCMAKE_C_COMPILER_TARGET="riscv32-unknown-elf"                          \
+    -DCMAKE_CXX_COMPILER_TARGET="riscv32-unknown-elf"                        \
+    -DCMAKE_ASM_COMPILER_TARGET="riscv32-unknown-elf"                        \
+    -DCMAKE_C_FLAGS="-march=rv32i -mabi=ilp32 -O2"                           \
+    -DCMAKE_CXX_FLAGS="-march=rv32i -mabi=ilp32 -O2"                         \
+    -DCMAKE_ASM_FLAGS="-march=rv32i -mabi=ilp32 -O2"                         \
+    -DCMAKE_EXE_LINKER_FLAGS="-nostartfiles -nostdlib -fuse-ld=lld"          \
+    -DCOMPILER_RT_BAREMETAL_BUILD=ON                                         \
+    -DCOMPILER_RT_BUILD_BUILTINS=ON                                          \
+    -DCOMPILER_RT_BUILD_MEMPROF=OFF                                          \
+    -DCOMPILER_RT_BUILD_COPYPROF=OFF                                         \
+    -DCOMPILER_RT_BUILD_LIBFUZZER=OFF                                        \
+    -DCOMPILER_RT_BUILD_PROFILE=OFF                                          \
+    -DCOMPILER_RT_BUILD_SANITIZERS=OFF                                       \
+    -DCOMPILER_RT_BUILD_XRAY=OFF                                             \
+    -DCOMPILER_RT_BUILD_CTX_PROFILE=OFF                                      \
+    -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON                                     \
+    -DCOMPILER_RT_OS_DIR=""                                                  \
+    -DLLVM_CONFIG_PATH=${BUILDPREFIX}/llvm/bin/llvm-config                   \
+    ../../llvm-project/compiler-rt
+make -j${PARALLEL_JOBS}
+make install
+
+CRTLIBDIR=$(${INSTALLPREFIX}/bin/clang -target riscv32-unknown-elf -print-resource-dir)/lib/riscv32-unknown-unknown-elf
+mkdir -p ${CRTLIBDIR}
+cp ${BUILDPREFIX}/compiler-rt32-inst/lib/libclang_rt.builtins-riscv32.a \
+   ${CRTLIBDIR}/libclang_rt.builtins.a
+cp ${BUILDPREFIX}/compiler-rt32-inst/lib/clang_rt.crtbegin-riscv32.o \
+   ${CRTLIBDIR}/clang_rt.crtbegin.o
+cp ${BUILDPREFIX}/compiler-rt32-inst/lib/clang_rt.crtend-riscv32.o \
+   ${CRTLIBDIR}/clang_rt.crtend.o
