@@ -17,7 +17,7 @@ fi
 # Build 32-bit
 mkdir -p ${WORKSPACE}/build/binutils-sim-32
 cd ${WORKSPACE}/build/binutils-sim-32
-CFLAGS="-g -O2 -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types" \
+CFLAGS="-g -O2 -std=gnu99 -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types" \
 CXXFLAGS="-g -O2 -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types" \
 ${WORKSPACE}/binutils-gdb-sim/configure    \
   --target=riscv32-unknown-elf             \
@@ -31,7 +31,7 @@ make install-sim
 # Build 64-bit
 mkdir -p ${WORKSPACE}/build/binutils-sim-64
 cd ${WORKSPACE}/build/binutils-sim-64
-CFLAGS="-g -O2 -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types" \
+CFLAGS="-g -O2 -std=gnu99 -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types" \
 CXXFLAGS="-g -O2 -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types" \
 ${WORKSPACE}/binutils-gdb-sim/configure    \
   --target=riscv64-unknown-elf             \
