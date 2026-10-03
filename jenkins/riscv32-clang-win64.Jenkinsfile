@@ -43,7 +43,7 @@ node('winbuilder') {
           extensions: [[$class: 'CloneOption', shallow: true]],
           userRemoteConfigs: [[url: 'https://mirrors.git.embecosm.com/mirrors/newlib-cygwin.git']]])
     }
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && ./describe-build.sh" """
@@ -51,21 +51,21 @@ node('winbuilder') {
   }
 
   stage('Build') {
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                    set BUGURL=${BUGURL}
                    set PKGVERS=${PKGVERS}
                    set EXTRA_LLVM_OPTS=-DLLVM_ENABLE_THREADS=OFF
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && ./stages/build-riscv32-clang-baremetal.sh" """
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && ./utils/extract-mingw-dlls.sh" """
   }
 
   stage('Package') {
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && utils/prepare-zip-package.sh ${PKGVERS}" """
@@ -74,7 +74,7 @@ node('winbuilder') {
 
   stage('Test') {
     // Build the CGEN simulator and use it for testing
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && ./stages/test-llvm.sh" """

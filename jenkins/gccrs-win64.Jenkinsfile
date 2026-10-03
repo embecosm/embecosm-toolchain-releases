@@ -37,7 +37,7 @@ node('winbuilder') {
           extensions: [[$class: 'CloneOption', shallow: true]],
           userRemoteConfigs: [[url: 'https://mirrors.git.embecosm.com/mirrors/gccrs.git']]])
     }
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && ./describe-build.sh" """
@@ -45,20 +45,20 @@ node('winbuilder') {
   }
 
   stage('Build') {
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                    set BUGURL=${BUGURL}
                    set PKGVERS=${PKGVERS}
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && ./stages/build-gccrs.sh" """
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && ./utils/extract-mingw-dlls.sh" """
   }
 
   stage('Package') {
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && utils/prepare-zip-package.sh ${PKGVERS}" """
@@ -66,7 +66,7 @@ node('winbuilder') {
   }
 
   stage('Test') {
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                   set /P UNIXWORKSPACE=<workspacedir
                   ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                       "cd %UNIXWORKSPACE% && ./stages/test-gccrs.sh" """

@@ -11,7 +11,7 @@ cd ${WORKSPACE}/install
 FILES=$(find . -name '*.exe')
 
 for FILE in $FILES; do
-  DEPS=$(ldd ${FILE} | grep '=> /mingw' | awk '{print $3}')
+  DEPS=$(ldd ${FILE} | grep '=> /ucrt64' | awk '{print $3}')
   for DEP in $DEPS; do
     if ! [ -e "$(dirname ${FILE})/$(basename ${DEP})" ]; then
       cp -v ${DEP} "$(dirname ${FILE})"

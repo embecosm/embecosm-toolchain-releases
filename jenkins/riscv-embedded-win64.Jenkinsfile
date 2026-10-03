@@ -62,7 +62,7 @@ node('winbuilder') {
           extensions: [[$class: 'CloneOption', shallow: true]],
           userRemoteConfigs: [[url: 'https://github.com/embecosm/riscv-binutils-gdb.git']]])
     }
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && ./describe-build.sh" """
@@ -70,7 +70,7 @@ node('winbuilder') {
   }
 
   stage('Build') {
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                    set BUGURL=${BUGURL}
                    set PKGVERS=${PKGVERS}
                    set EXTRA_BINUTILS_OPTS=--with-python=no --with-system-readline --disable-sim
@@ -78,21 +78,21 @@ node('winbuilder') {
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && ./stages/build-riscv32-gcc.sh" """
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                    set BUGURL=${BUGURL}
                    set PKGVERS=${PKGVERS}
                    set EXTRA_LLVM_OPTS=-DLLVM_ENABLE_THREADS=OFF
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && ./stages/build-riscv32-clang-only.sh" """
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && ./utils/extract-mingw-dlls.sh" """
   }
 
   stage('Package') {
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && utils/prepare-zip-package.sh ${PKGVERS}" """
@@ -100,15 +100,15 @@ node('winbuilder') {
   }
 
   stage('Test') {
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE%/build/binutils-gdb && make check-gas" """, returnStatus: true
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE%/build/binutils-gdb && make check-ld" """, returnStatus: true
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE%/build/binutils-gdb && make check-binutils" """, returnStatus: true
@@ -123,13 +123,13 @@ node('winbuilder') {
     }
     // Build the CGEN simulator and use it for testing
     if (params.ReducedMultilibTesting)
-      bat script: """set MSYSTEM=MINGW64
+      bat script: """set MSYSTEM=UCRT64
                     set REDUCED_MULTILIB_TEST=1
                     set /P UNIXWORKSPACE=<workspacedir
                     ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                         "cd %UNIXWORKSPACE% && ./stages/test-riscv32-gcc.sh" """
     else
-      bat script: """set MSYSTEM=MINGW64
+      bat script: """set MSYSTEM=UCRT64
                     set /P UNIXWORKSPACE=<workspacedir
                     ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                         "cd %UNIXWORKSPACE% && ./stages/test-riscv32-gcc.sh" """
@@ -140,7 +140,7 @@ node('winbuilder') {
                                      gcc/testsuite/g++/g++.sum''',
                        fingerprint: true
     }
-    bat script: """set MSYSTEM=MINGW64
+    bat script: """set MSYSTEM=UCRT64
                    set /P UNIXWORKSPACE=<workspacedir
                    ${MSYSHOME}\\usr\\bin\\bash --login -c ^
                        "cd %UNIXWORKSPACE% && ./stages/test-llvm.sh" """
