@@ -66,7 +66,7 @@ node('builder') {
   }
 
   stage('Build') {
-    image.inside {
+    image.inside('--ulimit nofile=1048576:1048576') {
       sh script: "BUGURL='${BUGURL}' PKGVERS='${PKGVERS}' ./stages/build-riscv64-linux-gcc.sh"
       sh script: "BUGURL='${BUGURL}' PKGVERS='${PKGVERS}' ./stages/build-riscv-qemu.sh"
     }
