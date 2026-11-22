@@ -6,7 +6,15 @@ LABEL maintainer simon.cook@embecosm.com
 RUN apt-get -y update && \
     DEBIAN_FRONTEND=noninteractive \
     apt-get install -y flex bison build-essential dejagnu git python-is-python3 python3 texinfo wget libexpat-dev rsync file \
-    gawk zlib1g-dev ninja-build pkg-config libglib2.0-dev python3-venv cmake
+    gawk zlib1g-dev ninja-build pkg-config libglib2.0-dev python3-venv
+
+# Install cmake 4.5.1
+RUN mkdir -p /tmp/cmake && cd /tmp/cmake && \
+    wget https://buildbot.embecosm.com/userContent/packages/cmake-4.5.1.tar.gz && \
+    tar xf cmake-4.5.1.tar.gz && cd cmake-4.5.1 && \
+    ./bootstrap --parallel=$(nproc) -- -DCMAKE_USE_OPENSSL=OFF && \
+    make -j$(nproc) && make install && \
+    cd /tmp && rm -rf cmake
 
 # Install fixed version of DejaGNU for more reliable test summary generation
 RUN mkdir -p /tmp/dejagnu && cd /tmp/dejagnu && \

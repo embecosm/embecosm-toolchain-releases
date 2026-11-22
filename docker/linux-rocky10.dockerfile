@@ -9,10 +9,10 @@ RUN dnf -y upgrade && dnf -y groupinstall 'Development tools' && \
     dnf -y install dejagnu python3 python-unversioned-command texinfo wget which expat-devel rsync file \
     gawk zlib-devel ninja-build pkg-config glib2-devel
 
-# Install cmake 3.26.4
+# Install cmake 4.5.1
 RUN mkdir -p /tmp/cmake && cd /tmp/cmake && \
-    wget https://buildbot.embecosm.com/userContent/packages/cmake-3.26.4.tar.gz && \
-    tar xf cmake-3.26.4.tar.gz && cd cmake-3.26.4 && \
+    wget https://buildbot.embecosm.com/userContent/packages/cmake-4.5.1.tar.gz && \
+    tar xf cmake-4.5.1.tar.gz && cd cmake-4.5.1 && \
     ./bootstrap --parallel=$(nproc) -- -DCMAKE_USE_OPENSSL=OFF && \
     make -j$(nproc) && make install && \
     cd /tmp && rm -rf cmake

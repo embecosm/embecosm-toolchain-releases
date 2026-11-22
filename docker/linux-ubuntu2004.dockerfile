@@ -9,10 +9,10 @@ RUN apt-get -y update && \
     gawk zlib1g-dev ninja-build pkg-config libglib2.0-dev python3-venv python3-pip && \
     pip3 install tomli
 
-# Install cmake 3.26.4
+# Install cmake 4.5.1
 RUN mkdir -p /tmp/cmake && cd /tmp/cmake && \
-    wget https://buildbot.embecosm.com/userContent/packages/cmake-3.26.4.tar.gz && \
-    tar xf cmake-3.26.4.tar.gz && cd cmake-3.26.4 && \
+    wget https://buildbot.embecosm.com/userContent/packages/cmake-4.5.1.tar.gz && \
+    tar xf cmake-4.5.1.tar.gz && cd cmake-4.5.1 && \
     ./bootstrap --parallel=$(nproc) -- -DCMAKE_USE_OPENSSL=OFF && \
     make -j$(nproc) && make install && \
     cd /tmp && rm -rf cmake
